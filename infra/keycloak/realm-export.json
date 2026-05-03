@@ -1,0 +1,57 @@
+{
+  "realm": "epcc",
+  "enabled": true,
+  "displayName": "EPCC",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "_comment_roles": "17 canonical roles per M34 Spec Block 3. MFA enforcement on the 5 designated roles is configured via Required Action assignments at user-creation time (Round 27 seed).",
+  "roles": {
+    "realm": [
+      { "name": "SYSTEM_ADMIN", "description": "Internal — full administrative access. MFA required." },
+      { "name": "PMO_DIRECTOR", "description": "Internal — PMO governance. MFA required." },
+      { "name": "PORTFOLIO_MANAGER", "description": "Internal — portfolio prioritisation. MFA required." },
+      { "name": "PROJECT_DIRECTOR", "description": "Internal — project ownership." },
+      { "name": "PLANNING_ENGINEER", "description": "Internal — schedule and milestones." },
+      { "name": "QS_MANAGER", "description": "Internal — measurement, BOQ, RA bills." },
+      { "name": "FINANCE_LEAD", "description": "Internal — financial control. MFA required." },
+      { "name": "PROCUREMENT_OFFICER", "description": "Internal — material receipts and procurement." },
+      { "name": "SITE_MANAGER", "description": "Internal — daily progress capture." },
+      { "name": "COMPLIANCE_MANAGER", "description": "Internal — NABH/regulatory compliance." },
+      { "name": "ANALYST", "description": "Internal — read-only with analytics access." },
+      { "name": "READ_ONLY", "description": "Internal — read-only with field redaction." },
+      { "name": "EXTERNAL_AUDITOR", "description": "Internal — audit-log access. MFA required." },
+      { "name": "CLIENT_VIEWER", "description": "External — Phase 2." },
+      { "name": "LENDER_VIEWER", "description": "External — Phase 2." },
+      { "name": "NABH_ASSESSOR", "description": "External — Phase 2." },
+      { "name": "CONTRACTOR_LIMITED", "description": "External — Phase 2." }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "epcc-api",
+      "enabled": true,
+      "publicClient": false,
+      "bearerOnly": true,
+      "secret": "dev-client-secret-change-me",
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    },
+    {
+      "clientId": "epcc-web",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["http://localhost:5173/*"],
+      "webOrigins": ["http://localhost:5173"]
+    }
+  ],
+  "users": []
+}

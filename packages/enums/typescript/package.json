@@ -1,0 +1,12 @@
+{
+  "name": "@epcc/enums",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "description": "EPCC ENUMs generated from X8_GlossaryENUMs. Do NOT hand-edit.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

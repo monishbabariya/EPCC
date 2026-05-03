@@ -1,0 +1,17 @@
+# CI overlay — strips persistent volumes and exposes only what tests need.
+# Usage: docker compose -f infra/docker-compose.yml -f infra/docker-compose.test.yml up -d
+services:
+  postgres:
+    tmpfs:
+      - /var/lib/postgresql/data
+
+  redis:
+    tmpfs:
+      - /data
+
+  minio:
+    tmpfs:
+      - /data
+
+  keycloak:
+    profiles: ["disabled-in-ci"]

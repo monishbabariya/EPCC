@@ -1,0 +1,118 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  api-lint-typecheck-test:
+    name: API · lint + typecheck + tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: epcc
+          POSTGRES_PASSWORD: epcc_dev_password
+          POSTGRES_DB: epcc
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U epcc -d epcc"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: apps/api
+    env:
+      DATABASE_URL: postgresql+asyncpg://epcc:epcc_dev_password@localhost:5432/epcc
+      REDIS_URL: redis://localhost:6379/0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+      - name: Set up Python
+        run: uv python install 3.12
+      - name: Sync dependencies
+        run: uv sync --extra dev
+      - name: Ruff lint
+        run: uv run ruff check .
+      - name: Ruff format check
+        run: uv run ruff format --check .
+      - name: Mypy
+        run: uv run mypy src
+      - name: Pytest (unit)
+        run: uv run pytest tests/unit -ra
+
+  web-lint-typecheck-test:
+    name: Web · lint + typecheck + tests + build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+      - name: Install
+        run: pnpm install --frozen-lockfile=false
+      - name: Biome
+        run: pnpm exec biome check .
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+      - name: Vitest
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+
+  enum-codegen-stale:
+    name: ENUM codegen freshness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+      - name: Set up Python
+        run: uv python install 3.12
+      - name: Run codegen
+        run: uv run python scripts/codegen-enums.py
+      - name: Fail on uncommitted changes to generated files
+        run: |
+          if ! git diff --quiet -- packages/enums/; then
+            echo "::error::Generated ENUM files are out of date. Run 'make codegen' and commit."
+            git status --short
+            git diff -- packages/enums/
+            exit 1
+          fi
+
+  br-coverage:
+    name: BR coverage check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Round 25 stub
+        run: |
+          echo "Round 25 scaffold — BR coverage check is implemented in Round 27 once the first BR-tagged tests land."

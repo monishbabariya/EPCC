@@ -42,3 +42,32 @@ build/
 *.log
 *.tmp
 *.bak
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# uv
+uv.lock.bak
+
+# Node tooling caches
+.vite/
+.turbo/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# Generated code (regenerated from X8 + OpenAPI on every build)
+packages/enums/python/src/epcc_enums/_generated.py
+packages/enums/typescript/src/_generated.ts
+packages/api-types/src/_generated.ts
+
+# Local docker volumes
+infra/.volumes/
+
+# OpenAPI dump
+apps/api/openapi.json
