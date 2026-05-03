@@ -2,9 +2,9 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-03 (Round 18 LOCKED + audit corrections — M03 complete; M01 v1.1 cascade closed; rules amended for cascade pattern + audit stamp formats + folder placement)
+**Last Updated:** 2026-05-03 (Rounds 21 + 22 LOCKED — M04 Wireframes + Workflows; M04 ExecutionCapture module COMPLETE)
 **Current Phase:** Phase 1 — Foundational Module Specifications
-**Active Round:** Awaiting Round 19 (next module — TBD; recommend M07 EVMEngine)
+**Active Round:** Round 22 LOCKED. M04 module COMPLETE (Brief, Spec, Wireframes, Workflows + X8 v0.5 + X9 v0.3 cascades). Awaiting Round 23.
 
 ---
 
@@ -51,13 +51,14 @@
 | M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 cascade notes) | Done | Done | 5b–8, 16, 18-audit |
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
 | **M03 PlanningMilestones** | Done | Done (v1.1) | Done | Done | 15–18 |
+| **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0 (R20) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22 |
 
 ### Cross-cutting
 
 | Doc | Version | Status |
 |---|---|---|
-| X8 GlossaryENUMs | **v0.4** | Living |
-| X9 VisualisationStandards | **v0.2** | Living |
+| X8 GlossaryENUMs | **v0.5** | Living (M04 ENUMs locked Round 20) |
+| X9 VisualisationStandards | **v0.3** | Living (M04 §13.3.4 row locked Round 20) |
 | EPCC_NamingConvention | v1.0 | Locked |
 | EPCC_FolderIndex | v1.0 | Locked |
 | EPCC_VersionLog | v1.1 | Living (reconciled Round 18) |
@@ -70,7 +71,7 @@
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 20 · **Remaining:** 65 (M01 v1.1 cascade note added Round 18 audit)
+**Total deliverables:** ~85 · **Done:** 26 · **Remaining:** 59 (M04 module COMPLETE through Round 22: Brief + Spec + Wireframes + Workflows + cascades)
 
 ---
 

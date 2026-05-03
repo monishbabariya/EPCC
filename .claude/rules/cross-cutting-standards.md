@@ -15,14 +15,14 @@
 | X5 | Speed Tier Inventory | Roadmap | — |
 | X6 | Integration Point Map | Roadmap | Per-module §7 until built |
 | X7 | Standards Memory v1.0 | Roadmap | This rules folder until built |
-| **X8** | **Glossary ENUMs** | **LIVING (current v0.4)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_4.md` |
-| **X9** | **Visualisation Standards** | **LIVING (current v0.2)** | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_2.md` |
+| **X8** | **Glossary ENUMs** | **LIVING (current v0.5)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_5.md` |
+| **X9** | **Visualisation Standards** | **LIVING (current v0.3)** | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_3.md` |
 
 ---
 
 ## X8 — ENUM Discipline
 
-### Locked ENUMs by Module (current v0.4)
+### Locked ENUMs by Module (current v0.5)
 
 | ENUM | Owner | Locked In |
 |---|---|---|
@@ -49,6 +49,12 @@
 | BACChangeType, UnitTier, UnitCategory, UnitSystem, PackageType | M02 | v0.3 |
 | ChainValidationStatus, CSVImportMode, CSVImportTarget, CSVImportRecordAction | M02 | v0.3 |
 | (M03 ENUMs — 12 new) | M03 | v0.4 |
+| ProgressMeasurementMethod (Units/Steps/Milestone/Subjective_Estimate) | M04 | v0.5 |
+| ProgressApprovalStatus (Draft/Submitted/Approved/Rejected) | M04 | v0.5 |
+| EVConfidence (High/Low/Fallback/Derived — Fallback/Derived M07-written) | M04 | v0.5 |
+| NCRStatus (7-state lifecycle) | M04 | v0.5 |
+| NCRRootCauseCategory (Workmanship/Material/Design/Procedure/Other) | M04 | v0.5 |
+| MaterialReceiptStatus, MaterialQCStatus, MaterialQCDecision | M04 | v0.5 |
 
 ### Anti-Drift Rules (LOCKED)
 
@@ -58,7 +64,7 @@
 
 ---
 
-## X9 — Visualisation (current v0.2)
+## X9 — Visualisation (current v0.3)
 
 **Decision-First Principle (FOUNDATIONAL):** every chart answers ONE decision in ONE sentence.
 

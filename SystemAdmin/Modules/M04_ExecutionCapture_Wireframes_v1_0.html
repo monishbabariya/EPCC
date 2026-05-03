@@ -1,0 +1,795 @@
+<!--
+artefact: M04_ExecutionCapture_Wireframes_v1_0
+round: 21
+date: 2026-05-03
+author: Monish (with Claude assist)
+x8_version: v0.5
+x9_version: v0.3
+status: LOCKED
+prior_version: M04_ExecutionCapture_Spec_v1_0 (Round 20) + M04_ExecutionCapture_Brief_v1_0 (Round 19)
+note: Renders the 7 role-default views from X9 v0.3 §13.3.4. Tailwind CDN, no JS framework deps (per D3 lock). Inline role-switcher uses plain JS for tab toggling. KDMC-001-DBOT mock data throughout. NCR pipeline funnel = 8th instance of X9 §11 flagship pattern.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>M04 — Execution Capture · Wireframes v1.0 · KDMC-001-DBOT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ----- Severity / status palette (X9 v0.3 + dual-encode per OQ-1.6) ----- */
+    .sev-critical { background: #b91c1c; color: white; }
+    .sev-high     { background: #ea580c; color: white; }
+    .sev-medium   { background: #ca8a04; color: white; }
+    .sev-low      { background: #4d7c0f; color: white; }
+    .sev-info     { background: #475569; color: white; }
+    .rag-red      { background: #b91c1c; color: white; }
+    .rag-amber    { background: #d97706; color: white; }
+    .rag-green    { background: #15803d; color: white; }
+
+    /* Status badges with shape + color (dual-encode for accessibility) */
+    .badge        { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 11px; font-weight: 600; border-radius: 9999px; letter-spacing: 0.02em; }
+    .badge::before{ content: ''; display: inline-block; width: 6px; height: 6px; background: currentColor; }
+    .badge.shape-circle::before { border-radius: 50%; }
+    .badge.shape-square::before { border-radius: 0; }
+    .badge.shape-triangle::before { width: 0; height: 0; background: transparent; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 6px solid currentColor; }
+
+    /* Heatmap cells */
+    .heat-0   { background: #fef2f2; }
+    .heat-25  { background: #fed7aa; }
+    .heat-50  { background: #fde68a; }
+    .heat-75  { background: #bbf7d0; }
+    .heat-100 { background: #15803d; color: white; }
+
+    /* Pipeline funnel (X9 §11 flagship) */
+    .funnel-stage { padding: 10px 16px; margin: 2px auto; text-align: center; font-weight: 600; clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%); }
+
+    /* S-curve visual (CSS-only proxy) */
+    .scurve-band { position: relative; height: 120px; background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 35%, #bae6fd 60%, #38bdf8 90%); border-radius: 4px; }
+    .scurve-line-planned { position: absolute; bottom: 0; left: 0; height: 2px; background: #475569; width: 100%; transform: scaleY(2); transform-origin: bottom; }
+    .scurve-line-actual  { position: absolute; bottom: 0; left: 0; height: 2px; background: #b91c1c; width: 78%; }
+
+    .role-section { display: none; }
+    .role-section.active { display: block; }
+    .role-tab { padding: 8px 14px; cursor: pointer; border-bottom: 3px solid transparent; font-size: 13px; font-weight: 600; color: #475569; }
+    .role-tab.active { border-color: #1d4ed8; color: #1d4ed8; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+
+<!-- ============== TOP BAR ============== -->
+<header class="bg-slate-900 text-white">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+    <div>
+      <div class="text-xs uppercase tracking-widest text-slate-400">EPCC · M04 Execution Capture · Wireframes v1.0</div>
+      <div class="text-lg font-bold mt-1">KDMC-001-DBOT — 150-bed Maternity, Cancer & Cardiology Hospital</div>
+    </div>
+    <div class="text-right text-xs">
+      <div>Project value: <span class="font-mono text-amber-300">₹68.4 Cr</span></div>
+      <div>Phase: <span class="font-mono text-cyan-300">CONSTRUCTION</span> · Report date: <span class="font-mono">2026-05-01</span></div>
+      <div>Contractor: <span class="font-semibold">L&amp;T Construction</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============== ROLE SWITCHER ============== -->
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-10">
+  <div class="max-w-7xl mx-auto flex flex-wrap gap-1 px-6 overflow-x-auto" id="roleTabs">
+    <div class="role-tab active" data-role="site_manager">SITE_MANAGER</div>
+    <div class="role-tab" data-role="project_director">PROJECT_DIRECTOR</div>
+    <div class="role-tab" data-role="qs_manager">QS_MANAGER ⭐</div>
+    <div class="role-tab" data-role="pmo_director">PMO_DIRECTOR</div>
+    <div class="role-tab" data-role="procurement_officer">PROCUREMENT_OFFICER</div>
+    <div class="role-tab" data-role="analyst">ANALYST</div>
+    <div class="role-tab" data-role="read_only">READ_ONLY</div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-6 py-6">
+
+<!-- =============================================================================== -->
+<!-- ROLE: SITE_MANAGER  ·  Primary: Today's progress entries (data-entry surface)   -->
+<!--                       Secondary: 4-week look-ahead Gantt                          -->
+<!-- =============================================================================== -->
+<section class="role-section active" data-role="site_manager">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Site Manager — Today's Progress Entries</h1>
+    <div class="text-xs text-slate-500">Site: KDMC main block · Today: 2026-05-03 · Period: Apr-2026 (Monthly)</div>
+  </div>
+
+  <!-- Primary: Today's progress entries (data-entry first; not a chart) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">Declared Progress — pending submit</h2>
+      <button class="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded">+ New Entry</button>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b border-slate-200">
+        <tr>
+          <th class="py-2 pr-3">WBS</th>
+          <th class="py-2 pr-3">Method</th>
+          <th class="py-2 pr-3">% Declared</th>
+          <th class="py-2 pr-3">Entry Value</th>
+          <th class="py-2 pr-3">Photos</th>
+          <th class="py-2 pr-3">Status</th>
+          <th class="py-2 text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">2.3.1.4 Foundation — Block A</td>
+          <td class="py-2.5 pr-3 text-xs">Units (m³)</td>
+          <td class="py-2.5 pr-3 font-mono">87.50%</td>
+          <td class="py-2.5 pr-3 font-mono">₹12,40,000</td>
+          <td class="py-2.5 pr-3 text-xs">3 attached</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-circle bg-slate-200 text-slate-700">Draft</span></td>
+          <td class="py-2.5 text-right"><button class="text-blue-700 text-xs font-semibold">Submit →</button></td>
+        </tr>
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">3.2.1 OT-1 MEP rough-in</td>
+          <td class="py-2.5 pr-3 text-xs">Steps (8 of 12)</td>
+          <td class="py-2.5 pr-3 font-mono">66.67%</td>
+          <td class="py-2.5 pr-3 font-mono">₹85,30,000</td>
+          <td class="py-2.5 pr-3 text-xs">1 attached</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-circle bg-slate-200 text-slate-700">Draft</span></td>
+          <td class="py-2.5 text-right"><button class="text-blue-700 text-xs font-semibold">Submit →</button></td>
+        </tr>
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">4.1.7 Cancer ward — finishes</td>
+          <td class="py-2.5 pr-3 text-xs">Subjective</td>
+          <td class="py-2.5 pr-3 font-mono">45.00%</td>
+          <td class="py-2.5 pr-3 font-mono">₹23,80,000</td>
+          <td class="py-2.5 pr-3 text-xs text-amber-700">Basis ⚠ required</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-circle bg-slate-200 text-slate-700">Draft</span></td>
+          <td class="py-2.5 text-right"><button class="text-slate-400 text-xs cursor-not-allowed">Submit →</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 italic">Subjective_Estimate &gt; 25% threshold (config) → basis text ≥ 100 chars required (BR-04-004d)</div>
+  </div>
+
+  <!-- Submitted entries (awaiting EPCC approval) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">Submitted (awaiting EPCC approval)</h2>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b">
+        <tr>
+          <th class="py-2 pr-3">WBS</th>
+          <th class="py-2 pr-3">% Declared</th>
+          <th class="py-2 pr-3">Submitted</th>
+          <th class="py-2 pr-3">Path</th>
+          <th class="py-2">Awaiting</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">2.3.1.3 Foundation — Block B</td>
+          <td class="py-2 pr-3 font-mono">92.00%</td>
+          <td class="py-2 pr-3 text-xs">2026-05-02 14:22</td>
+          <td class="py-2 pr-3"><span class="badge shape-square bg-slate-700 text-white">Single_QS</span></td>
+          <td class="py-2 text-xs">QS_MANAGER (P. Iyer)</td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">5.4.2 LINAC bunker shielding</td>
+          <td class="py-2 pr-3 font-mono">100.00%</td>
+          <td class="py-2 pr-3 text-xs">2026-05-02 09:08</td>
+          <td class="py-2 pr-3"><span class="badge shape-triangle bg-amber-700 text-white">Dual_QS_PD</span></td>
+          <td class="py-2 text-xs">QS ✓ → PD pending</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 italic">Dual_QS_PD path triggered when entry_value_inr &gt; ₹50L (ProjectExecutionConfig)</div>
+  </div>
+
+  <!-- Active NCRs - own packages -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">Active NCRs (your packages)</h2>
+    <div class="grid grid-cols-3 gap-3 text-sm">
+      <div class="border border-red-200 bg-red-50 p-3 rounded">
+        <span class="badge sev-critical mb-1">Critical</span>
+        <div class="font-mono text-xs mt-1">NCR-KDMC-0023</div>
+        <div class="text-xs mt-1">OT-1 — concrete cube failure (3 of 6 cubes &lt; M40)</div>
+        <div class="text-xs mt-1 text-red-700 font-semibold">Response due: 2026-05-03 18:00 (today)</div>
+      </div>
+      <div class="border border-orange-200 bg-orange-50 p-3 rounded">
+        <span class="badge sev-high mb-1">High</span>
+        <div class="font-mono text-xs mt-1">NCR-KDMC-0027</div>
+        <div class="text-xs mt-1">Cancer ward — drainage slope deviation</div>
+        <div class="text-xs mt-1 text-orange-700">Response due: 2026-05-04</div>
+      </div>
+      <div class="border border-yellow-200 bg-yellow-50 p-3 rounded">
+        <span class="badge sev-medium mb-1">Medium</span>
+        <div class="font-mono text-xs mt-1">NCR-KDMC-0029</div>
+        <div class="text-xs mt-1">Block B — paint adhesion patches</div>
+        <div class="text-xs mt-1 text-yellow-700">Response due: 2026-05-09</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary: 4-week look-ahead Gantt -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">4-Week Look-Ahead Gantt (your WBS slice)</h2>
+    <div class="text-xs text-slate-500 mb-2">Source: M03 ScheduleEntry · look_ahead_window_weeks = 4 (M03 LookAheadConfig)</div>
+    <table class="w-full text-xs font-mono">
+      <thead>
+        <tr class="border-b border-slate-200">
+          <th class="text-left py-1.5 pr-2 w-1/4">WBS</th>
+          <th class="text-left py-1.5">Wk 18 (May 04)</th>
+          <th class="text-left py-1.5">Wk 19 (May 11)</th>
+          <th class="text-left py-1.5">Wk 20 (May 18)</th>
+          <th class="text-left py-1.5">Wk 21 (May 25)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-slate-100">
+          <td class="py-1.5 pr-2">2.3.1.5 Found. Block C</td>
+          <td colspan="2" class="py-1.5"><div class="bg-blue-500 h-2 rounded"></div></td>
+          <td class="py-1.5"></td>
+          <td class="py-1.5"></td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="py-1.5 pr-2">3.2.1 OT-1 MEP</td>
+          <td colspan="3" class="py-1.5"><div class="bg-amber-500 h-2 rounded"></div></td>
+          <td class="py-1.5"></td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="py-1.5 pr-2">4.1.7 Cancer finish</td>
+          <td colspan="4" class="py-1.5"><div class="bg-emerald-500 h-2 rounded"></div></td>
+        </tr>
+        <tr>
+          <td class="py-1.5 pr-2">5.4.2 LINAC bunker</td>
+          <td class="py-1.5"></td>
+          <td colspan="2" class="py-1.5"><div class="bg-purple-500 h-2 rounded"></div></td>
+          <td class="py-1.5"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: PROJECT_DIRECTOR · Primary: % complete heatmap                              -->
+<!--                          Secondary: NCR pipeline funnel (X9 §11 flagship)         -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="project_director">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Project Director — KDMC Progress Dashboard</h1>
+    <div class="text-xs text-slate-500">438 WBS nodes · 47 packages · 12 contracts</div>
+  </div>
+
+  <!-- Primary: % complete heatmap by package -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">% Complete Heatmap (by Package × Period)</h2>
+      <div class="text-xs text-slate-500">Decision: are any packages slipping vs PV plan?</div>
+    </div>
+    <table class="w-full text-xs">
+      <thead>
+        <tr>
+          <th class="text-left py-1.5 pr-2 w-1/4">Package</th>
+          <th class="py-1.5 px-1">Q4-25</th>
+          <th class="py-1.5 px-1">Q1-26</th>
+          <th class="py-1.5 px-1">Q2-26</th>
+          <th class="py-1.5 px-1">Q3-26 (fcst)</th>
+          <th class="py-1.5 px-1">Q4-26 (fcst)</th>
+          <th class="py-1.5 px-1 text-right">RAG</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="py-1 pr-2 font-mono">PKG-01 Civil Block A</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="text-right"><span class="badge shape-square rag-green">Green</span></td>
+        </tr>
+        <tr>
+          <td class="py-1 pr-2 font-mono">PKG-02 Civil Block B</td>
+          <td class="heat-50 text-center">52</td>
+          <td class="heat-75 text-center">71</td>
+          <td class="heat-75 text-center">88</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="text-right"><span class="badge shape-square rag-green">Green</span></td>
+        </tr>
+        <tr>
+          <td class="py-1 pr-2 font-mono">PKG-03 OT Suite</td>
+          <td class="heat-25 text-center">28</td>
+          <td class="heat-50 text-center">47</td>
+          <td class="heat-50 text-center">61</td>
+          <td class="heat-75 text-center">82</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="text-right"><span class="badge shape-triangle rag-amber">Amber</span></td>
+        </tr>
+        <tr>
+          <td class="py-1 pr-2 font-mono">PKG-05 LINAC Bunker</td>
+          <td class="heat-0 text-center">0</td>
+          <td class="heat-25 text-center">12</td>
+          <td class="heat-25 text-center">31</td>
+          <td class="heat-50 text-center">58</td>
+          <td class="heat-75 text-center">79</td>
+          <td class="text-right"><span class="badge shape-circle rag-red">Red</span></td>
+        </tr>
+        <tr>
+          <td class="py-1 pr-2 font-mono">PKG-08 MEP Trunks</td>
+          <td class="heat-25 text-center">22</td>
+          <td class="heat-50 text-center">44</td>
+          <td class="heat-75 text-center">71</td>
+          <td class="heat-75 text-center">85</td>
+          <td class="heat-100 text-center font-bold">100</td>
+          <td class="text-right"><span class="badge shape-square rag-green">Green</span></td>
+        </tr>
+        <tr>
+          <td class="py-1 pr-2 font-mono">PKG-12 NABH Compliance</td>
+          <td class="heat-0 text-center">0</td>
+          <td class="heat-0 text-center">0</td>
+          <td class="heat-25 text-center">15</td>
+          <td class="heat-50 text-center">42</td>
+          <td class="heat-75 text-center">70</td>
+          <td class="text-right"><span class="badge shape-triangle rag-amber">Amber</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 flex gap-4">
+      <span><span class="inline-block w-3 h-3 heat-0 border border-slate-300 align-middle"></span> 0–10%</span>
+      <span><span class="inline-block w-3 h-3 heat-25 border border-slate-300 align-middle"></span> 10–35%</span>
+      <span><span class="inline-block w-3 h-3 heat-50 border border-slate-300 align-middle"></span> 35–65%</span>
+      <span><span class="inline-block w-3 h-3 heat-75 border border-slate-300 align-middle"></span> 65–90%</span>
+      <span><span class="inline-block w-3 h-3 heat-100 border border-slate-300 align-middle"></span> 90–100%</span>
+    </div>
+  </div>
+
+  <!-- Secondary: NCR Pipeline Funnel (X9 §11 flagship — 8th instance) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">NCR Pipeline Funnel <span class="text-xs font-normal text-slate-500 italic">— X9 §11 flagship pattern (8th instance)</span></h2>
+      <div class="text-xs text-slate-500">Decision: where are NCRs stuck?</div>
+    </div>
+    <div class="max-w-md mx-auto">
+      <div class="funnel-stage bg-slate-700 text-white text-sm" style="width: 100%;">Open · 14</div>
+      <div class="funnel-stage bg-slate-600 text-white text-sm" style="width: 90%;">Response Pending · 11</div>
+      <div class="funnel-stage bg-amber-600 text-white text-sm" style="width: 78%;">Response Received · 8</div>
+      <div class="funnel-stage bg-amber-700 text-white text-sm" style="width: 65%;">Remediation In Progress · 6</div>
+      <div class="funnel-stage bg-orange-700 text-white text-sm" style="width: 50%;">Reinspection Pending · 4</div>
+      <div class="funnel-stage bg-emerald-700 text-white text-sm" style="width: 35%;">Closed · 38</div>
+      <div class="funnel-stage bg-red-800 text-white text-sm" style="width: 8%;">Disputed · 1</div>
+    </div>
+    <div class="mt-3 text-xs text-slate-500 grid grid-cols-3 gap-2">
+      <div>Critical open: <span class="font-mono font-bold text-red-700">2</span></div>
+      <div>High open: <span class="font-mono font-bold text-orange-700">5</span></div>
+      <div>Avg time-to-close: <span class="font-mono">14 days</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: QS_MANAGER ⭐ · Primary: Pending approvals queue                            -->
+<!--                       Secondary: Measurement variance                             -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="qs_manager">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">QS Manager — Pending Approvals Queue ⭐</h1>
+    <div class="text-xs text-slate-500">M04's primary QS-facing surface (X9 v0.3 §13.3.4)</div>
+  </div>
+
+  <!-- Primary: Pending approvals queue, sorted by entry_value_inr desc -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">Submitted entries awaiting your approval</h2>
+      <div class="flex gap-2 text-xs">
+        <button class="px-3 py-1 bg-slate-100 rounded">All</button>
+        <button class="px-3 py-1 bg-blue-100 text-blue-700 font-semibold rounded">High value first</button>
+        <button class="px-3 py-1 bg-slate-100 rounded">Oldest first</button>
+      </div>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b border-slate-200">
+        <tr>
+          <th class="py-2 pr-3">WBS</th>
+          <th class="py-2 pr-3">Method</th>
+          <th class="py-2 pr-3">% Declared</th>
+          <th class="py-2 pr-3">Entry Value</th>
+          <th class="py-2 pr-3">Path</th>
+          <th class="py-2 pr-3">Submitted</th>
+          <th class="py-2 pr-3">SLA</th>
+          <th class="py-2 text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="bg-amber-50">
+          <td class="py-2.5 pr-3 font-mono text-xs">5.4.2 LINAC bunker</td>
+          <td class="py-2.5 pr-3 text-xs">Steps</td>
+          <td class="py-2.5 pr-3 font-mono">100.00%</td>
+          <td class="py-2.5 pr-3 font-mono font-bold">₹2,40,00,000</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-triangle bg-amber-700 text-white">Dual_QS_PD</span></td>
+          <td class="py-2.5 pr-3 text-xs">2026-05-02 09:08</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square sev-medium">22h left</span></td>
+          <td class="py-2.5 text-right">
+            <button class="text-emerald-700 font-semibold text-xs mr-2">Approve</button>
+            <button class="text-red-700 font-semibold text-xs">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">3.2.1 OT-1 MEP rough-in</td>
+          <td class="py-2.5 pr-3 text-xs">Steps</td>
+          <td class="py-2.5 pr-3 font-mono">66.67%</td>
+          <td class="py-2.5 pr-3 font-mono font-bold">₹85,30,000</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-triangle bg-amber-700 text-white">Dual_QS_PD</span></td>
+          <td class="py-2.5 pr-3 text-xs">2026-05-02 14:22</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square sev-low">28h left</span></td>
+          <td class="py-2.5 text-right">
+            <button class="text-emerald-700 font-semibold text-xs mr-2">Approve</button>
+            <button class="text-red-700 font-semibold text-xs">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">2.3.1.3 Foundation Block B</td>
+          <td class="py-2.5 pr-3 text-xs">Units (m³)</td>
+          <td class="py-2.5 pr-3 font-mono">92.00%</td>
+          <td class="py-2.5 pr-3 font-mono">₹14,80,000</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square bg-slate-700 text-white">Single_QS</span></td>
+          <td class="py-2.5 pr-3 text-xs">2026-05-02 14:22</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square sev-info">42h left</span></td>
+          <td class="py-2.5 text-right">
+            <button class="text-emerald-700 font-semibold text-xs mr-2">Approve</button>
+            <button class="text-red-700 font-semibold text-xs">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">4.1.7 Cancer ward finishes</td>
+          <td class="py-2.5 pr-3 text-xs">Subjective ⚠</td>
+          <td class="py-2.5 pr-3 font-mono">45.00%</td>
+          <td class="py-2.5 pr-3 font-mono">₹23,80,000</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square bg-slate-700 text-white">Single_QS</span></td>
+          <td class="py-2.5 pr-3 text-xs">2026-05-03 08:44</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square sev-info">46h left</span></td>
+          <td class="py-2.5 text-right">
+            <button class="text-emerald-700 font-semibold text-xs mr-2">Approve</button>
+            <button class="text-red-700 font-semibold text-xs">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 italic">Default SLA: 48 hr (PROGRESS_APPROVAL_PENDING — ProjectExecutionConfig). Subjective_Estimate flagged ⚠ because basis text needs QS judgment.</div>
+  </div>
+
+  <!-- Secondary: Measurement variance -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">Measurement Variance — declared vs approved % (last 6 periods)</h2>
+    <div class="text-xs text-slate-500 mb-3">Decision: which contractors / packages need closer measurement scrutiny?</div>
+    <table class="w-full text-xs">
+      <thead class="text-left uppercase text-slate-500 border-b border-slate-200">
+        <tr>
+          <th class="py-1.5 pr-3">Package</th>
+          <th class="py-1.5 pr-3">Avg declared</th>
+          <th class="py-1.5 pr-3">Avg approved</th>
+          <th class="py-1.5 pr-3">Δ (declared − approved)</th>
+          <th class="py-1.5">Pattern</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 pr-3 font-mono">PKG-02 Civil Block B</td><td class="py-1 pr-3 font-mono">76.4%</td><td class="py-1 pr-3 font-mono">75.8%</td><td class="py-1 pr-3 font-mono text-emerald-700">+0.6 pp</td><td class="py-1">Tight</td></tr>
+        <tr><td class="py-1 pr-3 font-mono">PKG-03 OT Suite</td><td class="py-1 pr-3 font-mono">58.2%</td><td class="py-1 pr-3 font-mono">52.1%</td><td class="py-1 pr-3 font-mono text-amber-700">+6.1 pp</td><td class="py-1">Optimistic declarations</td></tr>
+        <tr><td class="py-1 pr-3 font-mono">PKG-05 LINAC Bunker</td><td class="py-1 pr-3 font-mono">42.0%</td><td class="py-1 pr-3 font-mono">38.5%</td><td class="py-1 pr-3 font-mono text-amber-700">+3.5 pp</td><td class="py-1">Mild over-declaration</td></tr>
+        <tr><td class="py-1 pr-3 font-mono">PKG-08 MEP Trunks</td><td class="py-1 pr-3 font-mono">71.0%</td><td class="py-1 pr-3 font-mono">71.0%</td><td class="py-1 pr-3 font-mono">0.0 pp</td><td class="py-1">Aligned</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: PMO_DIRECTOR · Primary: NCR pipeline funnel · Secondary: Receipt variance  -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="pmo_director">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">PMO Director — NCR Pipeline + Material Variance</h1>
+    <div class="text-xs text-slate-500">Project oversight scope: KDMC-001-DBOT</div>
+  </div>
+
+  <!-- Primary: NCR pipeline funnel (same flagship) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">NCR Pipeline Funnel <span class="text-xs font-normal text-slate-500 italic">— X9 §11 flagship</span></h2>
+      <div class="text-xs text-slate-500">8th instance of the funnel pattern</div>
+    </div>
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <div class="funnel-stage bg-slate-700 text-white text-sm" style="width: 100%;">Open · 14</div>
+        <div class="funnel-stage bg-slate-600 text-white text-sm" style="width: 90%;">Response Pending · 11</div>
+        <div class="funnel-stage bg-amber-600 text-white text-sm" style="width: 78%;">Response Received · 8</div>
+        <div class="funnel-stage bg-amber-700 text-white text-sm" style="width: 65%;">Remediation · 6</div>
+        <div class="funnel-stage bg-orange-700 text-white text-sm" style="width: 50%;">Reinspection · 4</div>
+        <div class="funnel-stage bg-emerald-700 text-white text-sm" style="width: 35%;">Closed · 38</div>
+      </div>
+      <div class="text-sm">
+        <h3 class="font-semibold mb-2 text-slate-700">By severity (open only)</h3>
+        <table class="w-full text-xs mb-4">
+          <tr><td><span class="badge sev-critical">Critical</span></td><td class="font-mono text-right">2</td><td class="text-right text-red-700">2 overdue</td></tr>
+          <tr><td><span class="badge sev-high">High</span></td><td class="font-mono text-right">5</td><td class="text-right text-orange-700">3 overdue</td></tr>
+          <tr><td><span class="badge sev-medium">Medium</span></td><td class="font-mono text-right">9</td><td class="text-right">1 overdue</td></tr>
+          <tr><td><span class="badge sev-low">Low</span></td><td class="font-mono text-right">4</td><td class="text-right">0</td></tr>
+        </table>
+        <h3 class="font-semibold mb-2 text-slate-700">By root cause (last 90 days)</h3>
+        <table class="w-full text-xs">
+          <tr><td>Workmanship</td><td class="font-mono text-right">62%</td></tr>
+          <tr><td>Material</td><td class="font-mono text-right">19%</td></tr>
+          <tr><td>Procedure</td><td class="font-mono text-right">12%</td></tr>
+          <tr><td>Design</td><td class="font-mono text-right">5%</td></tr>
+          <tr><td>Other</td><td class="font-mono text-right">2%</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary: Material receipts vs procurement schedule variance -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">Material Receipts vs Procurement Schedule — Variance</h2>
+    <div class="text-xs text-slate-500 mb-3">Source: M03 ProcurementScheduleItem.latest_order_date vs M04 MaterialReceipt.received_at</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b border-slate-200">
+        <tr>
+          <th class="py-2 pr-3">Item</th>
+          <th class="py-2 pr-3">Latest order date</th>
+          <th class="py-2 pr-3">Actual delivery</th>
+          <th class="py-2 pr-3">Δ days</th>
+          <th class="py-2 pr-3">Value</th>
+          <th class="py-2">QC</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">LINAC Linear Accelerator</td>
+          <td class="py-2 pr-3 text-xs">2026-04-01</td>
+          <td class="py-2 pr-3 text-xs">2026-04-28</td>
+          <td class="py-2 pr-3 font-mono text-amber-700">+27</td>
+          <td class="py-2 pr-3 font-mono">₹15.0 Cr</td>
+          <td class="py-2"><span class="badge shape-square bg-emerald-700 text-white">Accepted</span></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">MRI 3T Scanner</td>
+          <td class="py-2 pr-3 text-xs">2026-05-15</td>
+          <td class="py-2 pr-3 text-xs italic text-slate-400">Pending</td>
+          <td class="py-2 pr-3 font-mono text-slate-400">—</td>
+          <td class="py-2 pr-3 font-mono">₹8.0 Cr</td>
+          <td class="py-2"><span class="badge shape-circle bg-slate-300 text-slate-700">Not received</span></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">CT Scanner 64-slice</td>
+          <td class="py-2 pr-3 text-xs">2026-04-10</td>
+          <td class="py-2 pr-3 text-xs">2026-04-10</td>
+          <td class="py-2 pr-3 font-mono">0</td>
+          <td class="py-2 pr-3 font-mono">₹4.0 Cr</td>
+          <td class="py-2"><span class="badge shape-square bg-emerald-700 text-white">Accepted</span></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">OT Equipment Set</td>
+          <td class="py-2 pr-3 text-xs">2026-04-15</td>
+          <td class="py-2 pr-3 text-xs">2026-04-25</td>
+          <td class="py-2 pr-3 font-mono text-amber-700">+10</td>
+          <td class="py-2 pr-3 font-mono">₹2.8 Cr</td>
+          <td class="py-2"><span class="badge shape-triangle bg-amber-600 text-white">Conditional</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: PROCUREMENT_OFFICER · Primary: Receipts log · Secondary: Long-lead tracking-->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="procurement_officer">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Procurement Officer — Material Receipts Log</h1>
+    <div class="text-xs text-slate-500">Decision: which orders are tracking late, and what's at QC?</div>
+  </div>
+
+  <!-- Primary: Material receipts log -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">Receipts (last 30 days)</h2>
+      <button class="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded">+ Log Receipt</button>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b border-slate-200">
+        <tr>
+          <th class="py-2 pr-3">Receipt</th>
+          <th class="py-2 pr-3">Item</th>
+          <th class="py-2 pr-3">Qty</th>
+          <th class="py-2 pr-3">Value</th>
+          <th class="py-2 pr-3">Received</th>
+          <th class="py-2 pr-3">QC</th>
+          <th class="py-2 pr-3">GRN</th>
+          <th class="py-2">Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">RCPT-KDMC-00041</td>
+          <td class="py-2 pr-3 text-xs">LINAC LA system</td>
+          <td class="py-2 pr-3 font-mono">1</td>
+          <td class="py-2 pr-3 font-mono">₹15.0 Cr</td>
+          <td class="py-2 pr-3 text-xs">2026-04-28</td>
+          <td class="py-2 pr-3"><span class="badge shape-square bg-emerald-700 text-white">Accepted</span></td>
+          <td class="py-2 pr-3 text-xs text-emerald-700">Emitted</td>
+          <td class="py-2"><span class="badge shape-square bg-emerald-700 text-white">Closed</span></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">RCPT-KDMC-00040</td>
+          <td class="py-2 pr-3 text-xs">OT Equipment Set (Steris)</td>
+          <td class="py-2 pr-3 font-mono">1</td>
+          <td class="py-2 pr-3 font-mono">₹2.8 Cr</td>
+          <td class="py-2 pr-3 text-xs">2026-04-25</td>
+          <td class="py-2 pr-3"><span class="badge shape-triangle bg-amber-600 text-white">Conditional</span></td>
+          <td class="py-2 pr-3 text-xs text-amber-700">Emitted (cond.)</td>
+          <td class="py-2"><span class="badge shape-square bg-amber-600 text-white">Conditional</span></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">RCPT-KDMC-00039</td>
+          <td class="py-2 pr-3 text-xs">M40 cement (1200 bags)</td>
+          <td class="py-2 pr-3 font-mono">1200</td>
+          <td class="py-2 pr-3 font-mono">₹8.4 L</td>
+          <td class="py-2 pr-3 text-xs">2026-04-22</td>
+          <td class="py-2 pr-3"><span class="badge shape-circle sev-critical">Rejected</span></td>
+          <td class="py-2 pr-3 text-xs text-slate-500">Not emitted</td>
+          <td class="py-2"><span class="badge shape-circle sev-critical">Rejected</span></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">RCPT-KDMC-00038</td>
+          <td class="py-2 pr-3 text-xs">CT Scanner 64-slice</td>
+          <td class="py-2 pr-3 font-mono">1</td>
+          <td class="py-2 pr-3 font-mono">₹4.0 Cr</td>
+          <td class="py-2 pr-3 text-xs">2026-04-10</td>
+          <td class="py-2 pr-3"><span class="badge shape-square bg-emerald-700 text-white">Accepted</span></td>
+          <td class="py-2 pr-3 text-xs text-emerald-700">Emitted</td>
+          <td class="py-2"><span class="badge shape-square bg-emerald-700 text-white">Closed</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 italic">RCPT-00039 (rejected cement) — return-to-vendor flow active. Decision Queue MATERIAL_RECEIPT_QC_FAIL pending your action (SLA 24h).</div>
+  </div>
+
+  <!-- Secondary: Long-lead item tracking -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">Long-Lead Item Tracking (M03)</h2>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b">
+        <tr>
+          <th class="py-2 pr-3">Item</th>
+          <th class="py-2 pr-3">Lead time</th>
+          <th class="py-2 pr-3">Latest order date</th>
+          <th class="py-2 pr-3">Status</th>
+          <th class="py-2">Gate link</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2 pr-3 text-xs">LINAC</td><td class="py-2 pr-3 text-xs">18–24 mo</td><td class="py-2 pr-3 text-xs font-mono">2026-04-01 ✓</td><td class="py-2 pr-3"><span class="badge shape-square bg-emerald-700 text-white">Delivered</span></td><td class="py-2 text-xs">SG-5</td></tr>
+        <tr><td class="py-2 pr-3 text-xs">MRI 3T</td><td class="py-2 pr-3 text-xs">14–16 mo</td><td class="py-2 pr-3 text-xs font-mono">2026-05-15</td><td class="py-2 pr-3"><span class="badge shape-square bg-amber-600 text-white">Order placed</span></td><td class="py-2 text-xs">SG-5</td></tr>
+        <tr><td class="py-2 pr-3 text-xs">CT Scanner</td><td class="py-2 pr-3 text-xs">10–12 mo</td><td class="py-2 pr-3 text-xs font-mono">2026-04-10 ✓</td><td class="py-2 pr-3"><span class="badge shape-square bg-emerald-700 text-white">Delivered</span></td><td class="py-2 text-xs">SG-5</td></tr>
+        <tr><td class="py-2 pr-3 text-xs">Cath Lab</td><td class="py-2 pr-3 text-xs">12–14 mo</td><td class="py-2 pr-3 text-xs font-mono">2026-06-20</td><td class="py-2 pr-3"><span class="badge shape-circle bg-slate-300 text-slate-700">Pending order</span></td><td class="py-2 text-xs">SG-5</td></tr>
+        <tr><td class="py-2 pr-3 text-xs">OT Equipment</td><td class="py-2 pr-3 text-xs">8–10 mo</td><td class="py-2 pr-3 text-xs font-mono">2026-04-15 ✓</td><td class="py-2 pr-3"><span class="badge shape-triangle bg-amber-600 text-white">Conditional accept</span></td><td class="py-2 text-xs">SG-6</td></tr>
+        <tr><td class="py-2 pr-3 text-xs">MGPS</td><td class="py-2 pr-3 text-xs">6–8 mo</td><td class="py-2 pr-3 text-xs font-mono">2026-07-10</td><td class="py-2 pr-3"><span class="badge shape-circle bg-slate-300 text-slate-700">Pending order</span></td><td class="py-2 text-xs">SG-6</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: ANALYST · Primary: Progress trend curves · Secondary: NCR rate trend       -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="analyst">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Analyst — Trend Surface</h1>
+    <div class="text-xs text-slate-500">Read-heavy view; no actions</div>
+  </div>
+
+  <!-- Primary: Progress trend curves -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">Progress S-Curve — Actual vs Planned (project-wide)</h2>
+    <div class="text-xs text-slate-500 mb-3">Source: M04 Approved ProgressEntry rolled up to ΣEV/ΣBAC; M03 PVProfile cumulative for plan</div>
+    <div class="scurve-band relative">
+      <div class="scurve-line-planned"></div>
+      <div class="scurve-line-actual"></div>
+      <div class="absolute top-2 left-2 text-xs text-slate-500">100%</div>
+      <div class="absolute bottom-2 left-2 text-xs text-slate-500">0%</div>
+      <div class="absolute bottom-2 right-2 text-xs text-slate-500">Project finish</div>
+    </div>
+    <div class="flex gap-4 mt-2 text-xs">
+      <span><span class="inline-block w-4 h-0.5 bg-slate-700 align-middle"></span> Planned PV</span>
+      <span><span class="inline-block w-4 h-0.5 bg-red-700 align-middle"></span> Actual EV (SPI proxy)</span>
+      <span class="text-amber-700">Today: actual lags by ~7 weeks</span>
+    </div>
+  </div>
+
+  <!-- Per-package trend table -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">Per-Package Approved-% Trend (last 6 months)</h2>
+    <div class="text-xs text-slate-500 mb-3">Tabular fallback per X9 v0.2 OQ-1.10 (always available)</div>
+    <table class="w-full text-xs font-mono">
+      <thead class="text-left uppercase text-slate-500 border-b border-slate-200">
+        <tr><th class="py-1.5 pr-3">Package</th><th class="py-1.5">Nov</th><th class="py-1.5">Dec</th><th class="py-1.5">Jan</th><th class="py-1.5">Feb</th><th class="py-1.5">Mar</th><th class="py-1.5">Apr</th></tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 pr-3">PKG-01</td><td>92</td><td>96</td><td>98</td><td>100</td><td>100</td><td>100</td></tr>
+        <tr><td class="py-1 pr-3">PKG-02</td><td>52</td><td>58</td><td>64</td><td>71</td><td>78</td><td>88</td></tr>
+        <tr><td class="py-1 pr-3">PKG-03</td><td>28</td><td>34</td><td>40</td><td>47</td><td>54</td><td>61</td></tr>
+        <tr><td class="py-1 pr-3">PKG-05</td><td>0</td><td>4</td><td>9</td><td>16</td><td>22</td><td>31</td></tr>
+        <tr><td class="py-1 pr-3">PKG-08</td><td>22</td><td>30</td><td>37</td><td>44</td><td>56</td><td>71</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: NCR rate trend -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-3">NCR Rate Trend (per 1000 person-days)</h2>
+    <table class="w-full text-xs font-mono">
+      <thead class="text-left uppercase text-slate-500 border-b border-slate-200">
+        <tr><th class="py-1.5 pr-3">Month</th><th class="py-1.5 pr-3">Critical</th><th class="py-1.5 pr-3">High</th><th class="py-1.5 pr-3">Medium</th><th class="py-1.5 pr-3">Low</th><th class="py-1.5">Total / 1000 pd</th></tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 pr-3">Nov</td><td class="py-1 pr-3">0</td><td class="py-1 pr-3">2</td><td class="py-1 pr-3">5</td><td class="py-1 pr-3">3</td><td>4.2</td></tr>
+        <tr><td class="py-1 pr-3">Dec</td><td class="py-1 pr-3">1</td><td class="py-1 pr-3">3</td><td class="py-1 pr-3">7</td><td class="py-1 pr-3">2</td><td>5.5</td></tr>
+        <tr><td class="py-1 pr-3">Jan</td><td class="py-1 pr-3">0</td><td class="py-1 pr-3">2</td><td class="py-1 pr-3">8</td><td class="py-1 pr-3">4</td><td>5.0</td></tr>
+        <tr><td class="py-1 pr-3">Feb</td><td class="py-1 pr-3">2</td><td class="py-1 pr-3">4</td><td class="py-1 pr-3">9</td><td class="py-1 pr-3">3</td><td>6.7 ⚠</td></tr>
+        <tr><td class="py-1 pr-3">Mar</td><td class="py-1 pr-3">1</td><td class="py-1 pr-3">3</td><td class="py-1 pr-3">10</td><td class="py-1 pr-3">5</td><td>6.1</td></tr>
+        <tr><td class="py-1 pr-3">Apr</td><td class="py-1 pr-3">2</td><td class="py-1 pr-3">5</td><td class="py-1 pr-3">9</td><td class="py-1 pr-3">4</td><td>6.4</td></tr>
+      </tbody>
+    </table>
+    <div class="mt-2 text-xs text-amber-700">Trend: NCR rate ticking up since Feb. Flag for PMO review.</div>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: READ_ONLY · Project progress card (badges only; no actions)                -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="read_only">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Read-Only — Project Progress Card</h1>
+    <div class="text-xs text-slate-500">Status badges only · No approval actions · No floats / EAC numerics (M03 BR-03-031 + M02 BR-02-008 redaction)</div>
+  </div>
+
+  <div class="bg-white border border-slate-200 rounded-lg p-5">
+    <div class="grid grid-cols-3 gap-4">
+      <div class="border border-slate-200 rounded p-3">
+        <div class="text-xs text-slate-500 uppercase">Overall progress</div>
+        <div class="font-mono text-3xl font-bold mt-1">61%</div>
+        <div class="mt-2"><span class="badge shape-triangle rag-amber">Amber</span></div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="text-xs text-slate-500 uppercase">NCRs open</div>
+        <div class="font-mono text-3xl font-bold mt-1">14</div>
+        <div class="mt-2 flex gap-1">
+          <span class="badge sev-critical">2 Critical</span>
+          <span class="badge sev-high">5 High</span>
+        </div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="text-xs text-slate-500 uppercase">Procurement</div>
+        <div class="font-mono text-3xl font-bold mt-1">4 / 6</div>
+        <div class="text-xs text-slate-500 mt-1">long-lead items received</div>
+        <div class="mt-2"><span class="badge shape-square rag-green">On track</span></div>
+      </div>
+    </div>
+    <div class="mt-4 text-xs text-slate-500 italic">Read-only view — float values, EAC, contractor scoring, and approval surfaces are hidden per role.</div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============== ROLE-SWITCHER SCRIPT (no framework — vanilla JS) ============== -->
+<script>
+  document.querySelectorAll('.role-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const role = tab.dataset.role;
+      document.querySelectorAll('.role-tab').forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('.role-section').forEach(s => s.classList.toggle('active', s.dataset.role === role));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+
+<footer class="text-center text-xs text-slate-400 py-6 border-t border-slate-200 mt-8">
+  M04 Wireframes v1.0 · Round 21 · Locked 2026-05-03 · Tailwind CDN · No framework deps · 7 role-default views per X9 v0.3 §13.3.4 · KDMC-001-DBOT mock data
+</footer>
+</body>
+</html>

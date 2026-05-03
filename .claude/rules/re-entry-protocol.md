@@ -46,6 +46,7 @@ Always cite the canonical reference rather than answering from memory:
 | Project lifecycle, phase, status, contract structure | `SystemAdmin/Modules/M01_ProjectRegistry_Spec_v1_0.md` (read with `M01_ProjectRegistry_v1_1_CascadeNote.md` adding `min_wbs_depth` and `M01_ProjectRegistry_v1_2_CascadeNote.md` removing `reporting_period_type`) |
 | WBS, BOQ, packages, BAC, templates, units | `SystemAdmin/Modules/M02_StructureWBS_Spec_v1_0.md` |
 | Schedule, baseline, milestones, PV, procurement timing, audit events | `SystemAdmin/Modules/M03_PlanningMilestones_Spec_v1_1.md` |
+| Progress capture, NCRs, material receipts, contractor scoring, ProjectExecutionConfig | `SystemAdmin/Modules/M04_ExecutionCapture_Spec_v1_0.md` (read with Brief v1.0 as decision-history reference + Workflows v1.0 for runtime flows) |
 | ENUMs (any) | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_4.md` |
 | Charts, visualisation, role-default views | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_2.md` |
 | Naming conventions | `System Specs/EPCC_NamingConvention_v1_0.md` |
