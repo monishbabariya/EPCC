@@ -5,7 +5,7 @@ date: 2026-05-03
 author: Monish (with Claude assist)
 x8_version: v0.5
 x9_version: v0.3
-status: DRAFT
+status: LOCKED
 ---
 
 # EPCC Build Architecture — Brief (Round 23)
@@ -475,4 +475,46 @@ For completeness — these are NOT being decided in Round 23 or 24, and remain i
 
 ---
 
-*— End of Brief. Awaiting OQ-1 answers from Monish before drafting Round 24 Spec.*
+## 11. OQ-1 + OQ-2 — ANSWERS (Round 23 LOCK)
+
+Monish accepted all Claude-recommended defaults on 2026-05-03. Locked decisions below; these become the input contract for Round 24 Spec and may not be revisited without a new round.
+
+### OQ-1 (10/10 LOCKED)
+
+| ID | Decision | Locked Value |
+|---|---|---|
+| OQ-1.1 | Repo / branch strategy | **A — Monorepo on `main`.** Specs and code in same repo. Short-lived feature branches `feat/<scope>` merged via PR. NO long-lived `Code` branch. |
+| OQ-1.2 | Branch model | **A — Trunk-based.** `main` always deployable. Feature branches < 3 days. CI gates merge. |
+| OQ-1.3 | Module sequencing | **A — Thin vertical slice first.** M34 (auth+RBAC+17 roles) → M01 (project create+read) → KDMC demo, then deepen each module. |
+| OQ-1.4 | Auth backend | **A — Self-hosted Keycloak** for v1.0 (OIDC + local password fallback + MFA for the 5 designated roles). |
+| OQ-1.5 | Multi-tenant model | **A — Shared schema + `tenant_id` filtering at app layer + Postgres RLS at DB layer.** |
+| OQ-1.6 | Pilot tenant provisioning | **A — Seed script** `infra/seed/kdmc.py`. Reproducible across dev/staging/prod. |
+| OQ-1.7 | CI/CD host | **A — GitHub Actions.** |
+| OQ-1.8 | Production hosting | **A — Defer.** Lock dev (docker-compose) + staging shape now; prod hosting decided after first module ships. |
+| OQ-1.9 | Spec → code traceability | **A — BR codes in test names.** `test_BR_01_024_*`. CI gate asserts every locked BR has ≥ 1 test. |
+| OQ-1.10 | ENUM single source of truth | **A — Codegen from X8.** `scripts/codegen-enums.py` → `packages/enums/python/` + `packages/enums/typescript/`. CI fails on stale generated files. |
+
+### OQ-2 (all defaults accepted)
+
+**Backend:** Python 3.12 · `uv` · FastAPI 0.110+ · uvicorn (dev) / gunicorn (prod) · SQLAlchemy 2.x async · Alembic · Pydantic v2 · Celery 5.x + Redis · `boto3` against MinIO · `authlib` · pytest + pytest-asyncio + httpx · `pytest-postgresql` (real Postgres in CI) · `ruff` · `mypy --strict` on `apps/api/` (relaxed on tests) · 80% line coverage / 100% on BR-tagged tests.
+
+**Frontend:** Vite 5.x · TypeScript 5.x strict · React Router 6.x · TanStack Query v5 · Zustand · `react-hook-form` + `zod` · Tailwind CSS 3.x · `shadcn/ui` (Radix + Tailwind) · Recharts 3.x · frappe-gantt 0.7.x · react-flow 12.x · Vitest + React Testing Library · Playwright (e2e) · `biome` (linter+formatter, fall back to ESLint where needed).
+
+**API contract:** FastAPI route definitions → OpenAPI 3.1 → `openapi-typescript` + `openapi-fetch` for the TS client. URL prefix `/api/v1/`.
+
+**Infra (dev):** `docker-compose` (Postgres 16, Redis 7, MinIO, Keycloak) · `uvicorn --reload` + Vite HMR · `make seed` runs `infra/seed/kdmc.py`.
+
+**CI:** GitHub Actions. Pipeline: lint → typecheck → unit → integration (Postgres + Redis) → frontend build → e2e (Playwright) → ENUM-codegen-stale check → BR-coverage check.
+
+### Carry-forwards now resolved here (BA-OQ-1 to BA-OQ-6)
+
+- **BA-OQ-1** Generated ENUM packages pinned to X8 version. Package versions: `epcc_enums==<x8.major>.<x8.minor>.<patch>`. Patch bumps for codegen fixes.
+- **BA-OQ-2** PR template requires: linked spec section + path, BR codes touched (or "none"), cascade note path (or "n/a"), tests added/updated checklist, screenshot for UI changes.
+- **BA-OQ-3** Branch protection on `main`: required CI checks (lint, typecheck, tests, e2e, ENUM-stale, BR-coverage), 1 reviewer (Monish), linear history (squash-merge), no direct pushes to `main`. Signed commits not required for v1.0.
+- **BA-OQ-4** Secrets: `.env.local` for dev (gitignored, with `.env.example` checked in). CI uses GitHub Secrets. Production secrets deferred per OQ-1.8.
+- **BA-OQ-5** `make seed` is one command and creates all 17 role users + KDMC pilot data. No interactive variant in v1.0.
+- **BA-OQ-6** Cross-module API calls go through internal HTTP via the same FastAPI app (single deploy unit in v1.0). Function-call shortcuts forbidden — they violate the F-005 single-owner rule by hiding cross-module access from the audit log. If performance becomes a concern (post-pilot), revisit with an explicit round.
+
+---
+
+*— Round 23 LOCKED 2026-05-03. Round 24 Spec drafts immediately.*
