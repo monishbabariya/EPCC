@@ -1,10 +1,10 @@
 # M03 — Planning & Milestones
-## Spec v1.0
+## Spec v1.1
 **Status:** Locked
 **Locked:** Yes
 **Author:** PMO Director / System Architect
-**Created:** 2026-05-03 | **Last Updated:** 2026-05-03
-**Last Audited:** v1.0 on 2026-05-03
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-03 (v1.1 cascade from Round 18 Workflows lock)
+**Last Audited:** v1.1 on 2026-05-03
 **Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_4.md, X9_VisualisationStandards_Spec_v0_2.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_2.md, M02_StructureWBS_Spec_v1_0.md
 **Layer:** L2 Control — Planning
 **Phase:** 1 — Foundational
@@ -19,6 +19,7 @@
 | Version | Date | Change Summary |
 |---|---|---|
 | v1.0 | 2026-05-03 | Initial standalone consolidated spec. Re-issued from legacy v2.3 amendment chain. All 11 OQ-1 decisions locked. 12 entities, ~32 BRs. ResourceType extended to 4 values (incl. Vendor_Resource). reporting_period_type ownership shifted to M03 (M01 v1.2 cascade). Procurement vendor identity owned by M06. Float visibility role-tiered. Role-default views per X9 v0.2 §13.3.3 (PROJECT_DIRECTOR + PV S-curve secondary; PLANNING_ENGINEER + PV roll-up shape). |
+| v1.1 | 2026-05-03 | Round 18 cascade from Workflows lock. (1) New **Appendix C — Audit Events Catalogue** locks 28 UPPER_SNAKE_CASE event names (2 pre-existing in v1.0 + 26 surfaced by Workflows v1.0). Source of truth for M03 audit events until X3 Audit Event Catalogue lands. (2) New **BR-03-033** — critical-path recomputation MUST execute within the same DB transaction as `ScheduleEntry` persist (anti-stale-read invariant for BR-03-018). (3) New **BR-03-034** — `reporting_period_type` change + full PV regeneration MUST execute as a single atomic transaction; PV regen failure rolls back the reporting_period_type itself; emit `REPORTING_PERIOD_CHANGE_FAILED` (data integrity rule strengthening BR-03-028). |
 
 ---
 
@@ -605,6 +606,8 @@ Step 5: Confirm commit (all-or-nothing)
 | BR-03-030 | Resource over-allocation | Named resource total allocation_pct > max_allocation_pct in any period | Flag conflict; generate Decision RESOURCE_OVER_ALLOCATION_CONFLICT | 🔴 Real-time |
 | BR-03-031 | Float read by READ_ONLY | API request for float value | Return null/redacted; show status badge only | 🔴 Real-time |
 | BR-03-032 | M09 compliance grant date received | Compliance permit grant_date populated | Auto-populate linked Milestone.actual_date; status → Achieved | 🔴 Real-time |
+| BR-03-033 | ScheduleEntry persist (BR-03-018 dependency) | Critical-path recomputation must execute within the same DB transaction as the ScheduleEntry persist | If recompute fails, rollback persist; no stale-read for BR-03-018 firing | 🔴 Real-time |
+| BR-03-034 | reporting_period_type change post-baseline (BR-03-028 strengthening) | Atomic transaction: change reporting_period_type AND full PV regeneration in single commit | If PV regen fails, rollback reporting_period_type; emit REPORTING_PERIOD_CHANGE_FAILED; never leave project in mixed-period state | 🔴 Real-time |
 
 ---
 
@@ -773,4 +776,69 @@ MGPS             6-8 months     latest_order_date = SG-6 date
 
 ---
 
-*v1.0 — Spec locked. Zero open questions. Ready for Round 17 (Wireframes).*
+## APPENDIX C — Audit Events Catalogue (Spec v1.1, Round 18 cascade)
+
+> **Status:** LOCKED. Source of truth for M03 audit event names until X3 Audit Event Catalogue is built. When X3 lands, these names migrate to X3 unchanged (forward-traceability commitment). Naming follows X8 §2 — UPPER_SNAKE_CASE.
+>
+> **Scope:** Twenty-eight events surfaced across M03 v1.0 BRs and Workflows v1.0. Listed alphabetically below.
+
+### Event registry
+
+| Event Name | Source BR(s) | Workflow | Severity | Trigger Description |
+|---|---|---|---|---|
+| `AUTHZ_DENIED` | M34 RBAC | WF-03-001 | Medium | RBAC fail at API entry (proxy-emitted; M34-owned, listed for closure) |
+| `BASELINE_EXTENSION_BLOCKED` | BR-03-009, BR-03-010 | WF-03-003 | Medium | Evidence URL missing OR billable extension without VO |
+| `BASELINE_EXTENSION_RAISED` | BR-03-008..011 | WF-03-003 | Info | Pending extension row inserted |
+| `BASELINE_LOCKED` | BR-03-005, BR-03-006 | WF-03-002 | High | Atomic transaction commits — irreversible |
+| `BASELINE_LOCK_BLOCKED` | BR-03-003, BR-03-004 | WF-03-002 | Medium | Pre-check fail (missing dates or gate milestones); `reason` enum |
+| `BASELINE_LOCK_FAILED` | BR-03-005, BR-03-006 | WF-03-002 | Critical | Atomic transaction rolled back |
+| `BASELINE_LOCK_INITIATED` | BR-03-003, BR-03-004 | WF-03-002 | Info | Pre-checks passed; routed to PMO_DIRECTOR |
+| `BASELINE_LOCK_REJECTED` | BR-03-005, BR-03-006 | WF-03-002 | High | PMO_DIRECTOR declined |
+| `CRITICAL_PATH_DELAY` | BR-03-018 | WF-03-007 | High | **Decision Queue trigger** — critical-path activity variance > 5d |
+| `EXTENSION_APPROVED` | BR-03-011 | WF-03-003 | High | PMO approves; cascade to M07 complete |
+| `EXTENSION_REJECTED` | BR-03-011 | WF-03-003 | Medium | PMO declines |
+| `LONG_LEAD_NO_GATE_LINK` | BR-03-017 | WF-03-006 | Low | Warning — long-lead item saved without gate link |
+| `M09_GRANT_ORPHANED` | BR-03-032 | WF-03-005 | Medium | M09 grant_date received with no linked milestone |
+| `MILESTONE_AUTO_ACHIEVED` | BR-03-032 | WF-03-005 | Info | M09 cascade flips status to Achieved |
+| `MILESTONE_AUTO_DELAYED` | BR-03-021 | WF-03-005 | Medium | Daily sweep flips status to Delayed |
+| `MILESTONE_FORECAST_UPDATED` | BR-03-015 | WF-03-005 | Info | Forecast date persisted |
+| `NEUTRAL_EVENT_RECLASSIFIED` | BR-03-008 | WF-03-003 | Medium | Pre-existing in v1.0; auto-reclassify Neutral_Event → Contractor_Delay |
+| `POST_BASELINE_EDIT_BLOCKED` | BR-03-007 | WF-03-001 | Medium | Direct date edit attempted post-baseline |
+| `PO_LINKED_TO_SCHEDULE` | BR-03-022 | WF-03-006 | Info | M06 PO event populates actual_order_date |
+| `PROCUREMENT_ESCALATION` | BR-03-016 | WF-03-006 | High | **Decision Queue trigger** — daily sweep finds late order |
+| `PROJECT_LEVEL_EXCEPTION_APPROVED` | BR-03-027 | WF-03-009 | High | PMO approves project-level extension |
+| `PROJECT_LEVEL_EXCEPTION_BLOCKED` | BR-03-026 | WF-03-009 | Medium | Justification < 100 chars |
+| `PROJECT_LEVEL_EXCEPTION_RAISED` | BR-03-027 | WF-03-009 | High | Flagged extension persisted; PMO Decision generated |
+| `PROJECT_LEVEL_EXCEPTION_REJECTED` | BR-03-027 | WF-03-009 | Medium | PMO declines |
+| `PV_PROFILE_GENERATED` | BR-03-012 | WF-03-004 | Info | LoadingProfile assignment generates PV rows |
+| `PV_PROFILE_OVERRIDDEN` | BR-03-013 | WF-03-004 | Medium | Manual override persisted with reason |
+| `PV_PROFILE_OVERRIDE_BLOCKED` | BR-03-013 | WF-03-004 | Low | Blank override_reason |
+| `REPORT_DATE_PV_RECALCULATED` | BR-03-014 | WF-03-004 | Info | M01 report_date update triggers cascade |
+| `REPORTING_PERIOD_CHANGE_FAILED` | BR-03-034 | WF-03-009 | Critical | Atomic rollback fired during reporting_period_type change |
+| `REPORTING_PERIOD_TYPE_CHANGED` | BR-03-028, BR-03-034 | WF-03-009 | High | Pre-existing in v1.0; atomic change with PV regen committed |
+| `RESOURCE_CONFLICT_FLAGGED` | BR-03-019 | WF-03-007 | Medium | Over-allocation detected; confirmation blocked |
+| `RESOURCE_EXTERNAL_ENGAGEMENT_GAP` | BR-03-029 | WF-03-007 | Medium | External resource engagement_end < activity planned_finish |
+| `RESOURCE_OVER_ALLOCATION_CONFLICT` | BR-03-030 | WF-03-007 | High | **Decision Queue trigger** — same trigger as BR-019, generates Decision |
+| `SCHEDULE_ENTRY_CREATED` | BR-03-001, BR-03-002 | WF-03-001 | Info | ScheduleEntry insert |
+| `SCHEDULE_ENTRY_UPDATED` | BR-03-001, BR-03-002 | WF-03-001 | Info | ScheduleEntry update |
+| `SCHEDULE_ENTRY_VALIDATION_FAILED` | BR-03-001, BR-03-002 | WF-03-001 | Low | Date logic OR project bounds reject; `reason` enum |
+| `SCHEDULE_IMPORT_COMMITTED` | BR-03-023..025 | WF-03-008 | Info | Final commit with row counts |
+| `SCHEDULE_IMPORT_INITIATED` | BR-03-023 | WF-03-008 | Info | Import session created |
+| `SCHEDULE_IMPORT_MODE_MISSING` | BR-03-023 | WF-03-008 | Low | Mode unselected |
+| `SCHEDULE_IMPORT_PREVIEW_BLOCKED` | BR-03-024 | WF-03-008 | Medium | Conflicts unresolved at preview |
+| `SCHEDULE_RECOVERY_REQUIRED` | BR-03-015 | WF-03-005 | High | **Decision Queue trigger** — gate-linked milestone forecast > baseline + 7d |
+| `WEATHER_WINDOW_APPLIED` | BR-03-020 | WF-03-007 | Info | Factored window adjusts float / productivity |
+| `WEATHER_WINDOW_REVERSED` | BR-03-020 | WF-03-007 | Info | Factored flag toggled false; adjustment reversed |
+
+### Notes
+
+- **Pre-existing in v1.0 (2 events):** `NEUTRAL_EVENT_RECLASSIFIED`, `REPORTING_PERIOD_TYPE_CHANGED`. Confirmed unchanged here.
+- **Newly locked in v1.1 (26 events + 1 sibling):** all others. `REPORTING_PERIOD_TYPE_CHANGED` gains a sibling `REPORTING_PERIOD_CHANGE_FAILED` for the BR-03-034 rollback path.
+- **Decision Queue triggers (5):** `CRITICAL_PATH_DELAY`, `PROCUREMENT_ESCALATION`, `RESOURCE_OVER_ALLOCATION_CONFLICT`, `SCHEDULE_RECOVERY_REQUIRED`, plus `PROJECT_LEVEL_EXCEPTION_RAISED` (PMO routing). Matches the "5 Decision Queue triggers" line in BLOCK 7 integration to M11.
+- **Out-of-scope events listed for closure:** `AUTHZ_DENIED` is M34-owned but emitted on the M03 path; included for traceability only.
+- **BR-03-031 (READ_ONLY float redaction):** No event emitted. Redaction is a serialiser-layer rule logged at API gateway access logs only.
+- **Cross-reference:** BLOCK 8a "Logged Events" describes *what* is logged (action-level, retention-tagged); Appendix C names the *event constants* (machine-level). Complementary, not duplicate.
+
+---
+
+*v1.1 — Spec re-locked. Round 18 cascade absorbed. Zero open questions. M03 module COMPLETE pending Workflows v1.0 lock.*

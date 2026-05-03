@@ -2,9 +2,9 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-03 (after Round 17 — M03 Wireframes; FIRST module using X9 charts)
+**Last Updated:** 2026-05-03 (Round 18 LOCKED — M03 module COMPLETE; Spec v1.1 cascade absorbed)
 **Current Phase:** Phase 1 — Foundational Module Specifications
-**Active Round:** Awaiting Round 18 (M03 Workflows — completes M03 module)
+**Active Round:** Awaiting Round 19 (next module — TBD)
 
 ---
 
@@ -50,7 +50,7 @@
 | M34 SystemAdminRBAC | Done | Done | Done | Done | 1–4 |
 | M01 ProjectRegistry | Done | Done (v1.2 cascade note) | Done | Done | 5b–8, 16 |
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
-| **M03 PlanningMilestones** | Done | Done | Done | Pending Round 18 | 15–17 |
+| **M03 PlanningMilestones** | Done | Done (v1.1) | Done | Done | 15–18 |
 
 ### Cross-cutting
 
@@ -70,7 +70,7 @@
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 18 · **Remaining:** 67
+**Total deliverables:** ~85 · **Done:** 19 · **Remaining:** 66
 
 ---
 

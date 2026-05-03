@@ -45,6 +45,7 @@ Always cite the canonical reference rather than answering from memory:
 | Authentication, RBAC, roles, permissions | `SystemAdmin/M34_SystemAdminRBAC_Spec_v1_0.md` |
 | Project lifecycle, phase, status, contract structure | `SystemAdmin/Modules/M01_ProjectRegistry_Spec_v1_0.md` |
 | WBS, BOQ, packages, BAC, templates, units | `SystemAdmin/Modules/M02_StructureWBS_Spec_v1_0.md` |
+| Schedule, baseline, milestones, PV, procurement timing, audit events | `SystemAdmin/Modules/M03_PlanningMilestones_Spec_v1_1.md` |
 | ENUMs (any) | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_4.md` |
 | Charts, visualisation, role-default views | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_2.md` |
 | Naming conventions | `System Specs/EPCC_NamingConvention_v1_0.md` |

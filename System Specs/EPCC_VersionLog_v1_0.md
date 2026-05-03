@@ -1,7 +1,8 @@
 # EPCC — Master Version Log
-## Version 1.0
+## Version 1.1
 **Owner:** PMO Director
-**Created:** 2026-05-03 | **Status:** Living Document
+**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-03 (Round 18 lock — Rounds 1–18 catch-up)
+**Status:** Living Document
 **Update Frequency:** On every artefact creation, modification, or status change.
 
 ---
@@ -24,7 +25,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 ---
 
-## 3. CURRENT REGISTRY STATE — 2026-05-03
+## 3. CURRENT REGISTRY STATE — 2026-05-03 (post Round 18)
 
 ### 3.1 Governance Files (00_Governance)
 
@@ -57,16 +58,16 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 | File | Type | Version | Status | Notes |
 |---|---|---|---|---|
-| M01_ProjectRegistry_*_v1_0.* | Brief/Spec/WF/WL | — | Pending | Re-issue of legacy v2.1 |
+| M34_SystemAdminRBAC_*_v1_0.* | Brief/Spec/WF/WL | v1.0 | **Locked** | Rounds 1–4 (foundation) |
+| M01_ProjectRegistry_*_v1_0.* | Brief/Spec/WF/WL | v1.0 (Spec v1.2 per cascade ref) | **Locked** | Rounds 5b–8 + Round 16 cascade. Pending v1.1 — `Project.min_wbs_depth` field per M02 OQ-1.1=B |
 | M23_BGInsuranceTracker_*_v1_0.* | Brief/Spec/WF/WL | — | Pending | New (was unspecced) |
-| M34_SystemAdminRBAC_*_v1_0.* | Brief/Spec/WF/WL | — | Pending | **Round 1 priority — RBAC must precede all** |
 
 ### 3.5 L2 Planning (03_L2_Planning)
 
 | Module | Status | Notes |
 |---|---|---|
-| M02 StructureWBS | Pending | Re-issue of legacy v2.1 (currently amendment file) |
-| M03 PlanningMilestones | Pending | Re-issue of legacy v2.3 |
+| M02 StructureWBS | **Locked** v1.0 | Rounds 9–12 |
+| M03 PlanningMilestones | **Locked** Spec v1.1 / Brief v1.1 / Wireframes v1.0 / Workflows v1.0 | Rounds 15–18. Spec v1.1 cascade in Round 18 added Appendix C (28 audit events) + BR-03-033 (CP transactionality) + BR-03-034 (reporting_period_type atomic rollback) |
 | M12 DocumentControl | Pending | New (Phase 1 critical, was unspecced) |
 | M14 QSMeasurementBook | Pending | New (Phase 1 critical, was unspecced) |
 | M27 DesignControl | Pending | New (proposed v2.3) |
@@ -134,16 +135,17 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 ### 3.12 Cross-Cutting (10_CrossCutting)
 
-| Doc | Status | Trigger |
+| Doc | Status | Trigger / Current Version |
 |---|---|---|
-| X1 RBACMatrix | Pending | After M34 spec locks |
-| X2 DataDictionary | Pending | After all Phase 1 specs lock |
-| X3 IntegrationMap | Pending | After all Phase 1 specs lock |
-| X4 OutputCatalog | Pending | After all Phase 1 specs lock |
-| X5 FormInventory | Pending | After all wireframes complete |
-| X6 WorkflowDiagrams | Pending | After all Phase 1 specs lock |
-| X7 DecisionQueueSchema | Pending | After all Phase 1 specs lock |
-| X8 GlossaryENUMs | **Living** | Updated continuously per I3 |
+| X1 RBACMatrix | Roadmap | M34 spec is source of truth until X1 lands |
+| X2 DataDictionary | Roadmap (renamed → Decision Queue Catalogue) | After all Phase 1 specs lock |
+| X3 IntegrationMap | Roadmap (renamed → Audit Event Catalogue) | After all Phase 1 specs lock. M03 Spec v1.1 Appendix C is interim source of truth for M03 audit events |
+| X4 OutputCatalog | Roadmap (renamed → API Surface Index) | After all Phase 1 specs lock |
+| X5 FormInventory | Roadmap (renamed → Speed Tier Inventory) | After all wireframes complete |
+| X6 WorkflowDiagrams | Roadmap (renamed → Integration Point Map) | After all Phase 1 specs lock |
+| X7 DecisionQueueSchema | Roadmap (renamed → Standards Memory) | After all Phase 1 specs lock |
+| X8 GlossaryENUMs | **Living — current v0.4** | Updated continuously per I3. Bumped v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03) |
+| X9 VisualisationStandards | **Living — current v0.2** | Decision-First Principle locked v0.1; library + role views locked v0.2 |
 
 ### 3.13 System Utilities (11_System_Utilities)
 
@@ -158,6 +160,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | Date | Version | Change |
 |---|---|---|
 | 2026-05-03 | v1.0 | Initial creation. All artefacts inventoried. 70+ artefacts pending. |
+| 2026-05-03 | v1.1 | Round 18 reconciliation pass. §3 registry state aligned with actual locked artefacts (M34 R1–4, M01 R5b–8+R16, M02 R9–12, M03 R15–18 + Spec v1.1 cascade). §6 activity log catch-up entry consolidated for Rounds 1–18. §7 next-round preview refreshed to reflect Round 19 readiness. §3.12 cross-cutting expanded with X9 living-doc row + X8 version trail. Activity log was last updated at Round 0; gap acknowledged and back-filled at the round level (per-artefact granularity preserved in CLAUDE.md §3 status table and per-artefact change logs). |
 
 ---
 
@@ -176,6 +179,8 @@ When any artefact is created, modified, or status-changed:
 
 | Date | Time | Artefact | Action | Author | Note |
 |---|---|---|---|---|---|
+| 2026-05-03 | — | Round 18 — M03 Workflows v1.0 + M03 Spec v1.1 cascade | Locked | Monish (with Claude assist) | M03 module COMPLETE. Workflows v1.0 with 9 flows + 34/34 BR coverage matrix locked. Spec v1.0 → v1.1 cascade absorbed Appendix C (28 audit events), BR-03-033 (critical-path transactionality), BR-03-034 (reporting_period_type atomic rollback). File renamed via `git mv` preserving history. CLAUDE.md §3 row + re-entry-protocol.md canonical-source table updated. |
+| 2026-05-03 | — | Rounds 1–17 (reconciliation catch-up) | Reconciled | Monish (with Claude assist) | Activity log was last updated at Round 0; this consolidation entry covers the full Round 1–17 span. Module deliverables: M34 (R1–4 — foundation: Brief, Spec, Wireframes, Workflows v1.0), M01 (R5b–8 — Brief, Spec, Wireframes, Workflows v1.0; R16 cascade absorbing M02 OQ-1.1=B → Project.min_wbs_depth pending v1.1), M02 (R9–12 — Brief, Spec, Wireframes, Workflows v1.0). Cross-cutting: X8 v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03); X9 Brief v0.1 → Spec v0.1 → Spec v0.2. Per-artefact granularity in CLAUDE.md §3 status table. |
 | 2026-05-03 | — | Round 0 (5 files) | Created | PMO Dir | Foundation files. Round 0 fired per v2.7 plan. |
 
 ---
@@ -184,10 +189,8 @@ When any artefact is created, modified, or status-changed:
 
 | Round | Artefact | Status |
 |---|---|---|
-| 1 | M34_SystemAdminRBAC_Brief_v1_0.md | Awaiting Round 0 sign-off |
-| 2 | M34_SystemAdminRBAC_Spec_v1_0.md | Awaiting Round 1 |
-| 3 | M34_SystemAdminRBAC_Wireframes_v1_0.html | Awaiting Round 2 |
-| 4 | X1_RBACMatrix_v1_0.md | Awaiting Round 3 |
+| 19 | TBD — next module Brief (candidates: M07 EVMEngine, M27 DesignControl, M12 DocumentControl, M14 QSMeasurementBook) | Awaiting Monish's Round 19 module pick |
+| (separate cascade) | M01 Spec v1.1 — add `Project.min_wbs_depth` field per M02 OQ-1.1=B | Pending — independent of Round 19 sequence |
 
 ---
 
