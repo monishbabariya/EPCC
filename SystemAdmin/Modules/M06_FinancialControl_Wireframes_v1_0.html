@@ -1,0 +1,1016 @@
+<!--
+artefact: M06_FinancialControl_Wireframes_v1_0
+round: 25
+date: 2026-05-03
+author: Monish (with Claude assist)
+x8_version: v0.5
+x9_version: v0.3
+status: LOCKED
+spec_locked_in: Round 24 (SystemAdmin/Modules/M06_FinancialControl_Spec_v1_0.md)
+locked_at: 2026-05-03 (Round 25 user confirmation; auditor ACCEPT 0/17 + 3 cosmetic fixes applied)
+-->
+<!-- Note: First named instance of X9 §11 Pipeline Funnel flagship pattern (M06 Capital Funnel: Budgeted → Committed → Accrued → Paid). 8 role-default views per Spec Block 5 / X9 v0.3 §13.3.6. Tailwind CDN, no JS framework deps (D3 lock). KDMC-001-DBOT mock data throughout. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>M06 — Financial Control · Wireframes v1.0 · KDMC-001-DBOT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ----- Severity / status palette (X9 v0.3 + dual-encode per OQ-1.6) ----- */
+    .sev-critical { background: #b91c1c; color: white; }
+    .sev-high     { background: #ea580c; color: white; }
+    .sev-medium   { background: #ca8a04; color: white; }
+    .sev-low      { background: #4d7c0f; color: white; }
+    .sev-info     { background: #475569; color: white; }
+    .rag-red      { background: #b91c1c; color: white; }
+    .rag-amber    { background: #d97706; color: white; }
+    .rag-green    { background: #15803d; color: white; }
+
+    /* Status badges with shape + color (dual-encode for accessibility — X9 OQ-1.6) */
+    .badge        { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 11px; font-weight: 600; border-radius: 9999px; letter-spacing: 0.02em; }
+    .badge::before{ content: ''; display: inline-block; width: 6px; height: 6px; background: currentColor; }
+    .badge.shape-circle::before { border-radius: 50%; }
+    .badge.shape-square::before { border-radius: 0; }
+    .badge.shape-triangle::before { width: 0; height: 0; background: transparent; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 6px solid currentColor; }
+
+    /* Capital Funnel — flagship X9 §11 / §9.5.1 (4-state nested-bar — Budgeted container, Committed/Accrued/Paid layered) */
+    .funnel-row { display: grid; grid-template-columns: 110px 1fr 130px; align-items: center; gap: 12px; margin: 6px 0; font-size: 13px; }
+    .funnel-bar { position: relative; height: 28px; border-radius: 4px; background: #e2e8f0; }
+    .funnel-fill { position: absolute; top: 0; left: 0; height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 10px; color: white; font-weight: 600; font-size: 12px; }
+    .fill-budgeted  { background: #475569; }
+    .fill-committed { background: #d97706; }
+    .fill-accrued   { background: #0891b2; }
+    .fill-paid      { background: #15803d; }
+    .funnel-delta { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11px; color: #475569; text-align: right; }
+
+    /* Pipeline funnel (RA bill / PO state — same X9 §11 pattern as M04 NCR, used for secondary state-pipelines) */
+    .funnel-stage { padding: 8px 16px; margin: 2px auto; text-align: center; font-weight: 600; clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%); font-size: 12px; }
+
+    /* S-curve visual (CSS-only proxy for cashflow time-series) */
+    .scurve-band { position: relative; height: 140px; background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 35%, #bae6fd 65%, #38bdf8 95%); border-radius: 4px; }
+    .scurve-line-planned { position: absolute; bottom: 8px; left: 0; height: 2px; background: #475569; width: 100%; }
+    .scurve-line-actual  { position: absolute; bottom: 8px; left: 0; height: 2px; background: #b91c1c; width: 64%; }
+    .scurve-marker       { position: absolute; bottom: 4px; width: 6px; height: 10px; background: #b91c1c; border-radius: 1px; }
+
+    /* Heatmap cells (margin / variance) */
+    .heat-pos    { background: #dcfce7; color: #166534; }
+    .heat-flat   { background: #f1f5f9; color: #475569; }
+    .heat-warn   { background: #fef3c7; color: #92400e; }
+    .heat-bad    { background: #fee2e2; color: #991b1b; }
+    .heat-crit   { background: #b91c1c; color: white; }
+
+    /* Aging buckets */
+    .aging-0-30   { background: #ecfccb; }
+    .aging-31-60  { background: #fef3c7; }
+    .aging-61-90  { background: #fed7aa; }
+    .aging-90p    { background: #fecaca; }
+
+    /* Stack-bar (vendor outstanding) */
+    .stack { display: flex; height: 22px; border-radius: 3px; overflow: hidden; }
+    .stack > div { display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: 600; }
+
+    .role-section { display: none; }
+    .role-section.active { display: block; }
+    .role-tab { padding: 8px 14px; cursor: pointer; border-bottom: 3px solid transparent; font-size: 13px; font-weight: 600; color: #475569; white-space: nowrap; }
+    .role-tab.active { border-color: #1d4ed8; color: #1d4ed8; }
+    .restricted { color: #94a3b8; font-style: italic; letter-spacing: 0.05em; }
+
+    /* Decision banner */
+    .decision-banner { background: #eff6ff; border-left: 4px solid #1d4ed8; padding: 10px 14px; font-size: 13px; color: #1e3a8a; margin-bottom: 18px; border-radius: 0 4px 4px 0; }
+    .decision-banner b { color: #1e3a8a; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+
+<!-- ============== AUDIT STAMP BANNER ============== -->
+<div class="bg-amber-100 border-b border-amber-300 text-amber-900 text-xs px-6 py-1.5 flex flex-wrap items-center gap-x-4 gap-y-0.5 justify-center">
+  <span><b>M06 FinancialControl Wireframes v1.0</b></span>
+  <span>Round <b>25</b></span>
+  <span>X8 <b>v0.5</b></span>
+  <span>X9 <b>v0.3</b></span>
+  <span>Spec locked Round 24</span>
+  <span class="font-bold tracking-wider px-2 py-0.5 bg-amber-700 text-white rounded">DRAFT</span>
+  <span>Capital Funnel = 1st named instance of X9 §11 flagship</span>
+</div>
+
+<!-- ============== TOP BAR ============== -->
+<header class="bg-slate-900 text-white">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+    <div>
+      <div class="text-xs uppercase tracking-widest text-slate-400">EPCC · M06 Financial Control · Wireframes v1.0</div>
+      <div class="text-lg font-bold mt-1">KDMC-001-DBOT — 150-bed Maternity, Cancer &amp; Cardiology Hospital</div>
+    </div>
+    <div class="text-right text-xs">
+      <div>Project value: <span class="font-mono text-amber-300">₹68.40 Cr</span> · Committed: <span class="font-mono text-amber-300">₹52.18 Cr</span> · Paid: <span class="font-mono text-emerald-300">₹19.74 Cr</span></div>
+      <div>Phase: <span class="font-mono text-cyan-300">CONSTRUCTION</span> · Report date: <span class="font-mono">2026-05-01</span> · Period: <span class="font-mono">Apr-2026 (Monthly)</span></div>
+      <div>Contractor: <span class="font-semibold">L&amp;T Construction</span> · Currency: <span class="font-mono">INR</span> (multi-currency capable per OQ-1.6=B)</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============== ROLE SWITCHER ============== -->
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-10">
+  <div class="max-w-7xl mx-auto flex flex-wrap gap-1 px-6 overflow-x-auto" id="roleTabs">
+    <div class="role-tab active" data-role="finance_lead">FINANCE_LEAD ⭐</div>
+    <div class="role-tab" data-role="pmo_director">PMO_DIRECTOR</div>
+    <div class="role-tab" data-role="project_director">PROJECT_DIRECTOR</div>
+    <div class="role-tab" data-role="procurement_officer">PROCUREMENT_OFFICER</div>
+    <div class="role-tab" data-role="site_manager">SITE_MANAGER</div>
+    <div class="role-tab" data-role="qs_manager">QS_MANAGER</div>
+    <div class="role-tab" data-role="external_auditor">EXTERNAL_AUDITOR</div>
+    <div class="role-tab" data-role="read_only">READ_ONLY</div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-6 py-6">
+
+<!-- =============================================================================== -->
+<!-- ROLE: FINANCE_LEAD ⭐  ·  Primary owner of M06                                    -->
+<!-- Primary: Capital Funnel (X9 §9.5.1 flagship — 1st named instance)                -->
+<!-- Secondary: Cashflow S-curve, Payment aging, Vendor outstanding, Pending RA bills  -->
+<!-- Rate display: ACTUAL (no spike formula) per BR-02-008                            -->
+<!-- =============================================================================== -->
+<section class="role-section active" data-role="finance_lead">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "Do I have headroom to commit more capital this period — and what's stuck between Committed and Paid?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Finance Lead — Capital Funnel + Cashflow ⭐</h1>
+    <div class="text-xs text-slate-500">Owner role: BR-06-015 (RA bill Finance approval), BR-06-023/024 (Payment evidence + Confirmed_Paid), BR-06-029 (Retention Approved_Finance) · Rate display: ACTUAL</div>
+  </div>
+
+  <!-- ================== PRIMARY: CAPITAL FUNNEL (X9 §9.5.1 FLAGSHIP) ================== -->
+  <!-- X9: pipeline_funnel (Capital Funnel — 1st named instance), decision: "Do I have headroom to commit more capital this period?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-1">
+      <h2 class="font-semibold text-slate-800">Capital Funnel <span class="text-xs font-normal text-slate-500 italic">— X9 §9.5.1 / §11 FLAGSHIP · 1st named instance</span></h2>
+      <div class="text-xs text-slate-500">CostLedgerEntry state distribution · KDMC-001-DBOT · 4-state pipeline per BR-06-002</div>
+    </div>
+    <div class="text-xs text-slate-500 mb-4">Each inner layer is a subset of the outer (X9 §9.6). Visible gap = headroom remaining at that state.</div>
+
+    <div class="space-y-1 mb-4">
+      <div class="funnel-row">
+        <div class="text-right font-semibold text-slate-700">Budgeted</div>
+        <div class="funnel-bar"><div class="funnel-fill fill-budgeted" style="width: 100%;">₹68.40 Cr · 100%</div></div>
+        <div class="funnel-delta">BAC ceiling</div>
+      </div>
+      <div class="funnel-row">
+        <div class="text-right font-semibold text-amber-700">Committed</div>
+        <div class="funnel-bar"><div class="funnel-fill fill-committed" style="width: 76.3%;">₹52.18 Cr · 76.3%</div></div>
+        <div class="funnel-delta">Δ headroom: ₹16.22 Cr</div>
+      </div>
+      <div class="funnel-row">
+        <div class="text-right font-semibold text-cyan-700">Accrued</div>
+        <div class="funnel-bar"><div class="funnel-fill fill-accrued" style="width: 41.4%;">₹28.32 Cr · 41.4%</div></div>
+        <div class="funnel-delta">Δ work pipeline: ₹23.86 Cr</div>
+      </div>
+      <div class="funnel-row">
+        <div class="text-right font-semibold text-emerald-700">Paid</div>
+        <div class="funnel-bar"><div class="funnel-fill fill-paid" style="width: 28.9%;">₹19.74 Cr · 28.9%</div></div>
+        <div class="funnel-delta">Δ payable backlog: ₹8.58 Cr</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-4 gap-3 text-xs">
+      <div class="border border-slate-200 rounded p-3">
+        <div class="text-slate-500 uppercase tracking-wide">Committable headroom</div>
+        <div class="font-mono text-lg font-bold mt-1 text-amber-700">₹16.22 Cr</div>
+        <div class="text-slate-500">23.7% of BAC remains uncommitted · <span class="badge shape-square rag-green">Green</span> &lt; 95% threshold (BR-06-042)</div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="text-slate-500 uppercase tracking-wide">Work pipeline</div>
+        <div class="font-mono text-lg font-bold mt-1 text-cyan-700">₹23.86 Cr</div>
+        <div class="text-slate-500">PO-issued but not yet GRN/RA-billed</div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="text-slate-500 uppercase tracking-wide">Payable backlog</div>
+        <div class="font-mono text-lg font-bold mt-1 text-orange-700">₹8.58 Cr</div>
+        <div class="text-slate-500">Approved but unpaid · 7 invoices · 2 over SLA</div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="text-slate-500 uppercase tracking-wide">BAC integrity</div>
+        <div class="font-mono text-lg font-bold mt-1">3 ⚠</div>
+        <div class="text-slate-500">Stale_Pending_VO flags on Committed entries (BR-06-003 · flag-not-block)</div>
+      </div>
+    </div>
+
+    <!-- Tabular fallback (X9 OQ-1.10) -->
+    <details class="mt-4">
+      <summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback (X9 OQ-1.10)</summary>
+      <table class="w-full text-xs mt-2 border border-slate-200">
+        <thead class="bg-slate-100 text-left"><tr><th class="py-1.5 px-2">State</th><th class="px-2">Amount (INR)</th><th class="px-2">% of BAC</th><th class="px-2">Δ from prior state</th><th class="px-2">Source events</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-2 font-mono">Budgeted</td><td class="px-2 font-mono">68,40,00,000</td><td class="px-2 font-mono">100.0%</td><td class="px-2 text-slate-400">—</td><td class="px-2">M02.Package.bac_amount seeded on Project Active</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Committed</td><td class="px-2 font-mono">52,18,40,000</td><td class="px-2 font-mono">76.3%</td><td class="px-2 font-mono text-amber-700">−16,21,60,000</td><td class="px-2">PO_ISSUED · 23 POs · BR-06-007</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Accrued</td><td class="px-2 font-mono">28,32,10,000</td><td class="px-2 font-mono">41.4%</td><td class="px-2 font-mono text-cyan-700">−23,86,30,000</td><td class="px-2">RA_BILL_APPROVED_FINANCE · 12 bills · MATERIAL_GRN_EMITTED · 8 GRNs · BR-06-015/017</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Paid</td><td class="px-2 font-mono">19,74,00,000</td><td class="px-2 font-mono">28.9%</td><td class="px-2 font-mono text-emerald-700">−8,58,10,000</td><td class="px-2">PAYMENT_CONFIRMED · 9 evidences · BR-06-024</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <!-- ================== SECONDARY: CASHFLOW TIME-SERIES (S-CURVE OVERLAY) ================== -->
+  <!-- X9: time_series_s_curve, decision: "Are we tracking actual cash burn against the planned PV-mirror forecast?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="font-semibold text-slate-800">Cashflow S-Curve — Planned vs Actual (lifetime)</h2>
+      <div class="text-xs text-slate-500">Decision: are we tracking cash burn vs forecast?</div>
+    </div>
+    <div class="text-xs text-slate-500 mb-2">Source: M03 PVProfile.cumulative_pv_amount (planned mirror per OQ-1.5=A) · M06 CashflowForecast (actual) · Period grain: monthly</div>
+    <div class="scurve-band relative">
+      <!-- planned curve marker dots -->
+      <div class="scurve-marker" style="left: 8%; height: 18px;"></div>
+      <div class="scurve-marker" style="left: 24%; height: 28px;"></div>
+      <div class="scurve-marker" style="left: 42%; height: 50px;"></div>
+      <div class="scurve-marker" style="left: 64%; height: 78px;"></div>
+      <div class="scurve-marker" style="left: 86%; height: 110px;"></div>
+      <div class="scurve-line-planned"></div>
+      <div class="scurve-line-actual"></div>
+      <div class="absolute top-2 left-3 text-xs">
+        <span class="inline-block w-3 h-0.5 bg-slate-700 align-middle"></span> Planned (M03 PV mirror)
+        <span class="inline-block w-3 h-0.5 bg-red-700 align-middle ml-3"></span> Actual (CostLedgerEntry Paid)
+      </div>
+      <div class="absolute bottom-2 right-3 text-xs font-mono text-red-700">Today 2026-05-01 · ₹19.74 Cr / ₹26.10 Cr planned · −24% lag</div>
+    </div>
+
+    <details class="mt-3">
+      <summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback (last 6 months)</summary>
+      <table class="w-full text-xs mt-2 border border-slate-200">
+        <thead class="bg-slate-100"><tr><th class="py-1.5 px-2 text-left">Month</th><th class="px-2">Planned (₹ Cr)</th><th class="px-2">Actual Paid (₹ Cr)</th><th class="px-2">Δ</th><th class="px-2">Cumulative actual</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-2 font-mono">Nov-2025</td><td class="px-2 font-mono">2.40</td><td class="px-2 font-mono">1.92</td><td class="px-2 font-mono text-red-700">−0.48</td><td class="px-2 font-mono">8.14</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Dec-2025</td><td class="px-2 font-mono">2.85</td><td class="px-2 font-mono">2.61</td><td class="px-2 font-mono text-amber-700">−0.24</td><td class="px-2 font-mono">10.75</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Jan-2026</td><td class="px-2 font-mono">3.10</td><td class="px-2 font-mono">2.80</td><td class="px-2 font-mono text-amber-700">−0.30</td><td class="px-2 font-mono">13.55</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Feb-2026</td><td class="px-2 font-mono">3.40</td><td class="px-2 font-mono">2.05</td><td class="px-2 font-mono text-red-700">−1.35</td><td class="px-2 font-mono">15.60</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Mar-2026</td><td class="px-2 font-mono">3.65</td><td class="px-2 font-mono">2.34</td><td class="px-2 font-mono text-red-700">−1.31</td><td class="px-2 font-mono">17.94</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Apr-2026</td><td class="px-2 font-mono">3.20</td><td class="px-2 font-mono">1.80</td><td class="px-2 font-mono text-red-700">−1.40</td><td class="px-2 font-mono">19.74</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <!-- ================== SECONDARY: PAYMENT AGING + VENDOR OUTSTANDING ================== -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+
+    <!-- X9: aging_bucket_bar, decision: "Which vendor invoices are stuck in payable backlog and approaching SLA breach?" -->
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <h2 class="font-semibold text-slate-800 mb-1">Payment Aging — VendorInvoice queue</h2>
+      <div class="text-xs text-slate-500 mb-3">Decision: which invoices are stuck approaching SLA breach? (BR-06-025)</div>
+      <table class="w-full text-xs">
+        <thead class="text-left text-slate-500 uppercase border-b border-slate-200"><tr><th class="py-1.5 px-1">Bucket</th><th class="px-1">Count</th><th class="px-1">Amount</th><th class="px-1">Status</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-1 aging-0-30 font-mono">0–30 days</td><td class="px-1 font-mono">11</td><td class="px-1 font-mono">₹4.42 Cr</td><td class="px-1"><span class="badge shape-square rag-green">Green</span></td></tr>
+          <tr><td class="py-1 px-1 aging-31-60 font-mono">31–60 days</td><td class="px-1 font-mono">5</td><td class="px-1 font-mono">₹2.18 Cr</td><td class="px-1"><span class="badge shape-square rag-green">Green</span></td></tr>
+          <tr><td class="py-1 px-1 aging-61-90 font-mono">61–90 days</td><td class="px-1 font-mono">3</td><td class="px-1 font-mono">₹1.34 Cr</td><td class="px-1"><span class="badge shape-triangle sev-medium">Warn</span> (PAYMENT_SLA_BREACH)</td></tr>
+          <tr><td class="py-1 px-1 aging-90p font-mono">90+ days</td><td class="px-1 font-mono">2</td><td class="px-1 font-mono">₹0.64 Cr</td><td class="px-1"><span class="badge shape-circle sev-high">Red</span> (BR-06-025)</td></tr>
+        </tbody>
+        <tfoot class="border-t border-slate-300 font-bold"><tr><td class="py-1 px-1">Total</td><td class="px-1 font-mono">21</td><td class="px-1 font-mono">₹8.58 Cr</td><td class="px-1 text-red-700">2 Red · 3 Amber</td></tr></tfoot>
+      </table>
+      <div class="mt-2 text-xs text-slate-500 italic">Threshold: warn &gt; 60d · red &gt; 90d (M06FinancialConfig.payment_sla_*_days)</div>
+    </div>
+
+    <!-- X9: stacked_bar_horizontal, decision: "Which vendor are we accumulating the largest outstanding balance with?" -->
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <h2 class="font-semibold text-slate-800 mb-1">Vendor Outstanding (top 5 by accrued-not-paid)</h2>
+      <div class="text-xs text-slate-500 mb-3">Decision: who am I most exposed to right now?</div>
+      <table class="w-full text-xs">
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-2 pr-2 w-1/3 font-mono">L&amp;T Construction</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 62%;">PO ₹3.40 Cr</div><div class="bg-cyan-600" style="width: 28%;">Accr ₹1.50 Cr</div><div class="bg-emerald-700" style="width: 10%;">Paid ₹0.55 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">Varian Medical (LINAC)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 80%;">PO ₹15.00 Cr</div><div class="bg-cyan-600" style="width: 12%;">Accr ₹2.20 Cr</div><div class="bg-emerald-700" style="width: 8%;">Paid ₹1.50 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">Siemens Healthineers (CT/MRI)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 68%;">PO ₹8.20 Cr</div><div class="bg-cyan-600" style="width: 22%;">Accr ₹2.65 Cr</div><div class="bg-emerald-700" style="width: 10%;">Paid ₹1.20 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">Voltas (HVAC)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 50%;">PO ₹2.10 Cr</div><div class="bg-cyan-600" style="width: 30%;">Accr ₹1.25 Cr</div><div class="bg-emerald-700" style="width: 20%;">Paid ₹0.84 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">Schindler (Lifts)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 45%;">PO ₹1.85 Cr</div><div class="bg-cyan-600" style="width: 35%;">Accr ₹1.40 Cr</div><div class="bg-emerald-700" style="width: 20%;">Paid ₹0.80 Cr</div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="mt-2 text-xs text-slate-500"><span class="inline-block w-2 h-2 bg-amber-600 align-middle"></span> Committed · <span class="inline-block w-2 h-2 bg-cyan-600 align-middle ml-2"></span> Accrued · <span class="inline-block w-2 h-2 bg-emerald-700 align-middle ml-2"></span> Paid</div>
+    </div>
+  </div>
+
+  <!-- ================== SECONDARY: PENDING RA BILLS + RETENTION ================== -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">RA Bills awaiting Finance approval (BR-06-015 final approval)</h2>
+      <div class="text-xs text-slate-500">QS approved · Finance pending · MFA required</div>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b border-slate-200">
+        <tr><th class="py-2 pr-3">RA Bill</th><th class="py-2 pr-3">Package</th><th class="py-2 pr-3">Period</th><th class="py-2 pr-3">Trigger</th><th class="py-2 pr-3">Net Payable</th><th class="py-2 pr-3">QS approved</th><th class="py-2 pr-3">Flags</th><th class="py-2 text-right">Action</th></tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">RAB-KDMC-00018</td>
+          <td class="py-2.5 pr-3 text-xs">PKG-02 Civil Block B</td>
+          <td class="py-2.5 pr-3 text-xs">Apr-2026</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square sev-info">Progress</span></td>
+          <td class="py-2.5 pr-3 font-mono font-bold">₹1,24,80,000</td>
+          <td class="py-2.5 pr-3 text-xs">P. Iyer · 2026-04-30</td>
+          <td class="py-2.5 pr-3 text-xs"><span class="badge shape-square rag-green">Clean</span></td>
+          <td class="py-2.5 text-right"><button class="text-emerald-700 font-semibold text-xs mr-2">Approve (MFA)</button><button class="text-red-700 font-semibold text-xs">Reject</button></td>
+        </tr>
+        <tr class="bg-amber-50">
+          <td class="py-2.5 pr-3 font-mono text-xs">RAB-KDMC-00019</td>
+          <td class="py-2.5 pr-3 text-xs">PKG-05 LINAC Bunker</td>
+          <td class="py-2.5 pr-3 text-xs">Milestone — Bunker shielding 100%</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-triangle bg-violet-700 text-white">Milestone</span></td>
+          <td class="py-2.5 pr-3 font-mono font-bold">₹2,40,00,000</td>
+          <td class="py-2.5 pr-3 text-xs">P. Iyer · 2026-05-01</td>
+          <td class="py-2.5 pr-3 text-xs"><span class="badge shape-triangle sev-medium">BAC ⚠</span> VO-0034 pending</td>
+          <td class="py-2.5 text-right"><button class="text-emerald-700 font-semibold text-xs mr-2">Approve (MFA)</button><button class="text-red-700 font-semibold text-xs">Reject</button></td>
+        </tr>
+        <tr>
+          <td class="py-2.5 pr-3 font-mono text-xs">RAB-KDMC-00020</td>
+          <td class="py-2.5 pr-3 text-xs">PKG-08 MEP Trunks</td>
+          <td class="py-2.5 pr-3 text-xs">Apr-2026</td>
+          <td class="py-2.5 pr-3"><span class="badge shape-square sev-info">Progress</span></td>
+          <td class="py-2.5 pr-3 font-mono font-bold">₹64,20,000</td>
+          <td class="py-2.5 pr-3 text-xs">P. Iyer · 2026-05-01</td>
+          <td class="py-2.5 pr-3 text-xs"><span class="badge shape-square rag-green">Clean</span></td>
+          <td class="py-2.5 text-right"><button class="text-emerald-700 font-semibold text-xs mr-2">Approve (MFA)</button><button class="text-red-700 font-semibold text-xs">Reject</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 italic">Compliance hold check (BR-06-038) — auto-blocks if M09 sets compliance_hold_flag. Currently 0 blocks.</div>
+  </div>
+
+  <!-- ================== SECONDARY: RETENTION RELEASE TRANCHE TRACKER ================== -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Retention — pending release (Finance approval step · BR-06-029)</h2>
+    <div class="text-xs text-slate-500 mb-3">Tranche structure per OQ-1.8=C (dual sign-off Finance → PMO) · M01.Contract.dlp_retention_split_pct = 0.5000 (M01 v1.3 cascade)</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b border-slate-200"><tr><th class="py-2 pr-3">RA Bill</th><th class="py-2 pr-3">Withheld</th><th class="py-2 pr-3">Release type</th><th class="py-2 pr-3">Tranche %</th><th class="py-2 pr-3">Release amt</th><th class="py-2 pr-3">Eligibility basis</th><th class="py-2 pr-3">Status</th><th class="py-2 text-right">Action</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00006</td><td class="py-2 pr-3 font-mono">₹14,80,000</td><td class="py-2 pr-3 text-xs">Substantial_Completion</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹7,40,000</td><td class="py-2 pr-3 text-xs">SG_11_PASSAGE on PKG-01 · 2026-04-22</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Eligible</span></td><td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">Approve_Finance</button></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00009</td><td class="py-2 pr-3 font-mono">₹22,30,000</td><td class="py-2 pr-3 text-xs">Substantial_Completion</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹11,15,000</td><td class="py-2 pr-3 text-xs">SG_11_PASSAGE on PKG-02 · 2026-04-28</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Eligible</span></td><td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">Approve_Finance</button></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00012</td><td class="py-2 pr-3 font-mono">₹18,60,000</td><td class="py-2 pr-3 text-xs">DLP_End</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹9,30,000</td><td class="py-2 pr-3 text-xs"><span class="badge shape-triangle sev-medium">Blocked</span> M15: 2 open defects</td><td class="py-2 pr-3"><span class="badge shape-square sev-medium">Blocked</span></td><td class="py-2 text-right text-slate-400 text-xs italic">PMO override only</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: PMO_DIRECTOR · Capital Funnel + Margin by Package + Config + Dual sign-off  -->
+<!-- Rate display: ACTUAL                                                              -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="pmo_director">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "Are any packages running unprofitable, and what's blocked at PMO sign-off (retention release, invoice override, forex deviation)?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">PMO Director — Capital + Margin + Sign-off Queue</h1>
+    <div class="text-xs text-slate-500">Owner: BR-06-022/030 (PMO override), BR-06-029 (Retention Released), BR-06-034 (Forex PMO approval), BR-06-046 (M06FinancialConfig edit) · Rate display: ACTUAL · MFA required</div>
+  </div>
+
+  <!-- Primary: Capital Funnel (read primary, same flagship as FINANCE_LEAD) -->
+  <!-- X9: pipeline_funnel (Capital Funnel — 1st named instance), decision: "Where is project capital right now in the funnel?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Capital Funnel <span class="text-xs font-normal text-slate-500 italic">— X9 §9.5.1 / §11 FLAGSHIP</span></h2>
+    <div class="text-xs text-slate-500 mb-4">Same flagship view as FINANCE_LEAD — PMO oversight scope</div>
+    <div class="space-y-1 mb-2">
+      <div class="funnel-row"><div class="text-right font-semibold text-slate-700">Budgeted</div><div class="funnel-bar"><div class="funnel-fill fill-budgeted" style="width: 100%;">₹68.40 Cr · 100%</div></div><div class="funnel-delta">BAC ceiling</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-amber-700">Committed</div><div class="funnel-bar"><div class="funnel-fill fill-committed" style="width: 76.3%;">₹52.18 Cr · 76.3%</div></div><div class="funnel-delta">headroom ₹16.22 Cr</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-cyan-700">Accrued</div><div class="funnel-bar"><div class="funnel-fill fill-accrued" style="width: 41.4%;">₹28.32 Cr · 41.4%</div></div><div class="funnel-delta">work pipeline ₹23.86 Cr</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-emerald-700">Paid</div><div class="funnel-bar"><div class="funnel-fill fill-paid" style="width: 28.9%;">₹19.74 Cr · 28.9%</div></div><div class="funnel-delta">payable backlog ₹8.58 Cr</div></div>
+    </div>
+    <details class="mt-3"><summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback</summary>
+      <table class="w-full text-xs mt-2 border border-slate-200">
+        <thead class="bg-slate-100 text-left"><tr><th class="py-1 px-2">State</th><th class="px-2">Amount</th><th class="px-2">% of BAC</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-2 font-mono">Budgeted</td><td class="px-2 font-mono">68,40,00,000</td><td class="px-2 font-mono">100.0%</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Committed</td><td class="px-2 font-mono">52,18,40,000</td><td class="px-2 font-mono">76.3%</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Accrued</td><td class="px-2 font-mono">28,32,10,000</td><td class="px-2 font-mono">41.4%</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Paid</td><td class="px-2 font-mono">19,74,00,000</td><td class="px-2 font-mono">28.9%</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <!-- Secondary: Margin by package (BAC vs Accrued vs Paid) -->
+  <!-- X9: stacked_bar_horizontal_with_threshold, decision: "Which packages are running unprofitable / over-committed?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Margin by Package (BAC vs Committed vs Accrued)</h2>
+    <div class="text-xs text-slate-500 mb-3">Decision: which packages are running unprofitable? · BR-06-042 (capital headroom) · BR-06-043 (cost overrun)</div>
+    <table class="w-full text-xs">
+      <thead class="text-left text-slate-500 uppercase border-b border-slate-200"><tr><th class="py-1.5 px-2">Package</th><th class="px-2">BAC</th><th class="px-2">Committed</th><th class="px-2">Accrued</th><th class="px-2">Committed/BAC</th><th class="px-2">Margin status</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 px-2 font-mono">PKG-01 Civil Block A</td><td class="px-2 font-mono">₹8.10 Cr</td><td class="px-2 font-mono">₹8.05 Cr</td><td class="px-2 font-mono">₹8.05 Cr</td><td class="px-2 heat-pos font-mono">99.4%</td><td class="px-2"><span class="badge shape-square rag-green">Closed-out clean</span></td></tr>
+        <tr><td class="py-1 px-2 font-mono">PKG-02 Civil Block B</td><td class="px-2 font-mono">₹6.40 Cr</td><td class="px-2 font-mono">₹5.85 Cr</td><td class="px-2 font-mono">₹4.20 Cr</td><td class="px-2 heat-flat font-mono">91.4%</td><td class="px-2"><span class="badge shape-square rag-green">Green</span></td></tr>
+        <tr class="bg-amber-50"><td class="py-1 px-2 font-mono">PKG-03 OT Suite</td><td class="px-2 font-mono">₹4.20 Cr</td><td class="px-2 font-mono">₹4.05 Cr</td><td class="px-2 font-mono">₹2.10 Cr</td><td class="px-2 heat-warn font-mono">96.4%</td><td class="px-2"><span class="badge shape-triangle rag-amber">Capital headroom Amber (BR-06-042 · ≥95%)</span></td></tr>
+        <tr class="bg-red-50"><td class="py-1 px-2 font-mono">PKG-05 LINAC Bunker</td><td class="px-2 font-mono">₹18.00 Cr</td><td class="px-2 font-mono">₹18.40 Cr</td><td class="px-2 font-mono">₹2.20 Cr</td><td class="px-2 heat-bad font-mono">102.2%</td><td class="px-2"><span class="badge shape-circle rag-red">CAPITAL_HEADROOM_BREACH (BR-06-004 · Critical)</span></td></tr>
+        <tr><td class="py-1 px-2 font-mono">PKG-08 MEP Trunks</td><td class="px-2 font-mono">₹5.20 Cr</td><td class="px-2 font-mono">₹4.65 Cr</td><td class="px-2 font-mono">₹3.10 Cr</td><td class="px-2 heat-flat font-mono">89.4%</td><td class="px-2"><span class="badge shape-square rag-green">Green</span></td></tr>
+        <tr><td class="py-1 px-2 font-mono">PKG-12 NABH Compliance</td><td class="px-2 font-mono">₹2.30 Cr</td><td class="px-2 font-mono">₹0.80 Cr</td><td class="px-2 font-mono">₹0.42 Cr</td><td class="px-2 heat-flat font-mono">34.8%</td><td class="px-2"><span class="badge shape-square rag-green">Green · still ramping</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: dual sign-off / PMO override queue -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <h2 class="font-semibold text-slate-800 mb-1">Retention Release — pending PMO sign-off</h2>
+      <div class="text-xs text-slate-500 mb-3">BR-06-029 · Released requires PMO_DIRECTOR signature (dual sign-off after Finance approval) · OQ-1.8=C</div>
+      <table class="w-full text-xs">
+        <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 pr-2">RA Bill</th><th class="px-1">Type</th><th class="px-1">Released amt</th><th class="px-1">Finance approved</th><th class="px-1 text-right">Action</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 pr-2 font-mono">RAB-KDMC-00006</td><td class="px-1 text-xs">Substantial</td><td class="px-1 font-mono">₹7,40,000</td><td class="px-1 text-xs">A. Sharma · 2026-05-01</td><td class="px-1 text-right"><button class="text-emerald-700 font-semibold">Released (MFA)</button></td></tr>
+          <tr><td class="py-1 pr-2 font-mono">RAB-KDMC-00009</td><td class="px-1 text-xs">Substantial</td><td class="px-1 font-mono">₹11,15,000</td><td class="px-1 text-xs">A. Sharma · 2026-05-02</td><td class="px-1 text-right"><button class="text-emerald-700 font-semibold">Released (MFA)</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <h2 class="font-semibold text-slate-800 mb-1">Stale_Pending_VO Flag Dashboard</h2>
+      <div class="text-xs text-slate-500 mb-3">BR-06-003 · OQ-1.4=B (flag, don't block) · CostLedgerEntry rows with bac_integrity_warning_flag=true</div>
+      <table class="w-full text-xs">
+        <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-1">Package</th><th class="px-1">Pending VO</th><th class="px-1">Flagged amt</th><th class="px-1">Since</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-1 font-mono">PKG-05 LINAC</td><td class="px-1 font-mono">VO-0034</td><td class="px-1 font-mono">₹3.40 Cr</td><td class="px-1">12 days</td></tr>
+          <tr><td class="py-1 px-1 font-mono">PKG-08 MEP</td><td class="px-1 font-mono">VO-0029</td><td class="px-1 font-mono">₹0.84 Cr</td><td class="px-1">5 days</td></tr>
+          <tr><td class="py-1 px-1 font-mono">PKG-12 NABH</td><td class="px-1 font-mono">VO-0031</td><td class="px-1 font-mono">₹0.20 Cr</td><td class="px-1">3 days</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Secondary: M06FinancialConfig editor -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">M06FinancialConfig Editor <span class="text-xs font-normal text-slate-500 italic">(BR-06-046 · justification ≥ 100 chars on save)</span></h2>
+    <div class="text-xs text-slate-500 mb-3">Per-project tunables (mirrors M04 ProjectExecutionConfig pattern · OQ-1.10=A)</div>
+    <table class="w-full text-xs">
+      <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-2">Config Key</th><th class="px-2">Current value</th><th class="px-2">Default</th><th class="px-2">Range</th><th class="px-2 text-right">Action</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 px-2 font-mono">capital_headroom_amber_pct</td><td class="px-2 font-mono">0.95</td><td class="px-2 font-mono">0.95</td><td class="px-2 font-mono">[0.50, 1.20]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+        <tr><td class="py-1 px-2 font-mono">capital_headroom_red_pct</td><td class="px-2 font-mono">1.00</td><td class="px-2 font-mono">1.00</td><td class="px-2 font-mono">[0.50, 1.20]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+        <tr><td class="py-1 px-2 font-mono">payment_sla_warn_days</td><td class="px-2 font-mono">60</td><td class="px-2 font-mono">60</td><td class="px-2 font-mono">[1, 90]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+        <tr><td class="py-1 px-2 font-mono">payment_sla_red_days</td><td class="px-2 font-mono">90</td><td class="px-2 font-mono">90</td><td class="px-2 font-mono">[1, 90]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+        <tr><td class="py-1 px-2 font-mono">invoice_match_qty_tolerance_pct</td><td class="px-2 font-mono">0.02</td><td class="px-2 font-mono">0.02</td><td class="px-2 font-mono">[0.0, 0.10]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+        <tr><td class="py-1 px-2 font-mono">invoice_match_rate_tolerance_pct</td><td class="px-2 font-mono">0.03</td><td class="px-2 font-mono">0.03</td><td class="px-2 font-mono">[0.0, 0.10]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+        <tr><td class="py-1 px-2 font-mono">forex_deviation_pct</td><td class="px-2 font-mono">0.02</td><td class="px-2 font-mono">0.02</td><td class="px-2 font-mono">[0.0, 0.10]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+        <tr><td class="py-1 px-2 font-mono">retention_minor_release_pct_default</td><td class="px-2 font-mono">0.50</td><td class="px-2 font-mono">0.50</td><td class="px-2 font-mono">[0.0001, 0.9999]</td><td class="px-2 text-right"><button class="text-blue-700">Edit</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: PROJECT_DIRECTOR · Own-project Capital Funnel + RA bills due + cashflow vs PV -->
+<!-- Rate display: Loaded × 1.15 per BR-02-008                                         -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="project_director">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "What financial flow is outstanding on my project this week, and where is BAC vs PV diverging?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Project Director — KDMC Capital + RA Bills Due</h1>
+    <div class="text-xs text-slate-500">Scope: own project (cross-project hidden) · Rate display: <b>Loaded × 1.15</b> (BR-02-008)</div>
+  </div>
+
+  <!-- Primary: Capital funnel (own project) — note rates shown loaded-tier -->
+  <!-- X9: pipeline_funnel (Capital Funnel — 1st named instance), decision: "Where is my project's capital right now?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Capital Funnel — KDMC-001-DBOT <span class="text-xs font-normal text-slate-500 italic">(rates shown × 1.15 loaded)</span></h2>
+    <div class="text-xs text-slate-500 mb-4">Decision-first: where is my project's capital right now? · CostLedgerEntry 4-state pipeline</div>
+    <div class="space-y-1 mb-2">
+      <div class="funnel-row"><div class="text-right font-semibold text-slate-700">Budgeted</div><div class="funnel-bar"><div class="funnel-fill fill-budgeted" style="width: 100%;">₹78.66 Cr · 100% (loaded)</div></div><div class="funnel-delta">BAC × 1.15</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-amber-700">Committed</div><div class="funnel-bar"><div class="funnel-fill fill-committed" style="width: 76.3%;">₹60.01 Cr · 76.3%</div></div><div class="funnel-delta">headroom ₹18.65 Cr</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-cyan-700">Accrued</div><div class="funnel-bar"><div class="funnel-fill fill-accrued" style="width: 41.4%;">₹32.57 Cr · 41.4%</div></div><div class="funnel-delta">pipeline ₹27.44 Cr</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-emerald-700">Paid</div><div class="funnel-bar"><div class="funnel-fill fill-paid" style="width: 28.9%;">₹22.70 Cr · 28.9%</div></div><div class="funnel-delta">payable ₹9.87 Cr</div></div>
+    </div>
+    <details class="mt-3"><summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback (loaded × 1.15)</summary>
+      <table class="w-full text-xs mt-2 border border-slate-200">
+        <thead class="bg-slate-100 text-left"><tr><th class="py-1 px-2">State</th><th class="px-2">Loaded ₹</th><th class="px-2">% of BAC</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-2">Budgeted</td><td class="px-2 font-mono">78,66,00,000</td><td class="px-2">100.0%</td></tr>
+          <tr><td class="py-1 px-2">Committed</td><td class="px-2 font-mono">60,01,16,000</td><td class="px-2">76.3%</td></tr>
+          <tr><td class="py-1 px-2">Accrued</td><td class="px-2 font-mono">32,56,91,500</td><td class="px-2">41.4%</td></tr>
+          <tr><td class="py-1 px-2">Paid</td><td class="px-2 font-mono">22,70,10,000</td><td class="px-2">28.9%</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <!-- Secondary: RA bills due this period -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">RA Bills due this period (Apr–May 2026)</h2>
+    <div class="text-xs text-slate-500 mb-3">Decision: what's outstanding on my project this week?</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b"><tr><th class="py-2 pr-3">RA Bill</th><th class="py-2 pr-3">Package</th><th class="py-2 pr-3">Status</th><th class="py-2 pr-3">Net (loaded)</th><th class="py-2 pr-3">Due / paid date</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00018</td><td class="py-2 pr-3 text-xs">PKG-02 Block B</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Submitted</span></td><td class="py-2 pr-3 font-mono">₹1,43,52,000</td><td class="py-2 pr-3 text-xs">Due 2026-05-12</td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00019</td><td class="py-2 pr-3 text-xs">PKG-05 LINAC</td><td class="py-2 pr-3"><span class="badge shape-square sev-medium">QS approved</span></td><td class="py-2 pr-3 font-mono">₹2,76,00,000</td><td class="py-2 pr-3 text-xs">Awaiting Finance</td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00020</td><td class="py-2 pr-3 text-xs">PKG-08 MEP</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Submitted</span></td><td class="py-2 pr-3 font-mono">₹73,83,000</td><td class="py-2 pr-3 text-xs">Due 2026-05-15</td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00017</td><td class="py-2 pr-3 text-xs">PKG-01 Block A</td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Paid</span></td><td class="py-2 pr-3 font-mono">₹1,93,84,000</td><td class="py-2 pr-3 text-xs">Paid 2026-04-28</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: cashflow vs PV S-curve overlay -->
+  <!-- X9: time_series_s_curve, decision: "Is my actual cash burn tracking the PV plan?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Cashflow vs PV — S-curve overlay (loaded)</h2>
+    <div class="text-xs text-slate-500 mb-3">Source: M03 PVProfile.cumulative_pv_amount (planned) vs M06 actual Paid (per OQ-1.5=A)</div>
+    <div class="scurve-band relative">
+      <div class="scurve-marker" style="left: 24%; height: 28px;"></div>
+      <div class="scurve-marker" style="left: 50%; height: 58px;"></div>
+      <div class="scurve-marker" style="left: 78%; height: 95px;"></div>
+      <div class="scurve-line-planned"></div>
+      <div class="scurve-line-actual"></div>
+      <div class="absolute top-2 left-3 text-xs"><span class="inline-block w-3 h-0.5 bg-slate-700 align-middle"></span> Planned PV (loaded)<span class="inline-block w-3 h-0.5 bg-red-700 align-middle ml-3"></span> Actual Paid</div>
+      <div class="absolute bottom-2 right-3 text-xs font-mono text-red-700">Today: ₹22.70 Cr / ₹30.02 Cr planned · −24% lag</div>
+    </div>
+    <details class="mt-3"><summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback (last 6 months · loaded)</summary>
+      <table class="w-full text-xs mt-2 border border-slate-200">
+        <thead class="bg-slate-100 text-left"><tr><th class="py-1 px-2">Month</th><th class="px-2">Planned</th><th class="px-2">Actual</th><th class="px-2">Δ</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-2 font-mono">Nov-2025</td><td class="px-2 font-mono">₹2.76 Cr</td><td class="px-2 font-mono">₹2.21 Cr</td><td class="px-2 font-mono text-red-700">−0.55</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Dec-2025</td><td class="px-2 font-mono">₹3.28 Cr</td><td class="px-2 font-mono">₹3.00 Cr</td><td class="px-2 font-mono text-amber-700">−0.28</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Jan-2026</td><td class="px-2 font-mono">₹3.57 Cr</td><td class="px-2 font-mono">₹3.22 Cr</td><td class="px-2 font-mono text-amber-700">−0.35</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Feb-2026</td><td class="px-2 font-mono">₹3.91 Cr</td><td class="px-2 font-mono">₹2.36 Cr</td><td class="px-2 font-mono text-red-700">−1.55</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Mar-2026</td><td class="px-2 font-mono">₹4.20 Cr</td><td class="px-2 font-mono">₹2.69 Cr</td><td class="px-2 font-mono text-red-700">−1.51</td></tr>
+          <tr><td class="py-1 px-2 font-mono">Apr-2026</td><td class="px-2 font-mono">₹3.68 Cr</td><td class="px-2 font-mono">₹2.07 Cr</td><td class="px-2 font-mono text-red-700">−1.61</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: PROCUREMENT_OFFICER · Vendor outstanding + PO status pipeline + 2/3-way match -->
+<!-- Rate display: Loaded × 1.15 per BR-02-008                                          -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="procurement_officer">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "Which vendors am I exposed to, which POs are stuck, and which invoices are failing the 2/3-way match?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Procurement Officer — Vendor + PO + Match Queue</h1>
+    <div class="text-xs text-slate-500">Internal margins hidden · Rate display: <b>Loaded × 1.15</b> (BR-02-008)</div>
+  </div>
+
+  <!-- Primary: Vendor outstanding bar + PO status pipeline funnel -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+
+    <!-- X9: stacked_bar_horizontal, decision: "Who am I most exposed to right now?" -->
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <h2 class="font-semibold text-slate-800 mb-1">Vendor Outstanding (top 5 by Committed-not-Paid)</h2>
+      <div class="text-xs text-slate-500 mb-3">Decision: who am I paying late?</div>
+      <table class="w-full text-xs">
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-2 pr-2 w-1/3 font-mono">Varian Medical (LINAC)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 80%;">PO ₹17.25 Cr</div><div class="bg-cyan-600" style="width: 12%;">Accr ₹2.53 Cr</div><div class="bg-emerald-700" style="width: 8%;">Paid ₹1.72 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">Siemens Healthineers (CT/MRI)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 68%;">PO ₹9.43 Cr</div><div class="bg-cyan-600" style="width: 22%;">Accr ₹3.05 Cr</div><div class="bg-emerald-700" style="width: 10%;">Paid ₹1.38 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">L&amp;T Construction</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 62%;">PO ₹3.91 Cr</div><div class="bg-cyan-600" style="width: 28%;">Accr ₹1.73 Cr</div><div class="bg-emerald-700" style="width: 10%;">Paid ₹0.63 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">Voltas (HVAC)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 50%;">PO ₹2.42 Cr</div><div class="bg-cyan-600" style="width: 30%;">Accr ₹1.44 Cr</div><div class="bg-emerald-700" style="width: 20%;">Paid ₹0.97 Cr</div></div></td></tr>
+          <tr><td class="py-2 pr-2 font-mono">Schindler (Lifts)</td><td class="py-2 pr-2"><div class="stack"><div class="bg-amber-600" style="width: 45%;">PO ₹2.13 Cr</div><div class="bg-cyan-600" style="width: 35%;">Accr ₹1.61 Cr</div><div class="bg-emerald-700" style="width: 20%;">Paid ₹0.92 Cr</div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="mt-2 text-xs text-slate-500"><span class="inline-block w-2 h-2 bg-amber-600 align-middle"></span> Committed · <span class="inline-block w-2 h-2 bg-cyan-600 align-middle ml-2"></span> Accrued · <span class="inline-block w-2 h-2 bg-emerald-700 align-middle ml-2"></span> Paid (loaded)</div>
+    </div>
+
+    <!-- X9: pipeline_funnel (PO state pipeline — secondary use of the §11 pattern), decision: "Where are POs stuck?" -->
+    <div class="bg-white border border-slate-200 rounded-lg p-5">
+      <h2 class="font-semibold text-slate-800 mb-1">PO Status Pipeline <span class="text-xs font-normal text-slate-500 italic">— X9 §11 pattern (secondary)</span></h2>
+      <div class="text-xs text-slate-500 mb-3">Decision: where are POs stuck?</div>
+      <div class="max-w-md mx-auto">
+        <div class="funnel-stage bg-slate-700 text-white" style="width: 100%;">Draft · 4</div>
+        <div class="funnel-stage bg-amber-600 text-white" style="width: 90%;">Issued · 23</div>
+        <div class="funnel-stage bg-cyan-700 text-white" style="width: 70%;">Partially_Received · 12</div>
+        <div class="funnel-stage bg-emerald-700 text-white" style="width: 50%;">Fully_Received · 8</div>
+        <div class="funnel-stage bg-slate-500 text-white" style="width: 35%;">Closed · 6</div>
+        <div class="funnel-stage bg-red-800 text-white" style="width: 10%;">Cancelled · 1</div>
+      </div>
+      <details class="mt-3"><summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback</summary>
+        <table class="w-full text-xs mt-2 border border-slate-200">
+          <thead class="bg-slate-100 text-left"><tr><th class="py-1 px-2">Status</th><th class="px-2">Count</th><th class="px-2">Total PO value (loaded)</th></tr></thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr><td class="py-1 px-2 font-mono">Draft</td><td class="px-2 font-mono">4</td><td class="px-2 font-mono">₹2.30 Cr</td></tr>
+            <tr><td class="py-1 px-2 font-mono">Issued</td><td class="px-2 font-mono">23</td><td class="px-2 font-mono">₹60.01 Cr</td></tr>
+            <tr><td class="py-1 px-2 font-mono">Partially_Received</td><td class="px-2 font-mono">12</td><td class="px-2 font-mono">₹35.20 Cr</td></tr>
+            <tr><td class="py-1 px-2 font-mono">Fully_Received</td><td class="px-2 font-mono">8</td><td class="px-2 font-mono">₹19.86 Cr</td></tr>
+            <tr><td class="py-1 px-2 font-mono">Closed</td><td class="px-2 font-mono">6</td><td class="px-2 font-mono">₹14.42 Cr</td></tr>
+            <tr><td class="py-1 px-2 font-mono">Cancelled</td><td class="px-2 font-mono">1</td><td class="px-2 font-mono">₹0.42 Cr</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+  </div>
+
+  <!-- Secondary: 2/3-way match queue + GRN reconciliation -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Invoice Match Queue (2/3-way · BR-06-018) <span class="text-xs font-normal text-slate-500 italic">— per OQ-1.7=C</span></h2>
+    <div class="text-xs text-slate-500 mb-3">Decision: which invoices are failing match and need PMO override (BR-06-022) or correction?</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b"><tr><th class="py-2 pr-3">Invoice</th><th class="py-2 pr-3">Vendor</th><th class="py-2 pr-3">PO</th><th class="py-2 pr-3">Mode</th><th class="py-2 pr-3">Match status</th><th class="py-2 pr-3">Qty Δ%</th><th class="py-2 pr-3">Rate Δ%</th><th class="py-2 text-right">Action</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="bg-red-50">
+          <td class="py-2 pr-3 font-mono text-xs">VINV-KDMC-0042</td><td class="py-2 pr-3 text-xs">Voltas (HVAC)</td><td class="py-2 pr-3 font-mono text-xs">PO-KDMC-00012</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Three_Way</span></td>
+          <td class="py-2 pr-3"><span class="badge shape-circle sev-high">Fail_Rate</span></td>
+          <td class="py-2 pr-3 font-mono text-emerald-700">+1.2%</td><td class="py-2 pr-3 font-mono text-red-700">+5.8%</td>
+          <td class="py-2 text-right"><button class="text-amber-700 font-semibold text-xs">Escalate to PMO</button></td>
+        </tr>
+        <tr class="bg-amber-50">
+          <td class="py-2 pr-3 font-mono text-xs">VINV-KDMC-0044</td><td class="py-2 pr-3 text-xs">Schindler (Lifts)</td><td class="py-2 pr-3 font-mono text-xs">PO-KDMC-00018</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Three_Way</span></td>
+          <td class="py-2 pr-3"><span class="badge shape-triangle sev-medium">Fail_Quantity</span></td>
+          <td class="py-2 pr-3 font-mono text-amber-700">+3.5%</td><td class="py-2 pr-3 font-mono">+0.8%</td>
+          <td class="py-2 text-right"><button class="text-blue-700 font-semibold text-xs">Re-trigger GRN</button></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">VINV-KDMC-0045</td><td class="py-2 pr-3 text-xs">L&amp;T Construction</td><td class="py-2 pr-3 font-mono text-xs">PO-KDMC-00007</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Two_Way</span></td>
+          <td class="py-2 pr-3"><span class="badge shape-square rag-green">Pass</span></td>
+          <td class="py-2 pr-3 text-slate-400">—</td><td class="py-2 pr-3 font-mono">+0.3%</td>
+          <td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">→ Hand to Finance</button></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">VINV-KDMC-0046</td><td class="py-2 pr-3 text-xs">Siemens (CT)</td><td class="py-2 pr-3 font-mono text-xs">PO-KDMC-00009</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Three_Way</span></td>
+          <td class="py-2 pr-3"><span class="badge shape-square rag-green">Pass</span></td>
+          <td class="py-2 pr-3 font-mono">+0.5%</td><td class="py-2 pr-3 font-mono">+1.2%</td>
+          <td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">→ Hand to Finance</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-2 text-xs text-slate-500 italic">Tolerances (M06FinancialConfig): qty 2.0% · rate 3.0% · breach beyond → Decision Queue INVOICE_MATCH_FAILED</div>
+  </div>
+
+  <!-- Secondary: Long-lead PO tracking -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Long-lead PO Tracking <span class="text-xs font-normal text-slate-500 italic">(link → M03 ProcurementScheduleItem.long_lead_flag=true)</span></h2>
+    <div class="text-xs text-slate-500 mb-3">PO_ISSUED back-fills M03.actual_order_date (BR-06-005)</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b"><tr><th class="py-2 pr-3">Item</th><th class="py-2 pr-3">PO</th><th class="py-2 pr-3">Vendor</th><th class="py-2 pr-3">Currency</th><th class="py-2 pr-3">PO value (loaded)</th><th class="py-2 pr-3">Issue date</th><th class="py-2 pr-3">Expected delivery</th><th class="py-2 pr-3">Status</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2 pr-3 text-xs">LINAC TrueBeam</td><td class="py-2 pr-3 font-mono text-xs">PO-KDMC-00003</td><td class="py-2 pr-3 text-xs">Varian Medical</td><td class="py-2 pr-3 font-mono text-xs">USD (₹17.25 Cr)</td><td class="py-2 pr-3 font-mono">₹17.25 Cr</td><td class="py-2 pr-3 text-xs">2026-01-15</td><td class="py-2 pr-3 text-xs">2026-08-30</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Issued</span></td></tr>
+        <tr><td class="py-2 pr-3 text-xs">CT Scanner SOMATOM</td><td class="py-2 pr-3 font-mono text-xs">PO-KDMC-00009</td><td class="py-2 pr-3 text-xs">Siemens Healthineers</td><td class="py-2 pr-3 font-mono text-xs">EUR (₹5.06 Cr)</td><td class="py-2 pr-3 font-mono">₹5.06 Cr</td><td class="py-2 pr-3 text-xs">2026-02-20</td><td class="py-2 pr-3 text-xs">2026-07-15</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Partially_Received</span></td></tr>
+        <tr><td class="py-2 pr-3 text-xs">MRI 1.5T MAGNETOM</td><td class="py-2 pr-3 font-mono text-xs">PO-KDMC-00010</td><td class="py-2 pr-3 text-xs">Siemens Healthineers</td><td class="py-2 pr-3 font-mono text-xs">EUR (₹4.37 Cr)</td><td class="py-2 pr-3 font-mono">₹4.37 Cr</td><td class="py-2 pr-3 text-xs">2026-03-05</td><td class="py-2 pr-3 text-xs">2026-09-10</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Issued</span></td></tr>
+      </tbody>
+    </table>
+    <div class="mt-2 text-xs text-slate-500 italic">Forex rate locked per BR-06-033/035; deviation &gt; 2.0% → BR-06-034 PMO approval gate</div>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: SITE_MANAGER · Capital Funnel (% only · ₹ RESTRICTED) + RA bill status      -->
+<!-- Rate display: [RESTRICTED] per BR-02-008 / Spec 8c                                -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="site_manager">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "Are my packages' progress entries flowing through to billing — and where are RA bills stuck (without seeing commercial figures)?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Site Manager — Billing Status (your packages)</h1>
+    <div class="text-xs text-slate-500">All ₹ values <span class="restricted">[RESTRICTED]</span> per BR-02-008 · X9 §6 · Spec 8c</div>
+  </div>
+
+  <!-- Primary: Capital funnel — % only, ₹ values redacted -->
+  <!-- X9: pipeline_funnel (Capital Funnel — % only), decision: "Where is project capital flowing through (without commercial visibility)?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Capital Funnel — % only <span class="text-xs font-normal text-slate-500 italic">(₹ values redacted)</span></h2>
+    <div class="text-xs text-slate-500 mb-4">Decision-first: subset awareness of where project capital sits — without commercial figures</div>
+    <div class="space-y-1 mb-2">
+      <div class="funnel-row"><div class="text-right font-semibold text-slate-700">Budgeted</div><div class="funnel-bar"><div class="funnel-fill fill-budgeted" style="width: 100%;"><span class="restricted">[RESTRICTED]</span> · 100%</div></div><div class="funnel-delta">BAC ceiling</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-amber-700">Committed</div><div class="funnel-bar"><div class="funnel-fill fill-committed" style="width: 76.3%;"><span class="restricted">[RESTRICTED]</span> · 76.3%</div></div><div class="funnel-delta">23.7% headroom</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-cyan-700">Accrued</div><div class="funnel-bar"><div class="funnel-fill fill-accrued" style="width: 41.4%;"><span class="restricted">[RESTRICTED]</span> · 41.4%</div></div><div class="funnel-delta">work pipeline</div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-emerald-700">Paid</div><div class="funnel-bar"><div class="funnel-fill fill-paid" style="width: 28.9%;"><span class="restricted">[RESTRICTED]</span> · 28.9%</div></div><div class="funnel-delta">payable backlog</div></div>
+    </div>
+    <details class="mt-3"><summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback</summary>
+      <table class="w-full text-xs mt-2 border border-slate-200">
+        <thead class="bg-slate-100 text-left"><tr><th class="py-1 px-2">State</th><th class="px-2">% of BAC</th><th class="px-2">Amount</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-2 font-mono">Budgeted</td><td class="px-2 font-mono">100.0%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td></tr>
+          <tr><td class="py-1 px-2 font-mono">Committed</td><td class="px-2 font-mono">76.3%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td></tr>
+          <tr><td class="py-1 px-2 font-mono">Accrued</td><td class="px-2 font-mono">41.4%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td></tr>
+          <tr><td class="py-1 px-2 font-mono">Paid</td><td class="px-2 font-mono">28.9%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <!-- Secondary: RA bill status own packages (status only — no rupee values) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">RA Bills — your packages (status badges only)</h2>
+    <div class="text-xs text-slate-500 mb-3">Visibility: status flow · GRN receipts · No ₹ figures</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b"><tr><th class="py-2 pr-3">RA Bill</th><th class="py-2 pr-3">Package</th><th class="py-2 pr-3">Period</th><th class="py-2 pr-3">Trigger</th><th class="py-2 pr-3">Status</th><th class="py-2 pr-3">Net Payable</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00018</td><td class="py-2 pr-3 text-xs">PKG-02 Block B</td><td class="py-2 pr-3 text-xs">Apr-2026</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Progress</span></td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Submitted</span></td><td class="py-2 pr-3"><span class="restricted">[RESTRICTED]</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00019</td><td class="py-2 pr-3 text-xs">PKG-05 LINAC</td><td class="py-2 pr-3 text-xs">Milestone</td><td class="py-2 pr-3"><span class="badge shape-triangle bg-violet-700 text-white">Milestone</span></td><td class="py-2 pr-3"><span class="badge shape-square sev-medium">QS approved</span></td><td class="py-2 pr-3"><span class="restricted">[RESTRICTED]</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00020</td><td class="py-2 pr-3 text-xs">PKG-08 MEP</td><td class="py-2 pr-3 text-xs">Apr-2026</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Progress</span></td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Submitted</span></td><td class="py-2 pr-3"><span class="restricted">[RESTRICTED]</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00017</td><td class="py-2 pr-3 text-xs">PKG-01 Block A</td><td class="py-2 pr-3 text-xs">Mar-2026</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Progress</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Paid</span></td><td class="py-2 pr-3"><span class="restricted">[RESTRICTED]</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: GRN receipts log (visibility — no rupee figures) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">GRN Receipts (your packages)</h2>
+    <div class="text-xs text-slate-500 mb-3">Mirrored from M04 MaterialReceipt → CostLedgerEntry Accrued (BR-06-017)</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b"><tr><th class="py-2 pr-3">GRN</th><th class="py-2 pr-3">Package</th><th class="py-2 pr-3">Material</th><th class="py-2 pr-3">Qty received</th><th class="py-2 pr-3">QC decision</th><th class="py-2 pr-3">Value</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2 pr-3 font-mono text-xs">GRN-KDMC-00031</td><td class="py-2 pr-3 text-xs">PKG-05</td><td class="py-2 pr-3 text-xs">LINAC bunker shielding plates</td><td class="py-2 pr-3 font-mono">42 of 42</td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Accepted</span></td><td class="py-2 pr-3"><span class="restricted">[RESTRICTED]</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">GRN-KDMC-00032</td><td class="py-2 pr-3 text-xs">PKG-08</td><td class="py-2 pr-3 text-xs">MEP HVAC ducting (set 3)</td><td class="py-2 pr-3 font-mono">120 of 130</td><td class="py-2 pr-3"><span class="badge shape-triangle sev-medium">Conditional</span></td><td class="py-2 pr-3"><span class="restricted">[RESTRICTED]</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">GRN-KDMC-00033</td><td class="py-2 pr-3 text-xs">PKG-02</td><td class="py-2 pr-3 text-xs">M40 RMC supply (Block B)</td><td class="py-2 pr-3 font-mono">218 m³</td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Accepted</span></td><td class="py-2 pr-3"><span class="restricted">[RESTRICTED]</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: QS_MANAGER · RA bill queue (own packages) + variance analysis (declared vs billed) -->
+<!-- Rate display: Indexed × 1.08 per BR-02-008                                       -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="qs_manager">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "Which RA bills are awaiting my QS approval, and where is declared progress diverging from billed amount?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">QS Manager — RA Bill Approval + Measurement Audit</h1>
+    <div class="text-xs text-slate-500">Cross-project hidden · Rate display: <b>Indexed × 1.08</b> (BR-02-008) · BR-06-015 QS approval step</div>
+  </div>
+
+  <!-- Primary: RA bill queue (own packages) — pending QS approval -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-slate-800">RA Bills awaiting QS approval (BR-06-015)</h2>
+      <div class="flex gap-2 text-xs">
+        <button class="px-3 py-1 bg-slate-100 rounded">All</button>
+        <button class="px-3 py-1 bg-blue-100 text-blue-700 font-semibold rounded">High value first</button>
+        <button class="px-3 py-1 bg-slate-100 rounded">Oldest first</button>
+      </div>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b"><tr><th class="py-2 pr-3">RA Bill</th><th class="py-2 pr-3">Package</th><th class="py-2 pr-3">Trigger</th><th class="py-2 pr-3">Gross (indexed)</th><th class="py-2 pr-3">Retention</th><th class="py-2 pr-3">Net (indexed)</th><th class="py-2 pr-3">Source progress</th><th class="py-2 text-right">Action</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="bg-amber-50">
+          <td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00021</td>
+          <td class="py-2 pr-3 text-xs">PKG-03 OT Suite</td>
+          <td class="py-2 pr-3"><span class="badge shape-square sev-info">Progress</span></td>
+          <td class="py-2 pr-3 font-mono">₹1,18,80,000</td>
+          <td class="py-2 pr-3 font-mono text-slate-500">₹5,94,000 (5%)</td>
+          <td class="py-2 pr-3 font-mono font-bold">₹1,12,86,000</td>
+          <td class="py-2 pr-3 text-xs">5 ProgressEntry · BR-06-012</td>
+          <td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs mr-2">Approve_QS</button><button class="text-red-700 font-semibold text-xs">Reject</button></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00022</td>
+          <td class="py-2 pr-3 text-xs">PKG-05 LINAC</td>
+          <td class="py-2 pr-3"><span class="badge shape-triangle bg-violet-700 text-white">Milestone</span></td>
+          <td class="py-2 pr-3 font-mono">₹2,59,20,000</td>
+          <td class="py-2 pr-3 font-mono text-slate-500">₹12,96,000 (5%)</td>
+          <td class="py-2 pr-3 font-mono font-bold">₹2,46,24,000</td>
+          <td class="py-2 pr-3 text-xs">M03 Milestone MS-LINAC-Bunker-100% · BR-06-014</td>
+          <td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs mr-2">Approve_QS</button><button class="text-red-700 font-semibold text-xs">Reject</button></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00023</td>
+          <td class="py-2 pr-3 text-xs">PKG-08 MEP</td>
+          <td class="py-2 pr-3"><span class="badge shape-square sev-info">Progress</span></td>
+          <td class="py-2 pr-3 font-mono">₹69,33,600</td>
+          <td class="py-2 pr-3 font-mono text-slate-500">₹3,46,680 (5%)</td>
+          <td class="py-2 pr-3 font-mono font-bold">₹65,86,920</td>
+          <td class="py-2 pr-3 text-xs">3 ProgressEntry · BR-06-012</td>
+          <td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs mr-2">Approve_QS</button><button class="text-red-700 font-semibold text-xs">Reject</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 italic">Click any row to drill into RABillLine measurement basis (BoQ-line audit ties to M14 future). Indexed display = actual_rate × 1.08 (default) per BR-02-008.</div>
+  </div>
+
+  <!-- Secondary: variance analysis (declared progress vs RA bill amount) -->
+  <!-- X9 OQ-1.10 tabular fallback (rendering bar_horizontal_sortable §4.1.2 variance ranking as a table per QS_MANAGER role-default-view pattern), decision: "Which packages need closer measurement scrutiny?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Measurement Variance — declared progress vs billed (last 6 periods)</h2>
+    <div class="text-xs text-slate-500 mb-3">Decision: which packages / contractors need closer scrutiny? · Source: M04 ProgressEntry vs M06 RABillLine</div>
+    <table class="w-full text-xs">
+      <thead class="text-left uppercase text-slate-500 border-b"><tr><th class="py-1.5 pr-3">Package</th><th class="px-2">Avg declared</th><th class="px-2">Avg approved</th><th class="px-2">Avg billed (indexed)</th><th class="px-2">Δ (declared − billed)</th><th class="px-2">Pattern</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 pr-3 font-mono">PKG-02 Civil Block B</td><td class="px-2 font-mono">76.4%</td><td class="px-2 font-mono">75.8%</td><td class="px-2 font-mono">75.4%</td><td class="px-2 heat-pos font-mono">+1.0 pp</td><td class="px-2">Tight</td></tr>
+        <tr><td class="py-1 pr-3 font-mono">PKG-03 OT Suite</td><td class="px-2 font-mono">58.2%</td><td class="px-2 font-mono">52.1%</td><td class="px-2 font-mono">50.8%</td><td class="px-2 heat-warn font-mono">+7.4 pp</td><td class="px-2">Optimistic declarations</td></tr>
+        <tr><td class="py-1 pr-3 font-mono">PKG-05 LINAC Bunker</td><td class="px-2 font-mono">42.0%</td><td class="px-2 font-mono">38.5%</td><td class="px-2 font-mono">38.0%</td><td class="px-2 heat-warn font-mono">+4.0 pp</td><td class="px-2">Mild over-declaration</td></tr>
+        <tr><td class="py-1 pr-3 font-mono">PKG-08 MEP Trunks</td><td class="px-2 font-mono">71.0%</td><td class="px-2 font-mono">71.0%</td><td class="px-2 font-mono">70.8%</td><td class="px-2 heat-flat font-mono">+0.2 pp</td><td class="px-2">Aligned</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: forex variation tracker (KDMC has multi-currency POs — Varian USD, Siemens EUR) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Forex Variation Tracker <span class="text-xs font-normal text-slate-500 italic">(BR-06-036 quarterly compute)</span></h2>
+    <div class="text-xs text-slate-500 mb-3">Open POs ≠ INR — variation_inr = committed_amount_foreign × (rate_at_period_end − rate_at_commit) · indexed display</div>
+    <table class="w-full text-xs">
+      <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 pr-2">PO</th><th class="px-1">Vendor</th><th class="px-1">Foreign amt</th><th class="px-1">Rate at commit</th><th class="px-1">Rate now</th><th class="px-1">Δ rate</th><th class="px-1">Variation (indexed)</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 pr-2 font-mono">PO-KDMC-00003</td><td class="px-1">Varian Medical</td><td class="px-1 font-mono">USD 1.86 M</td><td class="px-1 font-mono">82.40</td><td class="px-1 font-mono">83.65</td><td class="px-1 font-mono text-amber-700">+1.52%</td><td class="px-1 font-mono text-amber-700">+₹25.10 L</td></tr>
+        <tr><td class="py-1 pr-2 font-mono">PO-KDMC-00009</td><td class="px-1">Siemens (CT)</td><td class="px-1 font-mono">EUR 0.55 M</td><td class="px-1 font-mono">88.20</td><td class="px-1 font-mono">89.05</td><td class="px-1 font-mono text-amber-700">+0.96%</td><td class="px-1 font-mono text-amber-700">+₹5.05 L</td></tr>
+        <tr><td class="py-1 pr-2 font-mono">PO-KDMC-00010</td><td class="px-1">Siemens (MRI)</td><td class="px-1 font-mono">EUR 0.48 M</td><td class="px-1 font-mono">88.50</td><td class="px-1 font-mono">89.05</td><td class="px-1 font-mono">+0.62%</td><td class="px-1 font-mono">+₹2.85 L</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: EXTERNAL_AUDITOR · Append-only ledger viewer (4 ledgers) + Forex log + BG cal -->
+<!-- Rate display: ACTUAL (full visibility for audit per BR-02-008 / Spec 8c)          -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="external_auditor">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "Can I trace every rupee transition end-to-end through immutable ledgers, with PMO overrides justified?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">External Auditor — Append-only Ledger Viewer</h1>
+    <div class="text-xs text-slate-500">Read-only across 4 immutable ledgers · Rate display: ACTUAL · MFA required · RATE_ACCESSED_PRIVILEGED audit</div>
+  </div>
+
+  <!-- Primary: Append-only ledger viewer (4 ledgers) -->
+  <!-- X9 OQ-1.10 tabular fallback (append-only ledger reader — pure tabular display per EXTERNAL_AUDITOR view; no chart-type pattern applies), decision: "Is the ledger chain intact and reversible only via offsetting INSERTs?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Append-only Ledgers (X8 §6 reserved-fields exemption · Spec 8b)</h2>
+    <div class="text-xs text-slate-500 mb-3">DB-level UPDATE/DELETE forbidden — reversal only via offsetting INSERT (e.g., BR-06-008 PO_CANCELLED)</div>
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <div class="border border-slate-200 rounded p-3">
+        <div class="font-mono text-xs uppercase text-slate-500">CostLedgerEntry</div>
+        <div class="font-mono text-2xl font-bold mt-1">2,841 rows</div>
+        <div class="text-xs text-slate-500 mt-1">All 4 states · last write 2026-05-01 18:42</div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="font-mono text-xs uppercase text-slate-500">RABillAuditLog</div>
+        <div class="font-mono text-2xl font-bold mt-1">142 rows</div>
+        <div class="text-xs text-slate-500 mt-1">21 RA bills × avg 6.8 transitions</div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="font-mono text-xs uppercase text-slate-500">PaymentEvidenceLedger</div>
+        <div class="font-mono text-2xl font-bold mt-1">38 rows</div>
+        <div class="text-xs text-slate-500 mt-1">Bank debit advice trail</div>
+      </div>
+      <div class="border border-slate-200 rounded p-3">
+        <div class="font-mono text-xs uppercase text-slate-500">ForexRateLog</div>
+        <div class="font-mono text-2xl font-bold mt-1">94 rows</div>
+        <div class="text-xs text-slate-500 mt-1">USD/EUR/INR · BR-06-033 lock</div>
+      </div>
+    </div>
+
+    <h3 class="font-semibold text-slate-700 text-sm mt-4 mb-2">CostLedgerEntry — last 8 transitions</h3>
+    <table class="w-full text-xs">
+      <thead class="bg-slate-100 text-left"><tr><th class="py-1.5 px-2">entry_id (suffix)</th><th class="px-2">prior</th><th class="px-2">new state</th><th class="px-2">amount</th><th class="px-2">source</th><th class="px-2">trigger</th><th class="px-2">created_at</th></tr></thead>
+      <tbody class="divide-y divide-slate-100 font-mono">
+        <tr><td class="py-1 px-2">…f4a1</td><td class="px-2 text-slate-400">null</td><td class="px-2">Budgeted</td><td class="px-2">₹4,20,00,000</td><td class="px-2">M02.Package PKG-03</td><td class="px-2">PROJECT_ACTIVATED</td><td class="px-2">2025-09-12 09:40</td></tr>
+        <tr><td class="py-1 px-2">…7c33</td><td class="px-2">Budgeted</td><td class="px-2">Committed</td><td class="px-2">₹4,05,00,000</td><td class="px-2">M06.PurchaseOrder PO-00007</td><td class="px-2">PO_ISSUED</td><td class="px-2">2025-12-04 11:22</td></tr>
+        <tr><td class="py-1 px-2">…91c8</td><td class="px-2">Committed</td><td class="px-2">Accrued</td><td class="px-2">₹1,18,80,000</td><td class="px-2">M06.RABill RAB-00018</td><td class="px-2">RA_BILL_APPROVED_FINANCE</td><td class="px-2">2026-04-30 16:18</td></tr>
+        <tr><td class="py-1 px-2">…42d0</td><td class="px-2">Accrued</td><td class="px-2">Paid</td><td class="px-2">₹1,12,86,000</td><td class="px-2">M06.PaymentEvidence PE-0019</td><td class="px-2">PAYMENT_CONFIRMED</td><td class="px-2">2026-05-01 14:02</td></tr>
+        <tr class="bg-amber-50"><td class="py-1 px-2">…b8e2</td><td class="px-2">Committed</td><td class="px-2">Budgeted</td><td class="px-2">−₹42,30,000</td><td class="px-2">M06.PurchaseOrder PO-00021</td><td class="px-2">PO_CANCELLED</td><td class="px-2">2026-04-22 10:51</td></tr>
+        <tr><td class="py-1 px-2">…3c50</td><td class="px-2">Budgeted</td><td class="px-2">Committed</td><td class="px-2">₹3,40,00,000</td><td class="px-2">M05.VariationOrder VO-0034</td><td class="px-2">VO_APPROVED (stub)</td><td class="px-2">2026-04-25 13:28</td></tr>
+        <tr><td class="py-1 px-2">…ee14</td><td class="px-2">Committed</td><td class="px-2">Accrued</td><td class="px-2">₹2,40,00,000</td><td class="px-2">M06.RABill RAB-00019</td><td class="px-2">RA_BILL_APPROVED_FINANCE</td><td class="px-2">2026-05-01 15:44</td></tr>
+        <tr><td class="py-1 px-2">…a009</td><td class="px-2">Committed</td><td class="px-2">Accrued</td><td class="px-2">₹78,30,000</td><td class="px-2">M06.GRN GRN-00031</td><td class="px-2">MATERIAL_GRN_EMITTED</td><td class="px-2">2026-04-29 12:15</td></tr>
+      </tbody>
+    </table>
+    <div class="mt-2 text-xs text-slate-500 italic">Composite uniqueness (tenant_id, project_id, source_entity_type, source_entity_id, state) — exactly one row per (source, state) per Spec Block 3b.</div>
+  </div>
+
+  <!-- Secondary: BACIntegrityLedger reads (read via M02 internal API, not DB) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">BACIntegrityLedger reads (M02 internal API · F-005 Single-Owner Rule)</h2>
+    <div class="text-xs text-slate-500 mb-3">M06 NEVER DB-reads M02's BACIntegrityLedger — only internal API consumption (Spec Block 7)</div>
+    <table class="w-full text-xs">
+      <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-2">Package</th><th class="px-2">M02 BAC status</th><th class="px-2">Pending VO</th><th class="px-2">Snapshot taken</th><th class="px-2">M06 flagged entries</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 px-2 font-mono">PKG-05 LINAC</td><td class="px-2"><span class="badge shape-triangle sev-medium">Stale_Pending_VO</span></td><td class="px-2 font-mono">VO-0034</td><td class="px-2 text-xs">2026-04-25 13:28</td><td class="px-2 font-mono">3 entries</td></tr>
+        <tr><td class="py-1 px-2 font-mono">PKG-08 MEP</td><td class="px-2"><span class="badge shape-triangle sev-medium">Stale_Pending_VO</span></td><td class="px-2 font-mono">VO-0029</td><td class="px-2 text-xs">2026-04-30 09:44</td><td class="px-2 font-mono">2 entries</td></tr>
+        <tr><td class="py-1 px-2 font-mono">PKG-12 NABH</td><td class="px-2"><span class="badge shape-triangle sev-medium">Stale_Pending_VO</span></td><td class="px-2 font-mono">VO-0031</td><td class="px-2 text-xs">2026-04-28 14:11</td><td class="px-2 font-mono">1 entry</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: BG expiry calendar -->
+  <!-- X9: calendar_timeline, decision: "Which BGs are about to expire and need renewal?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">BG Expiry Calendar <span class="text-xs font-normal text-slate-500 italic">(BGStub · BR-06-031/032 · phase-2 migrates to M23)</span></h2>
+    <div class="text-xs text-slate-500 mb-3">Decision: which BGs are about to expire?</div>
+    <table class="w-full text-xs">
+      <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-2">BG ref</th><th class="px-2">Type</th><th class="px-2">Issuer bank</th><th class="px-2">Coverage</th><th class="px-2">Expiry</th><th class="px-2">Days to expiry</th><th class="px-2">Status</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 px-2 font-mono">BG-LNT-001</td><td class="px-2">Performance</td><td class="px-2">SBI</td><td class="px-2 font-mono">₹3.42 Cr (5%)</td><td class="px-2 font-mono">2026-12-31</td><td class="px-2 font-mono">+244</td><td class="px-2"><span class="badge shape-square rag-green">Active</span></td></tr>
+        <tr class="bg-amber-50"><td class="py-1 px-2 font-mono">BG-LNT-002</td><td class="px-2">Mobilisation</td><td class="px-2">HDFC</td><td class="px-2 font-mono">₹6.84 Cr (10%)</td><td class="px-2 font-mono">2026-08-15</td><td class="px-2 font-mono text-amber-700">+106</td><td class="px-2"><span class="badge shape-triangle sev-medium">Warn 90d</span> BG_EXPIRING_SOON</td></tr>
+        <tr><td class="py-1 px-2 font-mono">BG-VAR-001</td><td class="px-2">Performance</td><td class="px-2">Citibank NA</td><td class="px-2 font-mono">USD 93,000</td><td class="px-2 font-mono">2027-03-30</td><td class="px-2 font-mono">+333</td><td class="px-2"><span class="badge shape-square rag-green">Active</span></td></tr>
+        <tr><td class="py-1 px-2 font-mono">BG-SIE-001</td><td class="px-2">Advance</td><td class="px-2">Deutsche Bank</td><td class="px-2 font-mono">EUR 55,000</td><td class="px-2 font-mono">2026-10-20</td><td class="px-2 font-mono">+172</td><td class="px-2"><span class="badge shape-square rag-green">Active</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: Retention release log -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Retention Release Log (full audit trail)</h2>
+    <div class="text-xs text-slate-500 mb-3">All transitions Withheld → Eligible → Approved_Finance → Released · dual sign-off captured</div>
+    <table class="w-full text-xs">
+      <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-2">RA Bill</th><th class="px-2">Type</th><th class="px-2">Tranche %</th><th class="px-2">Amount</th><th class="px-2">Eligibility basis</th><th class="px-2">Finance approver</th><th class="px-2">PMO approver</th><th class="px-2">Released_at</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-1 px-2 font-mono">RAB-KDMC-00006</td><td class="px-2">Substantial</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹7,40,000</td><td class="px-2 text-xs">SG_11 PKG-01 · 2026-04-22</td><td class="px-2 text-xs">A. Sharma</td><td class="px-2 text-xs">R. Krishnan</td><td class="px-2 text-xs">2026-05-02 16:18</td></tr>
+        <tr><td class="py-1 px-2 font-mono">RAB-KDMC-00009</td><td class="px-2">Substantial</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹11,15,000</td><td class="px-2 text-xs">SG_11 PKG-02 · 2026-04-28</td><td class="px-2 text-xs">A. Sharma</td><td class="px-2 text-xs">R. Krishnan</td><td class="px-2 text-xs">2026-05-03 09:42</td></tr>
+        <tr class="bg-amber-50"><td class="py-1 px-2 font-mono">RAB-KDMC-00012</td><td class="px-2">DLP_End</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹9,30,000</td><td class="px-2 text-xs">Blocked · M15 open_defect_count=2</td><td class="px-2 text-xs text-slate-400">—</td><td class="px-2 text-xs text-slate-400">—</td><td class="px-2 text-xs text-slate-400">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Secondary: forex rate log -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Forex Rate Log (last 6 entries · BR-06-033 lock)</h2>
+    <table class="w-full text-xs">
+      <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-2">Date</th><th class="px-2">Pair</th><th class="px-2">Tier</th><th class="px-2">Rate</th><th class="px-2">Locked at</th><th class="px-2">PMO approval</th><th class="px-2">FEMA evidence</th></tr></thead>
+      <tbody class="divide-y divide-slate-100 font-mono">
+        <tr><td class="py-1 px-2">2026-05-01</td><td class="px-2">USD/INR</td><td class="px-2">RBI_Reference</td><td class="px-2">83.65</td><td class="px-2">2026-05-02 02:00</td><td class="px-2 text-slate-400">—</td><td class="px-2 text-xs">RBI ref pub</td></tr>
+        <tr class="bg-amber-50"><td class="py-1 px-2">2026-04-25</td><td class="px-2">USD/INR</td><td class="px-2">Bank_Transaction</td><td class="px-2">85.10</td><td class="px-2">2026-04-26 02:00</td><td class="px-2 text-xs">PMO ✓ +1.73% dev</td><td class="px-2 text-xs">FEMA-DOC-0042</td></tr>
+        <tr><td class="py-1 px-2">2026-05-01</td><td class="px-2">EUR/INR</td><td class="px-2">RBI_Reference</td><td class="px-2">89.05</td><td class="px-2">2026-05-02 02:00</td><td class="px-2 text-slate-400">—</td><td class="px-2 text-xs">RBI ref pub</td></tr>
+        <tr><td class="py-1 px-2">2026-03-05</td><td class="px-2">EUR/INR</td><td class="px-2">Bank_Transaction</td><td class="px-2">88.50</td><td class="px-2">2026-03-06 02:00</td><td class="px-2 text-slate-400">—</td><td class="px-2 text-xs">FEMA-DOC-0038</td></tr>
+        <tr><td class="py-1 px-2">2026-02-20</td><td class="px-2">EUR/INR</td><td class="px-2">Bank_Transaction</td><td class="px-2">88.20</td><td class="px-2">2026-02-21 02:00</td><td class="px-2 text-slate-400">—</td><td class="px-2 text-xs">FEMA-DOC-0035</td></tr>
+        <tr><td class="py-1 px-2">2026-01-15</td><td class="px-2">USD/INR</td><td class="px-2">Bank_Transaction</td><td class="px-2">82.40</td><td class="px-2">2026-01-16 02:00</td><td class="px-2 text-slate-400">—</td><td class="px-2 text-xs">FEMA-DOC-0029</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================================================== -->
+<!-- ROLE: READ_ONLY · status badges (RAG by package) — no numerics                   -->
+<!-- Rate display: [RESTRICTED] per BR-02-008 · all action surfaces hidden            -->
+<!-- =============================================================================== -->
+<section class="role-section" data-role="read_only">
+
+  <div class="decision-banner">
+    <b>Decision answered:</b> "Is the project's financial flow broadly Green/Amber/Red — without seeing any commercial figures or actions?"
+  </div>
+
+  <div class="mb-4 flex items-baseline justify-between">
+    <h1 class="text-xl font-bold">Read-Only — Status Badges (no numerics)</h1>
+    <div class="text-xs text-slate-500">All ₹ values <span class="restricted">[RESTRICTED]</span> · all action surfaces hidden · BR-02-008</div>
+  </div>
+
+  <!-- Primary: Capital Funnel — % only with status banding -->
+  <!-- X9: pipeline_funnel (Capital Funnel — status badges only), decision: "Is project capital flow on track?" -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Capital Funnel — status only</h2>
+    <div class="text-xs text-slate-500 mb-4">% positions and RAG bands only · no rupee figures</div>
+    <div class="space-y-1 mb-2">
+      <div class="funnel-row"><div class="text-right font-semibold text-slate-700">Budgeted</div><div class="funnel-bar"><div class="funnel-fill fill-budgeted" style="width: 100%;">100%</div></div><div class="funnel-delta"><span class="badge shape-square rag-green">Green</span></div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-amber-700">Committed</div><div class="funnel-bar"><div class="funnel-fill fill-committed" style="width: 76.3%;">76%</div></div><div class="funnel-delta"><span class="badge shape-square rag-green">Green</span></div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-cyan-700">Accrued</div><div class="funnel-bar"><div class="funnel-fill fill-accrued" style="width: 41.4%;">41%</div></div><div class="funnel-delta"><span class="badge shape-square rag-green">Green</span></div></div>
+      <div class="funnel-row"><div class="text-right font-semibold text-emerald-700">Paid</div><div class="funnel-bar"><div class="funnel-fill fill-paid" style="width: 28.9%;">29%</div></div><div class="funnel-delta"><span class="badge shape-triangle rag-amber">Amber · payable backlog</span></div></div>
+    </div>
+    <details class="mt-3"><summary class="text-xs text-slate-600 cursor-pointer font-semibold">Tabular fallback</summary>
+      <table class="w-full text-xs mt-2 border border-slate-200">
+        <thead class="bg-slate-100 text-left"><tr><th class="py-1 px-2">State</th><th class="px-2">% of BAC</th><th class="px-2">Amount</th><th class="px-2">RAG</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1 px-2 font-mono">Budgeted</td><td class="px-2 font-mono">100%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td><td class="px-2"><span class="badge shape-square rag-green">Green</span></td></tr>
+          <tr><td class="py-1 px-2 font-mono">Committed</td><td class="px-2 font-mono">76%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td><td class="px-2"><span class="badge shape-square rag-green">Green</span></td></tr>
+          <tr><td class="py-1 px-2 font-mono">Accrued</td><td class="px-2 font-mono">41%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td><td class="px-2"><span class="badge shape-square rag-green">Green</span></td></tr>
+          <tr><td class="py-1 px-2 font-mono">Paid</td><td class="px-2 font-mono">29%</td><td class="px-2"><span class="restricted">[RESTRICTED]</span></td><td class="px-2"><span class="badge shape-triangle rag-amber">Amber</span></td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <!-- Secondary: package RAG grid (status badges only) -->
+  <div class="bg-white border border-slate-200 rounded-lg p-5 mb-6">
+    <h2 class="font-semibold text-slate-800 mb-1">Package Status Grid (RAG badges only)</h2>
+    <div class="text-xs text-slate-500 mb-3">All ₹ values [RESTRICTED] · status surfaced without commercial detail</div>
+    <table class="w-full text-sm">
+      <thead class="text-left text-xs uppercase text-slate-500 border-b"><tr><th class="py-2 pr-3">Package</th><th class="py-2 pr-3">BAC integrity</th><th class="py-2 pr-3">Capital headroom</th><th class="py-2 pr-3">Cost overrun</th><th class="py-2 pr-3">RA bill flow</th><th class="py-2 pr-3">Retention</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="py-2 pr-3 font-mono text-xs">PKG-01 Civil Block A</td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Confirmed</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Closed</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Released 50%</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">PKG-02 Civil Block B</td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Confirmed</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Active</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Released 50%</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">PKG-03 OT Suite</td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Confirmed</span></td><td class="py-2 pr-3"><span class="badge shape-triangle rag-amber">Amber</span></td><td class="py-2 pr-3"><span class="badge shape-triangle rag-amber">Warn</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Active</span></td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Withheld</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">PKG-05 LINAC Bunker</td><td class="py-2 pr-3"><span class="badge shape-triangle sev-medium">Stale_Pending_VO</span></td><td class="py-2 pr-3"><span class="badge shape-circle rag-red">Red BREACH</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Active</span></td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Withheld</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">PKG-08 MEP Trunks</td><td class="py-2 pr-3"><span class="badge shape-triangle sev-medium">Stale_Pending_VO</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Active</span></td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Withheld</span></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">PKG-12 NABH Compliance</td><td class="py-2 pr-3"><span class="badge shape-triangle sev-medium">Stale_Pending_VO</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square rag-green">Green</span></td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Pre-bill</span></td><td class="py-2 pr-3 text-slate-400 text-xs">—</td></tr>
+      </tbody>
+    </table>
+    <div class="mt-3 text-xs text-slate-500 italic">Read-only view — invoice queues, PMO override surfaces, and rate values are hidden per role.</div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============== ROLE-SWITCHER SCRIPT (no framework — vanilla JS) ============== -->
+<script>
+  document.querySelectorAll('.role-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const role = tab.dataset.role;
+      document.querySelectorAll('.role-tab').forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('.role-section').forEach(s => s.classList.toggle('active', s.dataset.role === role));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+
+<footer class="text-center text-xs text-slate-400 py-6 border-t border-slate-200 mt-8">
+  M06 Wireframes v1.0 · Round 25 · DRAFT · Tailwind CDN · No framework deps · 8 role-default views per Spec Block 5 / X9 v0.3 §13.3.6 · Capital Funnel = 1st named instance of X9 §11 / §9.5.1 flagship · KDMC-001-DBOT mock data
+</footer>
+</body>
+</html>
