@@ -180,6 +180,7 @@ When any artefact is created, modified, or status-changed:
 
 | Date | Time | Artefact | Action | Author | Note |
 |---|---|---|---|---|---|
+| 2026-05-03 | — | Round 23 — EPCC_BuildArchitecture_Brief_v1_0 | Draft | Monish (with Claude assist) | Round 23 opened to lock the build architecture before any code lands for M34/M01/M02/M03/M04. Brief surfaces 10 OQ-1 user decisions (repo strategy, branch model, sequencing, OIDC choice, multi-tenancy, pilot seed, CI host, prod hosting deferral, BR-tagged tests, ENUM codegen) + ~30 OQ-2 pattern defaults. Recommends monorepo on `main` (not a separate `Code` branch) with feature branches per module, thin vertical slice (M34 → M01 demo) before module deepening. New §7a "Change Management" details cascade-cost matrix + 10 built-in flexibility mechanisms (code mirrors spec layout, X8 codegen, OpenAPI codegen, BR-tagged tests, etc.) and honest list of where flexibility has limits. Brief has zero prescription — all 10 OQ-1 + OQ-2 awaiting Monish lock before Round 24 Spec. Format A (YAML frontmatter) per Round 18 audit decision. |
 | 2026-05-03 | — | Round 22 — M04 ExecutionCapture Workflows v1.0 | Locked | Monish (with Claude assist) | M04 Workflows v1.0 LOCKED. **M04 module COMPLETE** (4/4 artefacts). 9 workflows covering all 39 BRs from Spec — zero orphans in BR Coverage Matrix. WF-04-001 ProgressEntry create/submit, WF-04-002 approval (single + dual paths), WF-04-003 NCR lifecycle, WF-04-004 NCR daily sweep, WF-04-005 MaterialReceipt + QC + GRN, WF-04-006 ContractorPerformanceScore quarterly batch, WF-04-007 ProjectExecutionConfig auto-create + edit, WF-04-008 Photo migration to M12, WF-04-009 NCR → M05 LD signal. Mermaid flows + step-by-step + audit events + failure-mode tables per WF. References M04 Spec v1.0 Appendix A + X8 v0.5 §4.12 (34 named events). |
 | 2026-05-03 | — | Round 21 — M04 ExecutionCapture Wireframes v1.0 | Locked | Monish (with Claude assist) | M04 Wireframes v1.0 LOCKED. Single HTML file with 7 role-default views per X9 v0.3 §13.3.4: SITE_MANAGER (today's progress entries + 4-week look-ahead Gantt), PROJECT_DIRECTOR (% complete heatmap + NCR pipeline funnel), QS_MANAGER ⭐ (Pending approvals queue + measurement variance — M04's primary QS surface), PMO_DIRECTOR (NCR pipeline funnel + material receipts variance), PROCUREMENT_OFFICER (receipts log + long-lead tracking), ANALYST (S-curve trend + NCR rate trend), READ_ONLY (status-badge card). Tailwind CDN, no framework deps (D3 lock). Inline JS for role tab toggling. KDMC-001-DBOT mock data throughout. Format C audit stamp (HTML comment block) per Round 18 audit decision. NCR pipeline funnel rendered as 8th instance of X9 §11 flagship pattern. |
 | 2026-05-03 | — | Round 20 — X8 v0.5 + X9 v0.3 cascades (M04 sub-deliverables) | Locked | Monish (with Claude assist) | X8 v0.5 LOCKED — 8 new M04 ENUMs (ProgressMeasurementMethod, ProgressApprovalStatus, EVConfidence, NCRStatus, NCRRootCauseCategory, MaterialReceiptStatus, MaterialQCStatus, MaterialQCDecision). M04 audit events (22) and Decision Queue triggers (8) catalogued. M04 append-only ledgers (4) added to reserved-fields exemption list. X9 v0.3 LOCKED — §13.3.4 rewritten per M04 Brief OQ-1.8 + Spec Block 5: scope-decomposition cleanup (HSE→M31, BOQ-grain→M14, COMPLIANCE_MANAGER row dropped); 7-role mapping added (PROCUREMENT_OFFICER, ANALYST, READ_ONLY rows new); QS_MANAGER primary view = "Pending approvals queue" (M04's true QS-facing surface). NCR pipeline funnel confirmed as 8th instance of §11 flagship pipeline pattern. cross-cutting-standards.md updated. CLAUDE.md cross-cutting table updated. Round 20 fully closed. |
@@ -196,8 +197,14 @@ When any artefact is created, modified, or status-changed:
 
 | Round | Artefact | Status |
 |---|---|---|
-| 19 | TBD — next module Brief (candidates: M07 EVMEngine, M27 DesignControl, M12 DocumentControl, M14 QSMeasurementBook) | Awaiting Monish's Round 19 module pick |
-| (separate cascade) | M01 Spec v1.1 — add `Project.min_wbs_depth` field per M02 OQ-1.1=B | Pending — independent of Round 19 sequence |
+| 23 | EPCC_BuildArchitecture_Brief_v1_0 | **In Draft** — awaiting OQ-1 answers from Monish |
+| 24 | EPCC_BuildArchitecture_Spec_v1_0 | Pending Round 23 lock |
+| 25 | Monorepo scaffold (apps/api, apps/web, packages/, infra/, CI) | Pending Round 24 lock |
+| 26 | X8 → ENUM codegen pipeline | Pending Round 25 |
+| 27 | M34 thin slice (auth + 17 roles + audit log) | Pending Round 26 |
+| 28 | M01 thin slice (project create + read for KDMC-001-DBOT) | Pending Round 27 |
+| 29 | First end-to-end demo | Pending Round 28 |
+| (carry-over) | TBD module Brief candidates: M07 EVMEngine, M27 DesignControl, M12 DocumentControl, M14 QSMeasurementBook | Deferred until thin slice ships |
 
 ---
 
