@@ -2,6 +2,9 @@
 .claude/settings.local.json
 CLAUDE.local.md
 
+# Build-module pipeline state (transient — survives compaction, not history)
+.claude/state/
+
 # OS junk
 .DS_Store
 Thumbs.db
