@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+  artefact: {Module}_{ShortName}_Wireframes_v{Major}_{Minor}
+  round: {N}
+  date: YYYY-MM-DD
+  author: Monish (with Claude assist)
+  x8_version: v0.X
+  x9_version: v0.X
+  status: DRAFT
+  rules:
+    - Tailwind CDN only (no JS deps) — locked decision D3
+    - All views per role must be in this single file
+    - Role switcher visible at top
+    - Decision-first principle (X9 §3) — every chart answers ONE decision
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{Module} {ShortName} — Wireframes v{Major}.{Minor}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* X9 design tokens — pull from .claude/rules/cross-cutting-standards.md */
+    :root {
+      --epcc-rag-green: #10b981;
+      --epcc-rag-amber: #f59e0b;
+      --epcc-rag-red: #ef4444;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans">
+
+  <!-- Audit stamp banner -->
+  <div class="bg-slate-900 text-slate-100 text-xs px-4 py-2 flex justify-between">
+    <span>{Module} {ShortName} — Wireframes v{Major}.{Minor} · Round {N} · X8 v0.X · X9 v0.X</span>
+    <span class="text-amber-400">DRAFT</span>
+  </div>
+
+  <!-- Role switcher -->
+  <header class="bg-white border-b border-slate-200 px-6 py-4">
+    <h1 class="text-xl font-semibold mb-3">{Module} {ShortName}</h1>
+    <div class="flex flex-wrap gap-2 text-sm">
+      <span class="text-slate-500">View as role:</span>
+      <button class="role-btn bg-slate-900 text-white px-3 py-1 rounded" data-role="SYSTEM_ADMIN">SYSTEM_ADMIN</button>
+      <button class="role-btn bg-slate-200 px-3 py-1 rounded" data-role="PMO_DIRECTOR">PMO_DIRECTOR</button>
+      <button class="role-btn bg-slate-200 px-3 py-1 rounded" data-role="PROJECT_DIRECTOR">PROJECT_DIRECTOR</button>
+      <button class="role-btn bg-slate-200 px-3 py-1 rounded" data-role="FINANCE_LEAD">FINANCE_LEAD</button>
+      <button class="role-btn bg-slate-200 px-3 py-1 rounded" data-role="PLANNING_ENGINEER">PLANNING_ENGINEER</button>
+      <button class="role-btn bg-slate-200 px-3 py-1 rounded" data-role="QS_MANAGER">QS_MANAGER</button>
+      <button class="role-btn bg-slate-200 px-3 py-1 rounded" data-role="SITE_MANAGER">SITE_MANAGER</button>
+      <button class="role-btn bg-slate-200 px-3 py-1 rounded" data-role="READ_ONLY">READ_ONLY</button>
+      <!-- Add other roles as relevant per spec Block 5 -->
+    </div>
+  </header>
+
+  <main class="p-6 space-y-8">
+
+    <!-- View: SYSTEM_ADMIN -->
+    <section data-view="SYSTEM_ADMIN" class="role-view">
+      <h2 class="text-lg font-semibold mb-2">SYSTEM_ADMIN view</h2>
+      <p class="text-sm text-slate-500 mb-4">Decision answered: <em>—</em></p>
+      <div class="bg-white border border-slate-200 rounded-lg p-4">
+        <p class="text-slate-400 italic">[primary view content]</p>
+      </div>
+    </section>
+
+    <!-- View: PMO_DIRECTOR -->
+    <section data-view="PMO_DIRECTOR" class="role-view hidden">
+      <h2 class="text-lg font-semibold mb-2">PMO_DIRECTOR view</h2>
+      <p class="text-sm text-slate-500 mb-4">Decision answered: <em>—</em></p>
+      <div class="bg-white border border-slate-200 rounded-lg p-4">
+        <p class="text-slate-400 italic">[primary view content]</p>
+      </div>
+    </section>
+
+    <!-- Repeat one <section data-view="ROLE_NAME"> per role per Spec Block 5 -->
+
+  </main>
+
+  <!-- Minimal role-switcher logic (no external JS deps — locked rule D3) -->
+  <script>
+    document.querySelectorAll('.role-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const role = btn.dataset.role;
+        document.querySelectorAll('.role-btn').forEach(b => {
+          b.classList.toggle('bg-slate-900', b === btn);
+          b.classList.toggle('text-white', b === btn);
+          b.classList.toggle('bg-slate-200', b !== btn);
+        });
+        document.querySelectorAll('.role-view').forEach(v => {
+          v.classList.toggle('hidden', v.dataset.view !== role);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

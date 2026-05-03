@@ -1,0 +1,320 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.15}}
+@keyframes scanline{0%{top:-2px}100%{top:100%}}
+:root{
+--b0:#030810;--b1:#060D18;--b2:#0B1828;--b3:#0F2035;--b4:#162840;--b5:#1C3050;
+--cy:#00CFFF;--cyd:rgba(0,207,255,0.07);--cyb:rgba(0,207,255,0.2);--cyb2:rgba(0,207,255,0.35);
+--gn:#00F5A0;--gnd:rgba(0,245,160,0.07);--gnb:rgba(0,245,160,0.25);
+--am:#FFAB00;--amd:rgba(255,171,0,0.07);--amb:rgba(255,171,0,0.25);
+--rd:#FF4454;--rdd:rgba(255,68,84,0.07);--rdb:rgba(255,68,84,0.22);
+--bl:#4D9EFF;--bld:rgba(77,158,255,0.07);--blb:rgba(77,158,255,0.22);
+--t1:#D8EEFF;--t2:#4E7FA0;--t3:#1E4060;--t4:#0F2840;
+--f:system-ui,-apple-system,'Segoe UI',sans-serif;
+--fm:'SF Mono','Fira Code','Fira Mono','Cascadia Code','Consolas',monospace
+}
+.shell{background:var(--b1);border:1px solid var(--cyb);color:var(--t1);font-family:var(--f);overflow:hidden}
+.sysbar{background:var(--b0);height:30px;border-bottom:1px solid var(--cyb);display:flex;align-items:center;padding:0 14px;gap:6px}
+.sp{font-family:var(--fm);font-size:11px;color:var(--t3);letter-spacing:.04em}
+.sp b{color:var(--cy)}
+.sr{margin-left:auto;display:flex;align-items:center;gap:12px}
+.live{display:flex;align-items:center;gap:4px}
+.ldot{width:5px;height:5px;background:var(--gn);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.ltext{font-size:9px;font-family:var(--fm);color:var(--gn);letter-spacing:.1em}
+.st{font-size:10px;font-family:var(--fm);color:var(--t3)}
+.stenant{font-size:10px;font-family:var(--fm);color:var(--t3);padding-left:12px;border-left:1px solid var(--b5)}
+
+.main{display:flex}
+.nav{width:176px;flex-shrink:0;background:var(--b0);border-right:1px solid var(--cyb);padding:16px 0;display:flex;flex-direction:column}
+.nlogo{padding:0 14px 16px;border-bottom:1px solid var(--b4);margin-bottom:14px}
+.nmark{font-size:20px;font-weight:700;letter-spacing:.12em;color:var(--cy);font-family:var(--fm);line-height:1}
+.nsub{font-size:8px;color:var(--t3);letter-spacing:.2em;text-transform:uppercase;margin-top:2px}
+.nsh{font-size:8px;color:var(--t3);letter-spacing:.18em;text-transform:uppercase;padding:0 14px 6px;margin-top:10px}
+.ni{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;border-left:2px solid transparent;transition:all 100ms;position:relative;overflow:hidden}
+.ni:hover{background:rgba(0,207,255,0.04);border-left-color:var(--cyb)}
+.ni.a{background:var(--cyd);border-left:2px solid var(--cy)}
+.nc{font-family:var(--fm);font-size:9px;font-weight:700;color:var(--t3);width:24px;flex-shrink:0;letter-spacing:.06em}
+.ni.a .nc{color:var(--cy)}
+.nl{font-size:11px;color:var(--t2);flex:1}
+.ni.a .nl{color:var(--t1)}
+.nd{width:4px;height:4px;border-radius:50%;background:var(--cy);flex-shrink:0}
+.nftr{margin-top:auto;padding:12px 14px 0;border-top:1px solid var(--b4)}
+.nuser{display:flex;align-items:center;gap:8px}
+.nav-av{width:26px;height:26px;background:var(--b4);border:1px solid var(--cyb);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--cy);font-family:var(--fm)}
+.nu-n{font-size:10px;color:var(--t2)}
+.nu-r{font-size:9px;color:var(--t3);margin-top:1px}
+
+.content{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0;background:var(--b1)}
+
+.sh{font-size:8px;color:var(--t3);letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sh::after{content:'';flex:1;height:1px;background:var(--b4)}
+.sh-dot{width:4px;height:4px;border-radius:50%;background:var(--cy);flex-shrink:0}
+
+.kg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.kc{background:var(--b2);border:1px solid var(--b4);border-top:2px solid;padding:11px 12px;position:relative}
+.kc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--b5)}
+.kcy{border-top-color:var(--cy)}
+.kgn{border-top-color:var(--gn)}
+.kam{border-top-color:var(--am)}
+.kbl{border-top-color:var(--bl)}
+.kl{font-size:8px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px;font-family:var(--fm)}
+.kv{font-family:var(--fm);font-size:24px;font-weight:600;line-height:1;margin-bottom:4px}
+.kcy .kv{color:var(--cy)}.kgn .kv{color:var(--gn)}.kam .kv{color:var(--am)}.kbl .kv{color:var(--bl)}
+.kd{font-size:9px;font-family:var(--fm)}
+.kd.up{color:var(--gn)}.kd.dn{color:var(--rd)}.kd.n{color:var(--t3)}
+
+.twoC{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+
+.dq{border-left:2px solid var(--rd);background:var(--rdd);padding:10px 11px;margin-bottom:7px}
+.dq:last-child{margin-bottom:0}
+.dq.h{border-left-color:var(--am);background:var(--amd)}
+.dqt{display:flex;align-items:center;gap:5px;margin-bottom:5px}
+.dqs{font-size:8px;font-weight:700;font-family:var(--fm);letter-spacing:.1em}
+.dqs.c{color:var(--rd)}.dqs.h{color:var(--am)}
+.dqm{font-size:9px;font-family:var(--fm);color:var(--cy);padding:1px 5px;border:1px solid var(--cyb);letter-spacing:.04em}
+.dq-pri{margin-left:auto;font-size:8px;font-family:var(--fm);font-weight:700;padding:2px 6px;letter-spacing:.08em}
+.dq-pri.c{color:var(--rd);background:var(--rdd);border:1px solid var(--rdb)}
+.dq-pri.h{color:var(--am);background:var(--amd);border:1px solid var(--amb)}
+.dqti{font-size:12px;color:var(--t1);margin-bottom:4px;font-weight:500;line-height:1.3}
+.dqme{font-size:9px;color:var(--t2);font-family:var(--fm);display:flex;justify-content:space-between}
+.dqsl{color:var(--rd)}.dqsl.w{color:var(--am)}
+.dq-bar{height:2px;background:var(--b4);margin-top:8px;overflow:hidden}
+.dq-bar-fill{height:100%;background:var(--rd)}.dq-bar-fill.w{background:var(--am)}
+
+.rpanel{background:var(--b2);border:1px solid var(--b4);padding:12px}
+.rph{font-size:8px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;font-family:var(--fm)}
+.brow{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.bdg{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border:1px solid;font-size:9px;font-family:var(--fm);letter-spacing:.06em;font-weight:700}
+.bc{color:var(--rd);border-color:var(--rdb);background:var(--rdd)}
+.bh{color:var(--am);border-color:var(--amb);background:var(--amd)}
+.bg{color:var(--gn);border-color:var(--gnb);background:var(--gnd)}
+.bi{color:var(--bl);border-color:var(--blb);background:var(--bld)}
+.bn{color:var(--t2);border-color:var(--b5);background:var(--b3)}
+.bcy{color:var(--cy);border-color:var(--cyb);background:var(--cyd)}
+.bdt{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.btc{background:var(--rd)}.bth{background:var(--am)}.btg{background:var(--gn)}.bti{background:var(--bl)}.btn_{background:var(--t3)}.btcy{background:var(--cy)}
+
+.grow{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.gate{padding:3px 9px;font-size:9px;font-family:var(--fm);font-weight:700;letter-spacing:.1em;border:1px solid}
+.ggo{color:var(--gn);border-color:var(--gnb);background:var(--gnd)}
+.gcg{color:var(--am);border-color:var(--amb);background:var(--amd)}
+.gng{color:var(--rd);border-color:var(--rdb);background:var(--rdd)}
+.gpd{color:var(--t3);border-color:var(--b5);background:var(--b3)}
+
+.brows{display:flex;gap:5px;flex-wrap:wrap}
+.xb{height:26px;padding:0 10px;font-size:9px;font-family:var(--fm);font-weight:700;letter-spacing:.08em;cursor:pointer;border:1px solid;display:inline-flex;align-items:center;transition:all 100ms}
+.xbp{background:var(--cy);color:var(--b0);border-color:var(--cy)}
+.xbs{background:transparent;color:var(--t2);border-color:var(--b5)}
+.xbs:hover{border-color:var(--cyb);color:var(--cy)}
+.xbd{background:transparent;color:var(--rd);border-color:var(--rdb)}
+.xbg{background:transparent;color:var(--t3);border-color:transparent}
+
+.tw{background:var(--b2);border:1px solid var(--b4);overflow:hidden}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+.th{padding:7px 11px;font-size:8px;font-family:var(--fm);letter-spacing:.14em;text-transform:uppercase;color:var(--t3);background:var(--b0);border-bottom:1px solid var(--b4);text-align:left;font-weight:700}
+.tr-c{background:var(--rdd)}
+.tr-c .td:first-child{border-left:2px solid var(--rd);padding-left:9px}
+.tr-h{background:var(--amd)}
+.tr-h .td:first-child{border-left:2px solid var(--am);padding-left:9px}
+.tr:hover{background:var(--b3)}
+.td{padding:9px 11px;font-size:11px;border-bottom:1px solid var(--b3);font-family:var(--fm);color:var(--t2)}
+.td.nm{font-family:var(--f);color:var(--t1);font-size:12px;font-weight:500}
+.td.r{text-align:right}
+.td.gn{color:var(--gn)}.td.am{color:var(--am)}.td.rd{color:var(--rd)}.td.dim{color:var(--t3)}
+
+.al{border:1px solid var(--rdb);border-left:3px solid var(--rd);background:var(--rdd);padding:10px 12px;display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
+.al.warn{border-color:var(--amb);border-left-color:var(--am);background:var(--amd)}
+.al-icon{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.al-ti{font-size:11px;font-weight:600;margin-bottom:2px;font-family:var(--fm);letter-spacing:.03em}
+.al .al-ti{color:#FF8896}.al.warn .al-ti{color:#FFCC55}
+.al-ds{font-size:10px;color:var(--t2)}
+</style>
+
+<h2 class="sr-only">EPCC Command Center — dark mission control UI showing live EVM metrics, decision queue, status badges, and tactical data table.</h2>
+
+<div class="shell">
+
+<div class="sysbar">
+  <span class="sp"><b>EPCC</b> ▸ CONTROL ▸ <b>M07 EVM ENGINE</b></span>
+  <div class="sr">
+    <div class="live"><div class="ldot"></div><span class="ltext">LIVE</span></div>
+    <span class="st">14:32:07 IST</span>
+    <span class="stenant">KDMC PORTFOLIO · MONTH 13/35</span>
+  </div>
+</div>
+
+<div class="main">
+
+<div class="nav">
+  <div class="nlogo">
+    <div class="nmark">EPCC</div>
+    <div class="nsub">Command Center</div>
+  </div>
+  <div class="nsh">Strategic</div>
+  <div class="ni"><span class="nc">PIOE</span><span class="nl">Portfolio Opt.</span></div>
+  <div class="nsh" style="margin-top:10px">Control Modules</div>
+  <div class="ni"><span class="nc">M01</span><span class="nl">Project Registry</span></div>
+  <div class="ni"><span class="nc">M02</span><span class="nl">Structure</span></div>
+  <div class="ni"><span class="nc">M03</span><span class="nl">Planning</span></div>
+  <div class="ni"><span class="nc">M04</span><span class="nl">Execution</span></div>
+  <div class="ni"><span class="nc">M05</span><span class="nl">Risk &amp; Change</span></div>
+  <div class="ni"><span class="nc">M06</span><span class="nl">Financial</span></div>
+  <div class="ni a"><span class="nc">M07</span><span class="nl">EVM Engine</span><div class="nd"></div></div>
+  <div class="ni"><span class="nc">M08</span><span class="nl">Gate Control</span></div>
+  <div class="ni"><span class="nc">M09</span><span class="nl">Compliance</span></div>
+  <div class="nsh" style="margin-top:10px">Command</div>
+  <div class="ni"><span class="nc">M10</span><span class="nl">EPCC Command</span></div>
+  <div class="nftr">
+    <div class="nuser">
+      <div class="nav-av">PD</div>
+      <div><div class="nu-n">PMO Director</div><div class="nu-r">KDMC</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <div>
+    <div class="sh"><div class="sh-dot"></div>Performance Metrics · Period 13 of 35</div>
+    <div class="kg">
+      <div class="kc kgn">
+        <div class="kl">Health Index</div>
+        <div class="kv">78.4</div>
+        <div class="kd up">↑ +3.2 PTS</div>
+      </div>
+      <div class="kc kgn">
+        <div class="kl">CPI</div>
+        <div class="kv">1.34</div>
+        <div class="kd up">↑ +0.02 PERIODS</div>
+      </div>
+      <div class="kc kam">
+        <div class="kl">SPI</div>
+        <div class="kv" style="color:var(--am)">0.93</div>
+        <div class="kd dn">↓ −0.03 WATCH</div>
+      </div>
+      <div class="kc kbl">
+        <div class="kl">EAC</div>
+        <div class="kv" style="font-size:17px;color:var(--bl)">₹141.8Cr</div>
+        <div class="kd n">BAC ₹190Cr · VAR ₹48.2Cr</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="twoC">
+
+    <div>
+      <div class="sh"><div class="sh-dot"></div>Decision Queue · 2 Active</div>
+      <div class="dq">
+        <div class="dqt">
+          <span class="dqs c">● CRITICAL</span>
+          <span class="dqm">M07</span>
+          <span class="dq-pri c">SCORE 82</span>
+        </div>
+        <div class="dqti">ETC Reestimate Required</div>
+        <div class="dqme"><span>Planning Engineer</span><span class="dqsl">OVERDUE 14h 32m</span></div>
+        <div class="dq-bar"><div class="dq-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="dq h">
+        <div class="dqt">
+          <span class="dqs h">● HIGH</span>
+          <span class="dqm">M08</span>
+          <span class="dq-pri h">SCORE 61</span>
+        </div>
+        <div class="dqti">Gate Health Review — TCPI 1.22</div>
+        <div class="dqme"><span>PMO Director</span><span class="dqsl w">18h 24m left</span></div>
+        <div class="dq-bar"><div class="dq-bar-fill w" style="width:23%"></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sh"><div class="sh-dot"></div>Design System Reference</div>
+      <div class="rpanel">
+        <div class="rph">Severity</div>
+        <div class="brow">
+          <span class="bdg bc"><span class="bdt btc"></span>CRITICAL</span>
+          <span class="bdg bh"><span class="bdt bth"></span>HIGH</span>
+          <span class="bdg bg"><span class="bdt btg"></span>ON TRACK</span>
+          <span class="bdg bi"><span class="bdt bti"></span>WATCH</span>
+          <span class="bdg bn"><span class="bdt btn_"></span>PENDING</span>
+        </div>
+        <div class="rph">Gate Status</div>
+        <div class="grow">
+          <span class="gate ggo">GO</span>
+          <span class="gate gcg">COND GO</span>
+          <span class="gate gng">NO-GO</span>
+          <span class="gate gpd">PENDING</span>
+        </div>
+        <div class="rph">Actions</div>
+        <div class="brows">
+          <button class="xb xbp">APPROVE</button>
+          <button class="xb xbs">EXPORT</button>
+          <button class="xb xbd">REJECT</button>
+          <button class="xb xbg">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div>
+    <div class="sh"><div class="sh-dot"></div>Package EVM Snapshot · KDMC-001</div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th class="th" style="width:28%">Package</th>
+            <th class="th" style="width:18%">Status</th>
+            <th class="th" style="width:18%;text-align:right">CPI</th>
+            <th class="th" style="width:18%;text-align:right">SPI</th>
+            <th class="th" style="width:18%;text-align:right">EAC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tr tr-c">
+            <td class="td nm">Civil Works</td>
+            <td class="td"><span class="bdg bc" style="font-size:8px"><span class="bdt btc"></span>CRITICAL</span></td>
+            <td class="td r rd">0.71</td>
+            <td class="td r rd">0.81</td>
+            <td class="td r">₹96.3Cr</td>
+          </tr>
+          <tr class="tr tr-h">
+            <td class="td nm">MEP Works</td>
+            <td class="td"><span class="bdg bh" style="font-size:8px"><span class="bdt bth"></span>HIGH</span></td>
+            <td class="td r am">0.88</td>
+            <td class="td r am">0.91</td>
+            <td class="td r">₹47.8Cr</td>
+          </tr>
+          <tr class="tr">
+            <td class="td nm">Medical Equip.</td>
+            <td class="td"><span class="bdg bg" style="font-size:8px"><span class="bdt btg"></span>ON TRACK</span></td>
+            <td class="td r gn">1.34</td>
+            <td class="td r gn">1.02</td>
+            <td class="td r">₹28.8Cr</td>
+          </tr>
+          <tr class="tr">
+            <td class="td nm">Interior Fin.</td>
+            <td class="td"><span class="bdg bn" style="font-size:8px"><span class="bdt btn_"></span>PENDING</span></td>
+            <td class="td r dim">—</td>
+            <td class="td r dim">—</td>
+            <td class="td r dim">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="al">
+      <svg class="al-icon" viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,13 2,13" stroke="#FF4454" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="6.5" x2="8" y2="9.5" stroke="#FF4454" stroke-width="1.5"/><circle cx="8" cy="11.5" r=".8" fill="#FF4454"/></svg>
+      <div><div class="al-ti">GOVERNANCE BREACH — ETC Reestimate SLA Overdue 14h 32m</div><div class="al-ds">KDMC-001 · Auto-escalated to Project Director · GovernanceBreachLog entry created · Gate SG-8 entry blocked</div></div>
+    </div>
+    <div class="al warn">
+      <svg class="al-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#FFAB00" stroke-width="1.5"/><line x1="8" y1="5" x2="8" y2="9" stroke="#FFAB00" stroke-width="1.5"/><circle cx="8" cy="11" r=".8" fill="#FFAB00"/></svg>
+      <div><div class="al-ti">TCPI INFEASIBILITY — Gate Health Review Triggered · TCPI = 1.22</div><div class="al-ds">PMO Director review required · GateHealthReview created · 18h 24m remaining · health_review_blocks_go = true</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>M01 — Project Registry — Wireframes v1.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #e5e5e5; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .surface-1 { background: #141414; }
+  .surface-2 { background: #1c1c1c; }
+  .surface-3 { background: #232323; }
+  .border-subtle { border-color: #262626; }
+  .text-cyan { color: #22d3ee; }
+  .bg-cyan { background: #22d3ee; }
+  .border-cyan { border-color: #22d3ee; }
+  .text-dim { color: #9ca3af; }
+  .text-mute { color: #6b7280; }
+  .severity-critical { border-left: 3px solid #ef4444; }
+  .severity-warning { border-left: 3px solid #f59e0b; }
+  .severity-info { border-left: 3px solid #3b82f6; }
+  .severity-success { border-left: 3px solid #10b981; }
+  .pill { padding: 2px 8px; font-size: 11px; border-radius: 3px; font-weight: 500; letter-spacing: 0.02em; display:inline-block; }
+  .pill-active { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .pill-draft { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+  .pill-onhold { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .pill-closed { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+  .pill-cancelled { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .pill-internal { background: rgba(34,211,238,0.15); color: #22d3ee; border: 1px solid rgba(34,211,238,0.3); }
+  .pill-amber { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .pill-red { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .pill-green { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .rag-green-dot { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.6); }
+  .rag-amber-dot { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.6); }
+  .rag-red-dot { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.6); }
+  .rag-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .annotation { background: rgba(168,85,247,0.08); border: 1px dashed rgba(168,85,247,0.4); color: #c4b5fd; padding: 10px 14px; font-size: 12px; border-radius: 4px; margin: 12px 0; font-family: 'JetBrains Mono', monospace; }
+  .annotation::before { content: '◆ REVIEWER NOTE — '; font-weight: 700; color: #a855f7; }
+  .field-required::after { content: ' *'; color: #ef4444; }
+  .uppercase-tracked { text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; font-weight: 600; }
+  .row-hover:hover { background: #1c1c1c; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .nav-tab { padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent; font-size: 13px; white-space: nowrap; }
+  .nav-tab.active { color: #22d3ee; border-color: #22d3ee; }
+  .nav-tab:hover:not(.active) { color: #e5e5e5; background: #1c1c1c; }
+  table { font-size: 13px; width: 100%; }
+  th { text-align: left; padding: 10px 12px; background: #1c1c1c; font-weight: 500; color: #9ca3af; text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; border-bottom: 1px solid #262626; }
+  td { padding: 11px 12px; border-bottom: 1px solid #1f1f1f; }
+  input[type="text"], input[type="email"], input[type="date"], input[type="datetime-local"], input[type="number"], input[type="password"], select, textarea {
+    background: #0a0a0a; border: 1px solid #2a2a2a; color: #e5e5e5; padding: 8px 12px; font-size: 13px; border-radius: 3px; width: 100%; font-family: inherit;
+  }
+  textarea { font-family: 'JetBrains Mono', monospace; min-height: 80px; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #22d3ee; box-shadow: 0 0 0 1px rgba(34,211,238,0.2); }
+  input[disabled], select[disabled] { background: #161616; color: #6b7280; cursor: not-allowed; }
+  .btn-primary { background: #22d3ee; color: #0a0a0a; padding: 8px 16px; border-radius: 3px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+  .btn-primary:hover { background: #06b6d4; }
+  .btn-primary[disabled] { background: #404040; color: #707070; cursor: not-allowed; }
+  .btn-secondary { background: #1c1c1c; color: #e5e5e5; border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 3px; font-size: 13px; cursor: pointer; }
+  .btn-secondary:hover { background: #262626; }
+  .btn-danger { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 8px 16px; border-radius: 3px; font-size: 13px; cursor: pointer; }
+  .btn-danger:hover { background: rgba(239,68,68,0.2); }
+  .btn-icon { padding: 4px 10px; background: transparent; border: 1px solid #2a2a2a; border-radius: 3px; color: #9ca3af; cursor: pointer; font-size: 12px; }
+  .btn-icon:hover { color: #22d3ee; border-color: #22d3ee; }
+  .scope-chip { display: inline-block; padding: 2px 6px; background: #1c1c1c; border: 1px solid #2a2a2a; border-radius: 2px; font-size: 11px; color: #9ca3af; font-family: 'JetBrains Mono', monospace; margin-right: 4px; }
+  .kpi-card { background: #141414; border: 1px solid #262626; border-radius: 4px; padding: 16px; }
+  .kpi-value { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .kpi-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  details summary { cursor: pointer; padding: 8px 0; }
+  details[open] summary { color: #22d3ee; }
+  .step-marker { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+  .step-active { background: #22d3ee; color: #0a0a0a; }
+  .step-done { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
+  .step-pending { background: #1c1c1c; color: #6b7280; border: 1px solid #2a2a2a; }
+  .step-line { flex:1; height: 1px; background: #2a2a2a; margin: 0 8px; }
+  .step-line.done { background: rgba(16,185,129,0.4); }
+  .tab-pill { padding: 8px 14px; font-size: 12px; font-weight: 500; cursor: pointer; border-radius: 3px; color: #9ca3af; }
+  .tab-pill:hover { color: #e5e5e5; }
+  .tab-pill.active { background: #1c1c1c; color: #22d3ee; }
+  .card-flat { background: #141414; border: 1px solid #262626; border-radius: 4px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  /* Project card */
+  .proj-card { background: #141414; border: 1px solid #262626; border-radius: 6px; padding: 18px; transition: all 0.2s; cursor: pointer; }
+  .proj-card:hover { border-color: #22d3ee; transform: translateY(-1px); }
+  .proj-card.rag-red { border-left: 4px solid #ef4444; }
+  .proj-card.rag-amber { border-left: 4px solid #f59e0b; }
+  .proj-card.rag-green { border-left: 4px solid #10b981; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ============================================================ -->
+<!-- TOP NAV: Role + View Switcher                                 -->
+<!-- ============================================================ -->
+<header class="border-b border-subtle surface-1 sticky top-0 z-50">
+  <div class="px-6 py-3 flex items-center gap-6">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 bg-cyan rounded-sm flex items-center justify-center text-black font-bold mono">M</div>
+      <div>
+        <div class="text-sm font-semibold">M01 — Project Registry</div>
+        <div class="text-xs text-mute mono">Wireframes v1.0 · 2026-05-03</div>
+      </div>
+    </div>
+    <div class="ml-auto flex items-center gap-4">
+      <div class="text-xs text-mute uppercase-tracked">Acting as</div>
+      <select id="roleSwitcher" onchange="switchRole()" class="!w-auto">
+        <option value="SYSTEM_ADMIN">SYSTEM_ADMIN</option>
+        <option value="PMO_DIRECTOR" selected>PMO_DIRECTOR</option>
+        <option value="PORTFOLIO_MANAGER">PORTFOLIO_MANAGER</option>
+        <option value="PROJECT_DIRECTOR">PROJECT_DIRECTOR</option>
+        <option value="FINANCE_LEAD">FINANCE_LEAD</option>
+        <option value="PLANNING_ENGINEER">PLANNING_ENGINEER</option>
+        <option value="SITE_MANAGER">SITE_MANAGER</option>
+        <option value="READ_ONLY">READ_ONLY</option>
+      </select>
+      <div class="text-xs text-dim mono">priya.sharma@kdmc</div>
+    </div>
+  </div>
+  <nav class="flex border-t border-subtle overflow-x-auto">
+    <div class="nav-tab active" onclick="switchView('portfolio', event)">1. Portfolio</div>
+    <div class="nav-tab" onclick="switchView('list', event)">2. Project List</div>
+    <div class="nav-tab" onclick="switchView('detail', event)">3. Project Detail</div>
+    <div class="nav-tab" onclick="switchView('create', event)">4. Create Wizard</div>
+    <div class="nav-tab" onclick="switchView('contract', event)">5. Contract Panel</div>
+    <div class="nav-tab" onclick="switchView('parties', event)">6. Party + Assignment</div>
+    <div class="nav-tab" onclick="switchView('scenario', event)">7. Scenario Config</div>
+    <div class="nav-tab" onclick="switchView('kpi', event)">8. KPI Thresholds</div>
+    <div class="nav-tab" onclick="switchView('exception', event)">9. Exception View</div>
+    <div class="nav-tab" onclick="switchView('decisions', event)">10. Decision Queue</div>
+    <div class="nav-tab" onclick="switchView('pincode', event)">11. Pincode Admin</div>
+  </nav>
+</header>
+
+<main class="px-6 py-6 max-w-[1400px] mx-auto">
+
+<!-- ============================================================ -->
+<!-- VIEW 1: PORTFOLIO SUMMARY                                     -->
+<!-- ============================================================ -->
+<section id="view-portfolio" class="view active">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 1 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Portfolio Summary</h2>
+    <div class="text-xs text-dim mt-1">Card grid layout. Default view for PMO_DIRECTOR + PORTFOLIO_MANAGER.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">view_project</span> (scope=All for PMO_DIRECTOR; Own_Project for others) · Block 5a · X8 §3.2 RAGStatus · X8 §3.9 Phase</div>
+
+  <!-- KPI strip -->
+  <div class="grid grid-cols-6 gap-3 mb-5">
+    <div class="kpi-card"><div class="kpi-value">12</div><div class="kpi-label">Total Projects</div></div>
+    <div class="kpi-card"><div class="kpi-value text-emerald-400">7</div><div class="kpi-label">Green</div></div>
+    <div class="kpi-card"><div class="kpi-value text-amber-400">3</div><div class="kpi-label">Amber</div></div>
+    <div class="kpi-card"><div class="kpi-value text-red-400">2</div><div class="kpi-label">Red</div></div>
+    <div class="kpi-card"><div class="kpi-value">9</div><div class="kpi-label">Pending Decisions</div></div>
+    <div class="kpi-card"><div class="kpi-value">₹847<span class="text-sm text-mute"> Cr</span></div><div class="kpi-label">Active Portfolio Value</div></div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 flex-wrap text-xs">
+    <select class="!w-auto"><option>All portfolios</option><option>KDMC Healthcare Portfolio</option></select>
+    <select class="!w-auto"><option>All programs</option><option>KDMC Municipal Hospitals</option></select>
+    <select class="!w-auto"><option>All sectors</option><option>Healthcare</option><option>Infrastructure</option><option>Residential</option><option>Commercial</option><option>Industrial</option></select>
+    <select class="!w-auto"><option>All delivery models</option><option>EPC</option><option>EPCM</option><option>DBOT</option><option>PPP</option><option>Turnkey</option><option>Construction_Management</option></select>
+    <select class="!w-auto"><option>All RAG</option><option>Red only</option><option>Amber only</option><option>Green only</option></select>
+    <select class="!w-auto"><option>All statuses</option><option>Draft</option><option>Active</option><option>On_Hold</option><option>Closed</option></select>
+    <select class="!w-auto"><option>All phases</option><option>Pre_Investment</option><option>Design</option><option>Pre_Construction</option><option>Construction</option><option>Equipment</option><option>Commissioning</option><option>Empanelment</option><option>Handover</option><option>DLP</option><option>Closed</option></select>
+    <div class="ml-auto flex gap-2">
+      <button class="btn-secondary text-xs">Export CSV</button>
+      <button class="btn-primary" onclick="switchView('create', event)">+ Create Project</button>
+    </div>
+  </div>
+
+  <!-- Card grid -->
+  <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+
+    <!-- Card 1: KDMC pilot -->
+    <div class="proj-card rag-amber">
+      <div class="flex items-start justify-between mb-2">
+        <div>
+          <div class="mono text-cyan text-sm font-semibold">KDMC-001-DBOT</div>
+          <div class="font-medium text-sm mt-1">KDMC 150-Bed Maternity, Cancer & Cardiology Hospital</div>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="rag-dot rag-amber-dot"></span>
+          <span class="pill pill-amber">AMBER</span>
+        </div>
+      </div>
+      <div class="text-xs text-dim space-y-1 mt-3">
+        <div>Client: <span class="text-dim">KDMC</span> · Contractor: <span class="text-dim">L&T Construction</span></div>
+        <div>Phase: <span class="mono text-cyan">Construction</span> · Month <span class="mono">13</span> / <span class="mono">35</span> · <span class="mono">36.4%</span> elapsed</div>
+        <div>Contract: <span class="mono">₹68.4 Cr</span> · <span class="mono">DBOT</span></div>
+      </div>
+      <div class="flex gap-3 mt-3 pt-3 border-t border-subtle text-xs">
+        <div>CPI <span class="mono text-amber-400">0.94</span></div>
+        <div>SPI <span class="mono text-amber-400">0.92</span></div>
+        <div class="ml-auto"><span class="pill pill-amber">3 decisions</span></div>
+      </div>
+    </div>
+
+    <!-- Card 2: Green project -->
+    <div class="proj-card rag-green">
+      <div class="flex items-start justify-between mb-2">
+        <div>
+          <div class="mono text-cyan text-sm font-semibold">PUNE-002-EPC</div>
+          <div class="font-medium text-sm mt-1">Pune 200-Bed Multi-Specialty Hospital</div>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="rag-dot rag-green-dot"></span>
+          <span class="pill pill-green">GREEN</span>
+        </div>
+      </div>
+      <div class="text-xs text-dim space-y-1 mt-3">
+        <div>Client: <span class="text-dim">PCMC</span> · Contractor: <span class="text-dim">Shapoorji Pallonji</span></div>
+        <div>Phase: <span class="mono text-cyan">Equipment</span> · Month <span class="mono">22</span> / <span class="mono">28</span> · <span class="mono">78.6%</span></div>
+        <div>Contract: <span class="mono">₹124.0 Cr</span> · <span class="mono">EPC</span></div>
+      </div>
+      <div class="flex gap-3 mt-3 pt-3 border-t border-subtle text-xs">
+        <div>CPI <span class="mono text-emerald-400">1.04</span></div>
+        <div>SPI <span class="mono text-emerald-400">1.02</span></div>
+        <div class="ml-auto text-mute">No pending decisions</div>
+      </div>
+    </div>
+
+    <!-- Card 3: Red project -->
+    <div class="proj-card rag-red">
+      <div class="flex items-start justify-between mb-2">
+        <div>
+          <div class="mono text-cyan text-sm font-semibold">NOIDA-003-PPP</div>
+          <div class="font-medium text-sm mt-1">Noida Cancer Specialty Hospital</div>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="rag-dot rag-red-dot"></span>
+          <span class="pill pill-red">RED</span>
+        </div>
+      </div>
+      <div class="text-xs text-dim space-y-1 mt-3">
+        <div>Client: <span class="text-dim">Noida Authority</span> · Contractor: <span class="text-dim">NCC Ltd</span></div>
+        <div>Phase: <span class="mono text-cyan">Construction</span> · Month <span class="mono">9</span> / <span class="mono">30</span> · <span class="mono">30.0%</span></div>
+        <div>Contract: <span class="mono">₹215.0 Cr</span> · <span class="mono">PPP</span></div>
+      </div>
+      <div class="flex gap-3 mt-3 pt-3 border-t border-subtle text-xs">
+        <div>CPI <span class="mono text-red-400">0.81</span></div>
+        <div>SPI <span class="mono text-red-400">0.74</span></div>
+        <div class="ml-auto"><span class="pill pill-red">5 decisions</span></div>
+      </div>
+    </div>
+
+    <!-- Card 4: Draft -->
+    <div class="proj-card" style="border-left: 4px solid #6b7280">
+      <div class="flex items-start justify-between mb-2">
+        <div>
+          <div class="mono text-cyan text-sm font-semibold">CHN-004-EPCM</div>
+          <div class="font-medium text-sm mt-1">Chennai 300-Bed Tertiary Care</div>
+        </div>
+        <span class="pill pill-draft">DRAFT</span>
+      </div>
+      <div class="text-xs text-mute space-y-1 mt-3">
+        <div>Pending activation: 1 Primary contract required</div>
+        <div>Phase: <span class="mono">Pre_Investment</span> · awaiting SG-3</div>
+        <div>Estimated value: <span class="mono">₹180 Cr</span> · <span class="mono">EPCM</span></div>
+      </div>
+      <div class="flex gap-3 mt-3 pt-3 border-t border-subtle text-xs">
+        <div class="text-mute">Awaiting BR-01-010 pass</div>
+      </div>
+    </div>
+
+    <!-- Card 5: On Hold -->
+    <div class="proj-card" style="border-left: 4px solid #f59e0b; opacity:0.85">
+      <div class="flex items-start justify-between mb-2">
+        <div>
+          <div class="mono text-cyan text-sm font-semibold">JLR-005-DBOT</div>
+          <div class="font-medium text-sm mt-1">Jalandhar 250-Bed Hospital</div>
+        </div>
+        <span class="pill pill-onhold">ON_HOLD</span>
+      </div>
+      <div class="text-xs text-dim space-y-1 mt-3">
+        <div>Hold reason: Funding rebid in progress</div>
+        <div>Expected resume: <span class="mono">2026-09-15</span></div>
+        <div>Frozen at month <span class="mono">5</span> / <span class="mono">32</span></div>
+      </div>
+    </div>
+
+    <!-- Card 6: Stale report date -->
+    <div class="proj-card rag-amber">
+      <div class="flex items-start justify-between mb-2">
+        <div>
+          <div class="mono text-cyan text-sm font-semibold">BLR-006-EPC</div>
+          <div class="font-medium text-sm mt-1">Bengaluru 100-Bed Maternity Hospital</div>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="rag-dot rag-amber-dot"></span>
+          <span class="pill pill-amber">STALE</span>
+        </div>
+      </div>
+      <div class="text-xs text-dim space-y-1 mt-3">
+        <div class="text-amber-400">⚠ Report date stale: <span class="mono">42 days</span> (threshold 35)</div>
+        <div>Phase: <span class="mono text-cyan">Construction</span> · Month <span class="mono">8</span> / <span class="mono">22</span></div>
+        <div>Contract: <span class="mono">₹52.0 Cr</span> · <span class="mono">EPC</span></div>
+      </div>
+      <div class="flex gap-3 mt-3 pt-3 border-t border-subtle text-xs">
+        <div>CPI <span class="mono text-mute">— stale</span></div>
+        <div class="ml-auto"><span class="pill pill-amber">1 decision</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-4 text-xs text-mute text-center">Showing 6 of 12 projects · <a href="#" onclick="switchView('list', event)" class="text-cyan hover:underline">View as table →</a></div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 2: PROJECT LIST                                          -->
+<!-- ============================================================ -->
+<section id="view-list" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 2 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Project List</h2>
+    <div class="text-xs text-dim mt-1">Tabular view. Sortable, filterable. All roles. Scoped to user's projects (except admin/PMO).</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">view_project</span> · Sort default: rag_status DESC then project_code · Block 5b</div>
+
+  <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 flex-wrap text-xs">
+    <input type="text" placeholder="Search project code, name, party..." class="!w-72">
+    <select class="!w-auto"><option>All sectors</option></select>
+    <select class="!w-auto"><option>All phases</option></select>
+    <select class="!w-auto"><option>All statuses</option></select>
+    <select class="!w-auto"><option>All RAG</option></select>
+    <div class="ml-auto"><button class="btn-secondary">Export CSV</button></div>
+  </div>
+
+  <div class="surface-1 border border-subtle rounded overflow-hidden">
+    <table>
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Sector / Sub-type</th>
+          <th>Model</th>
+          <th>Phase</th>
+          <th>Status</th>
+          <th>RAG</th>
+          <th class="text-right">Contract</th>
+          <th>Client</th>
+          <th>Contractor</th>
+          <th>Report Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-hover severity-warning">
+          <td><div class="mono text-cyan font-semibold">KDMC-001-DBOT</div><div class="text-xs text-mute mt-1">KDMC 150-Bed Hospital</div></td>
+          <td><div class="text-xs">Healthcare</div><div class="text-xs text-mute mono">Hospital_DBOT</div></td>
+          <td class="mono text-xs">DBOT</td>
+          <td class="mono text-xs">Construction</td>
+          <td><span class="pill pill-active">Active</span></td>
+          <td><span class="rag-dot rag-amber-dot"></span></td>
+          <td class="text-right mono text-xs">₹68.4 Cr</td>
+          <td class="text-xs text-dim">KDMC</td>
+          <td class="text-xs text-dim">L&T Construction</td>
+          <td class="mono text-xs">2026-04-23</td>
+          <td><button class="btn-icon" onclick="switchView('detail', event)">View</button></td>
+        </tr>
+        <tr class="row-hover severity-success">
+          <td><div class="mono text-cyan font-semibold">PUNE-002-EPC</div><div class="text-xs text-mute mt-1">Pune Multi-Specialty</div></td>
+          <td><div class="text-xs">Healthcare</div><div class="text-xs text-mute mono">Hospital_EPC</div></td>
+          <td class="mono text-xs">EPC</td>
+          <td class="mono text-xs">Equipment</td>
+          <td><span class="pill pill-active">Active</span></td>
+          <td><span class="rag-dot rag-green-dot"></span></td>
+          <td class="text-right mono text-xs">₹124.0 Cr</td>
+          <td class="text-xs text-dim">PCMC</td>
+          <td class="text-xs text-dim">Shapoorji Pallonji</td>
+          <td class="mono text-xs">2026-05-01</td>
+          <td><button class="btn-icon">View</button></td>
+        </tr>
+        <tr class="row-hover severity-critical">
+          <td><div class="mono text-cyan font-semibold">NOIDA-003-PPP</div><div class="text-xs text-mute mt-1">Noida Cancer Hospital</div></td>
+          <td><div class="text-xs">Healthcare</div><div class="text-xs text-mute mono">Hospital_PPP</div></td>
+          <td class="mono text-xs">PPP</td>
+          <td class="mono text-xs">Construction</td>
+          <td><span class="pill pill-active">Active</span></td>
+          <td><span class="rag-dot rag-red-dot"></span></td>
+          <td class="text-right mono text-xs">₹215.0 Cr</td>
+          <td class="text-xs text-dim">Noida Authority</td>
+          <td class="text-xs text-dim">NCC Ltd</td>
+          <td class="mono text-xs">2026-04-30</td>
+          <td><button class="btn-icon">View</button></td>
+        </tr>
+        <tr class="row-hover">
+          <td><div class="mono text-cyan font-semibold">CHN-004-EPCM</div><div class="text-xs text-mute mt-1">Chennai Tertiary Care</div></td>
+          <td><div class="text-xs">Healthcare</div><div class="text-xs text-mute mono">Hospital_EPC</div></td>
+          <td class="mono text-xs">EPCM</td>
+          <td class="mono text-xs">Pre_Investment</td>
+          <td><span class="pill pill-draft">Draft</span></td>
+          <td class="text-mute text-xs">—</td>
+          <td class="text-right mono text-xs text-mute">₹180 Cr (est)</td>
+          <td class="text-xs text-dim">TN Govt</td>
+          <td class="text-xs text-mute">— pending</td>
+          <td class="text-xs text-mute">—</td>
+          <td><button class="btn-icon">View</button></td>
+        </tr>
+        <tr class="row-hover" style="opacity:0.85">
+          <td><div class="mono text-cyan font-semibold">JLR-005-DBOT</div><div class="text-xs text-mute mt-1">Jalandhar Hospital</div></td>
+          <td><div class="text-xs">Healthcare</div><div class="text-xs text-mute mono">Hospital_DBOT</div></td>
+          <td class="mono text-xs">DBOT</td>
+          <td class="mono text-xs">Pre_Construction</td>
+          <td><span class="pill pill-onhold">On_Hold</span></td>
+          <td class="text-mute text-xs">—</td>
+          <td class="text-right mono text-xs">₹95.0 Cr</td>
+          <td class="text-xs text-dim">Jalandhar Authority</td>
+          <td class="text-xs text-dim">— pending</td>
+          <td class="mono text-xs">2026-02-28</td>
+          <td><button class="btn-icon">View</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="px-4 py-3 border-t border-subtle text-xs text-mute flex items-center justify-between">
+      <div>Showing 1–5 of 12</div>
+      <div class="flex gap-2 mono">
+        <button class="btn-icon">‹</button><span class="px-2">1</span><span class="px-2 text-mute">2</span><span class="px-2 text-mute">3</span><button class="btn-icon">›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 3: PROJECT DETAIL (tabbed)                               -->
+<!-- ============================================================ -->
+<section id="view-detail" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 3 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Project Detail</h2>
+    <div class="text-xs text-dim mt-1">Tabbed: Identity / Dates / Contracts / Parties / Scenario / KPIs / History / Audit</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">view_project</span> · PROJECT_DIRECTOR: own only · PMO_DIRECTOR: all · Block 5c</div>
+
+  <!-- Project header strip -->
+  <div class="surface-1 border border-subtle rounded p-5 mb-4">
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="mono text-cyan text-sm font-semibold">KDMC-001-DBOT</div>
+        <h3 class="text-lg font-semibold mt-1">KDMC 150-Bed Maternity, Cancer & Cardiology Hospital</h3>
+        <div class="text-xs text-mute mt-2">KDMC Healthcare Portfolio · KDMC Municipal Hospitals Program</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="rag-dot rag-amber-dot"></span>
+        <span class="pill pill-amber">AMBER</span>
+        <span class="pill pill-active">Active</span>
+        <button class="btn-secondary text-xs">Edit</button>
+        <button class="btn-icon">⋯</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-6 gap-4 mt-5 text-xs">
+      <div><div class="uppercase-tracked text-mute">Sector</div><div class="mt-1">Healthcare</div></div>
+      <div><div class="uppercase-tracked text-mute">Sub-type</div><div class="mt-1 mono">Hospital_DBOT</div></div>
+      <div><div class="uppercase-tracked text-mute">Model</div><div class="mt-1 mono">DBOT</div></div>
+      <div><div class="uppercase-tracked text-mute">Phase</div><div class="mt-1 mono text-cyan">Construction</div></div>
+      <div><div class="uppercase-tracked text-mute">Month</div><div class="mt-1 mono">13 / 35</div></div>
+      <div><div class="uppercase-tracked text-mute">Elapsed</div><div class="mt-1 mono">36.4%</div></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex gap-1 mb-4 surface-1 border border-subtle rounded p-1 inline-flex">
+    <div class="tab-pill active">Identity & Geography</div>
+    <div class="tab-pill">Dates & Phase</div>
+    <div class="tab-pill">Contracts <span class="mono text-cyan">(2)</span></div>
+    <div class="tab-pill">Parties <span class="mono text-cyan">(5)</span></div>
+    <div class="tab-pill">Scenario</div>
+    <div class="tab-pill">KPI Thresholds</div>
+    <div class="tab-pill">Status History</div>
+    <div class="tab-pill">Audit</div>
+  </div>
+
+  <!-- Tab content: Identity & Geography (default visible) -->
+  <div class="grid grid-cols-2 gap-6">
+    <div class="surface-1 border border-subtle rounded p-5">
+      <div class="uppercase-tracked text-cyan text-xs mb-4">Identity</div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs uppercase-tracked text-mute">Project Code</label>
+          <input type="text" value="KDMC-001-DBOT" disabled class="mt-1 mono">
+          <div class="text-xs text-red-400 mt-1">Immutable after creation</div>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute field-required">Project Name</label>
+          <input type="text" value="KDMC 150-Bed Maternity, Cancer & Cardiology Hospital" class="mt-1">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Portfolio</label>
+            <select class="mt-1"><option>KDMC Healthcare Portfolio</option></select>
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Program</label>
+            <select class="mt-1"><option>KDMC Municipal Hospitals</option></select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute field-required">Sector (top-level)</label>
+            <select class="mt-1" disabled>
+              <option>Healthcare</option>
+              <option>Infrastructure</option>
+              <option>Residential</option>
+              <option>Commercial</option>
+              <option>Industrial</option>
+            </select>
+            <div class="text-xs text-red-400 mt-1">Immutable after creation (BR-01-026)</div>
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute field-required">Sub-type</label>
+            <select class="mt-1 mono">
+              <option>Hospital_DBOT</option>
+              <option>Hospital_PPP</option>
+              <option>Hospital_EPC</option>
+              <option>Diagnostics_Center</option>
+              <option>Specialty_Clinic</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute field-required">Delivery Model</label>
+          <select class="mt-1">
+            <option>DBOT</option>
+            <option>EPC</option>
+            <option>EPCM</option>
+            <option>PPP</option>
+            <option>Turnkey</option>
+            <option>Construction_Management</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute">Delivery Model Notes</label>
+          <textarea placeholder="Capture hybrid arrangements here (max 500 chars)"></textarea>
+          <div class="text-xs text-mute mt-1">"Hybrid" enum value retired in v0.2 — use this field instead</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded p-5">
+      <div class="uppercase-tracked text-cyan text-xs mb-4">Geography</div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs uppercase-tracked text-mute field-required">Pincode</label>
+          <input type="text" value="421203" class="mt-1 mono">
+          <div class="text-xs text-emerald-400 mt-1">✓ Validated against PincodeMaster (IndiaPost_2026_Q1)</div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">State</label>
+            <input type="text" value="Maharashtra" disabled class="mt-1">
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">District</label>
+            <input type="text" value="Thane" disabled class="mt-1">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">City</label>
+            <input type="text" value="Kalyan-Dombivli" disabled class="mt-1">
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Region</label>
+            <input type="text" value="West" disabled class="mt-1 mono">
+          </div>
+        </div>
+        <div class="text-xs text-mute mt-2">Geography auto-resolved from PincodeMaster (BR-01-005). Pincode change re-resolves all fields.</div>
+      </div>
+
+      <div class="mt-6 pt-5 border-t border-subtle">
+        <div class="uppercase-tracked text-cyan text-xs mb-3">Accounting Integration</div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute">External System</label>
+          <select class="mt-1"><option>None</option><option>Tally</option><option>Zoho Books</option><option>SAP</option><option>Other</option></select>
+          <div class="text-xs text-mute mt-1">Stub field. EPCC functions independently.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 flex justify-end gap-2">
+    <button class="btn-secondary">Cancel</button>
+    <button class="btn-primary">Save changes</button>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 4: CREATE PROJECT WIZARD                                 -->
+<!-- ============================================================ -->
+<section id="view-create" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 4 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Create Project — Wizard</h2>
+    <div class="text-xs text-dim mt-1">7-step process. Project saved as Draft until BR-01-010 passes.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">create_project</span> · SYSTEM_ADMIN, PMO_DIRECTOR · BR-01-001 (code uniqueness) · BR-01-010 (activation gate)</div>
+
+  <div class="role-restricted hide-for-PORTFOLIO_MANAGER hide-for-PROJECT_DIRECTOR hide-for-FINANCE_LEAD hide-for-PLANNING_ENGINEER hide-for-SITE_MANAGER hide-for-READ_ONLY">
+
+    <!-- Step indicator -->
+    <div class="surface-1 border border-subtle rounded p-4 mb-4 flex items-center">
+      <div class="step-marker step-active">1</div>
+      <div class="ml-2 text-xs">Identity</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">2</div>
+      <div class="ml-2 text-xs text-mute">Geography</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">3</div>
+      <div class="ml-2 text-xs text-mute">Dates & Phase</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">4</div>
+      <div class="ml-2 text-xs text-mute">Contracts</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">5</div>
+      <div class="ml-2 text-xs text-mute">Parties</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">6</div>
+      <div class="ml-2 text-xs text-mute">Scenario</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">7</div>
+      <div class="ml-2 text-xs text-mute">KPIs</div>
+    </div>
+
+    <!-- Step 1: Identity -->
+    <div class="surface-1 border border-subtle rounded p-6 max-w-3xl mx-auto">
+      <div class="uppercase-tracked text-cyan text-xs mb-1">Step 1 of 7</div>
+      <h3 class="text-lg font-semibold">Project Identity</h3>
+      <div class="text-xs text-mute mb-5">Project will be saved as Draft until activation requirements are met.</div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="col-span-2">
+          <label class="text-xs uppercase-tracked text-mute field-required">Project Code</label>
+          <input type="text" placeholder="e.g., KDMC-002-EPC" class="mt-1 mono uppercase">
+          <div class="text-xs text-mute mt-1">Format: <span class="mono">[CLIENT]-[SEQ]-[TYPE]</span>. Uppercase. Unique system-wide. <span class="text-red-400">Immutable after creation.</span></div>
+        </div>
+        <div class="col-span-2">
+          <label class="text-xs uppercase-tracked text-mute field-required">Project Name</label>
+          <input type="text" placeholder="Full project name" class="mt-1">
+          <div class="text-xs text-mute mt-1">Unique within program (case-insensitive). Min 3 chars.</div>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute field-required">Portfolio</label>
+          <select class="mt-1"><option>— Select —</option><option>KDMC Healthcare Portfolio</option></select>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute field-required">Program</label>
+          <select class="mt-1" disabled><option>— Select Portfolio first —</option></select>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute field-required">Sector (top-level)</label>
+          <select class="mt-1">
+            <option>— Select —</option>
+            <option>Healthcare</option>
+            <option>Infrastructure</option>
+            <option>Residential</option>
+            <option>Commercial</option>
+            <option>Industrial</option>
+          </select>
+          <div class="text-xs text-red-400 mt-1">Immutable after creation</div>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute field-required">Sub-type</label>
+          <select class="mt-1 mono" disabled>
+            <option>— Select Sector first —</option>
+          </select>
+          <div class="text-xs text-mute mt-1">Filtered by sector top-level</div>
+        </div>
+        <div class="col-span-2">
+          <label class="text-xs uppercase-tracked text-mute field-required">Delivery Model</label>
+          <select class="mt-1">
+            <option>— Select —</option>
+            <option>EPC</option>
+            <option>EPCM</option>
+            <option>DBOT</option>
+            <option>PPP</option>
+            <option>Turnkey</option>
+            <option>Construction_Management</option>
+          </select>
+        </div>
+        <div class="col-span-2">
+          <label class="text-xs uppercase-tracked text-mute">Delivery Model Notes</label>
+          <textarea placeholder="Optional. Capture hybrid arrangements (max 500 chars). 'Hybrid' value retired."></textarea>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-between">
+        <button class="btn-secondary">Cancel</button>
+        <button class="btn-primary">Next: Geography →</button>
+      </div>
+    </div>
+
+    <details class="mt-6 surface-1 border border-subtle rounded p-4 max-w-3xl mx-auto">
+      <summary class="text-xs uppercase-tracked text-mute">► Activation gate preview (BR-01-010)</summary>
+      <div class="mt-4 space-y-2 text-xs">
+        <div class="text-mute">Project remains in <span class="mono pill pill-draft">Draft</span> until ALL of the following are met:</div>
+        <ul class="space-y-1 ml-2">
+          <li>☐ At least 1 Contract with role = Primary</li>
+          <li>☐ At least 1 ProjectPartyAssignment with role = Primary_Client</li>
+          <li>☐ At least 1 ProjectPartyAssignment with role = EPC_Contractor</li>
+          <li>☐ ScenarioConfig saved (defaults acceptable)</li>
+          <li>☐ KPIThreshold rows confirmed (5 KPIs)</li>
+        </ul>
+        <div class="text-emerald-400 mt-3">On meeting all conditions, "Activate Project" button enables. Status transitions Draft → Active.</div>
+      </div>
+    </details>
+  </div>
+
+  <div class="role-only-PORTFOLIO_MANAGER role-only-PROJECT_DIRECTOR role-only-FINANCE_LEAD role-only-PLANNING_ENGINEER role-only-SITE_MANAGER role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">Project creation requires <span class="mono text-cyan">SYSTEM_ADMIN</span> or <span class="mono text-cyan">PMO_DIRECTOR</span>.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 5: CONTRACT PANEL                                        -->
+<!-- ============================================================ -->
+<section id="view-contract" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 5 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Contract Panel</h2>
+    <div class="text-xs text-dim mt-1">Financial terms editable by FINANCE_LEAD + PMO_DIRECTOR. Soft cap 3 Primary contracts.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">edit_contract</span> · BR-01-018 (multi-Primary cap) · BR-01-006 (BAC vs contract value warning)</div>
+
+  <div class="role-restricted hide-for-PROJECT_DIRECTOR hide-for-PORTFOLIO_MANAGER hide-for-PLANNING_ENGINEER hide-for-SITE_MANAGER hide-for-READ_ONLY">
+
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="text-xs text-mute mono">KDMC-001-DBOT</div>
+        <div class="text-sm">2 contracts on this project</div>
+      </div>
+      <button class="btn-primary">+ Add Contract</button>
+    </div>
+
+    <!-- Contract list -->
+    <div class="space-y-4">
+
+      <!-- Contract 1: Primary -->
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="mono text-cyan font-semibold">KDMC-001-DBOT-PRIMARY-001</span>
+              <span class="pill pill-internal mono">Primary</span>
+              <span class="pill pill-active">DBOT</span>
+            </div>
+            <div class="text-xs text-mute mt-1">Signed: <span class="mono">2024-09-15</span> · Effective: <span class="mono">2024-10-01</span> · Term: <span class="mono">36 months</span></div>
+          </div>
+          <button class="btn-icon">Edit</button>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 text-sm">
+          <div>
+            <div class="uppercase-tracked text-mute text-xs">Contract Value (basic)</div>
+            <div class="mono mt-1 font-semibold">₹68.40 Cr</div>
+          </div>
+          <div>
+            <div class="uppercase-tracked text-mute text-xs">GST</div>
+            <div class="mono mt-1">18%</div>
+          </div>
+          <div>
+            <div class="uppercase-tracked text-mute text-xs">Incl. GST</div>
+            <div class="mono mt-1">₹80.71 Cr</div>
+          </div>
+          <div>
+            <div class="uppercase-tracked text-mute text-xs">BOQ Cost (M02)</div>
+            <div class="mono mt-1 text-amber-400">₹70.20 Cr ⚠</div>
+            <div class="text-xs text-amber-400">2.6% over basic — flagged</div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-subtle grid grid-cols-4 gap-4 text-xs">
+          <div><div class="text-mute uppercase-tracked">Mob. Advance</div><div class="mono mt-1">10%</div></div>
+          <div><div class="text-mute uppercase-tracked">Mat. Advance</div><div class="mono mt-1">5%</div></div>
+          <div><div class="text-mute uppercase-tracked">Retention</div><div class="mono mt-1">5%</div></div>
+          <div><div class="text-mute uppercase-tracked">DLP</div><div class="mono mt-1">365 days</div></div>
+          <div><div class="text-mute uppercase-tracked">LD Rate</div><div class="mono mt-1">0.5%/wk</div></div>
+          <div><div class="text-mute uppercase-tracked">LD Cap</div><div class="mono mt-1">10%</div></div>
+          <div><div class="text-mute uppercase-tracked">Risk Buffer</div><div class="mono mt-1">5%</div></div>
+          <div><div class="text-mute uppercase-tracked">Payment Terms</div><div class="mono mt-1">30 days</div></div>
+        </div>
+      </div>
+
+      <!-- Contract 2: Specialist -->
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="mono text-cyan font-semibold">KDMC-001-DBOT-SPECIALIST-001</span>
+              <span class="pill pill-amber mono">Specialist</span>
+              <span class="pill" style="background: rgba(168,85,247,0.15); color: #a855f7;">Item_Rate</span>
+            </div>
+            <div class="text-xs text-mute mt-1">Medical Equipment Supply & Install · Signed: <span class="mono">2025-03-10</span></div>
+          </div>
+          <button class="btn-icon">Edit</button>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 text-sm">
+          <div><div class="uppercase-tracked text-mute text-xs">Value (basic)</div><div class="mono mt-1 font-semibold">₹12.50 Cr</div></div>
+          <div><div class="uppercase-tracked text-mute text-xs">GST</div><div class="mono mt-1">18%</div></div>
+          <div><div class="uppercase-tracked text-mute text-xs">Incl. GST</div><div class="mono mt-1">₹14.75 Cr</div></div>
+          <div><div class="uppercase-tracked text-mute text-xs">DLP</div><div class="mono mt-1">730 days</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Multi-Primary warning region (illustrative) -->
+    <details class="mt-6 surface-1 border severity-warning rounded p-4">
+      <summary class="text-xs uppercase-tracked text-amber-400">► Multi-Primary scenario (BR-01-018 trigger preview)</summary>
+      <div class="mt-3 text-xs space-y-2">
+        <div>If a 2nd Primary contract is added: <span class="text-amber-400">amber flag + Decision Queue</span> <span class="mono">MULTIPLE_PRIMARY_CONTRACTS_FLAG</span></div>
+        <div>If a 4th Primary contract attempted: <span class="text-red-400">HARD BLOCK with error</span></div>
+        <div>Justification (≥ 100 chars) required from PMO_DIRECTOR before proceeding</div>
+      </div>
+    </details>
+  </div>
+
+  <div class="role-only-PROJECT_DIRECTOR role-only-PORTFOLIO_MANAGER role-only-PLANNING_ENGINEER role-only-SITE_MANAGER role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">Contract financial editing requires <span class="mono text-cyan">FINANCE_LEAD</span> or <span class="mono text-cyan">PMO_DIRECTOR</span>.</div>
+    <div class="text-xs text-mute mt-2">PROJECT_DIRECTOR can create non-Primary contracts on own project (read-only view here).</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 6: PARTY MASTER + ASSIGNMENT                             -->
+<!-- ============================================================ -->
+<section id="view-parties" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 6 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Party Master + Project Assignments</h2>
+    <div class="text-xs text-dim mt-1">Global party master (left) + project-specific assignments (right). Same party_role overlap triggers exclusivity exception (BR-01-011).</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">create_party, assign_party_to_project</span> · BR-01-011 (exclusivity) · OQ-1.5 same party_role · X8 §3.19 PartyType, §3.20 PartyRole</div>
+
+  <div class="grid grid-cols-3 gap-6">
+
+    <!-- LEFT: Party Master -->
+    <div class="surface-1 border border-subtle rounded p-5">
+      <div class="flex items-center justify-between mb-4">
+        <div class="uppercase-tracked text-cyan text-xs">Party Master (global)</div>
+        <button class="btn-icon">+ New</button>
+      </div>
+      <input type="text" placeholder="Search parties..." class="mb-3 text-xs">
+      <div class="space-y-2 max-h-[500px] overflow-y-auto">
+        <div class="surface-2 border border-subtle rounded p-3 cursor-pointer hover:border-cyan">
+          <div class="flex items-center gap-2"><span class="pill pill-internal mono">Client</span></div>
+          <div class="text-sm font-medium mt-2">Kalyan-Dombivli Municipal Corporation</div>
+          <div class="text-xs text-mute mono mt-1">KDMC · 1 active project</div>
+        </div>
+        <div class="surface-2 border border-cyan rounded p-3 cursor-pointer">
+          <div class="flex items-center gap-2"><span class="pill pill-internal mono">EPC_Contractor</span></div>
+          <div class="text-sm font-medium mt-2">Larsen & Toubro Construction</div>
+          <div class="text-xs text-mute mono mt-1">L&T · 3 active projects · ⚠ exclusivity</div>
+          <div class="text-xs text-cyan mt-1">Selected</div>
+        </div>
+        <div class="surface-2 border border-subtle rounded p-3 cursor-pointer hover:border-cyan">
+          <div class="flex items-center gap-2"><span class="pill pill-internal mono">PMC</span></div>
+          <div class="text-sm font-medium mt-2">SN Joshi Consultants Pvt Ltd</div>
+          <div class="text-xs text-mute mono mt-1">SNJ · 4 active projects</div>
+        </div>
+        <div class="surface-2 border border-subtle rounded p-3 cursor-pointer hover:border-cyan">
+          <div class="flex items-center gap-2"><span class="pill pill-internal mono">Specialist_Subcontractor</span></div>
+          <div class="text-sm font-medium mt-2">Schindler India Pvt Ltd</div>
+          <div class="text-xs text-mute mono mt-1">SCH · 7 projects (lifts)</div>
+        </div>
+        <div class="surface-2 border border-subtle rounded p-3 cursor-pointer hover:border-cyan">
+          <div class="flex items-center gap-2"><span class="pill pill-internal mono">Lender</span></div>
+          <div class="text-sm font-medium mt-2">HDFC Bank Ltd</div>
+          <div class="text-xs text-mute mono mt-1">HDFC · 2 projects</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Project Assignments (2-col span) -->
+    <div class="col-span-2 surface-1 border border-subtle rounded p-5">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="uppercase-tracked text-cyan text-xs">Assignments on Project</div>
+          <div class="text-xs text-mute mono mt-1">KDMC-001-DBOT</div>
+        </div>
+        <button class="btn-primary">+ Assign Party</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Party</th>
+            <th>Role</th>
+            <th>Primary for Role</th>
+            <th>Engagement</th>
+            <th>Exclusivity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover">
+            <td><div class="text-sm font-medium">Kalyan-Dombivli Municipal Corp.</div><div class="text-xs text-mute mono">KDMC</div></td>
+            <td><span class="pill pill-internal mono">Primary_Client</span></td>
+            <td><span class="pill pill-green">YES</span></td>
+            <td class="text-xs">2025-04-01 → indefinite</td>
+            <td class="text-xs text-mute">—</td>
+            <td><button class="btn-icon">⋯</button></td>
+          </tr>
+          <tr class="row-hover severity-warning">
+            <td><div class="text-sm font-medium">Larsen & Toubro Construction</div><div class="text-xs text-mute mono">L&T</div></td>
+            <td><span class="pill pill-internal mono">EPC_Contractor</span></td>
+            <td><span class="pill pill-green">YES</span></td>
+            <td class="text-xs">2025-04-01 → 2028-02-28</td>
+            <td>
+              <span class="pill pill-amber">EXCEPTION</span>
+              <div class="text-xs text-mute mono mt-1">Approved 2024-09-12</div>
+            </td>
+            <td><button class="btn-icon">⋯</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td><div class="text-sm font-medium">SN Joshi Consultants Pvt Ltd</div><div class="text-xs text-mute mono">SNJ</div></td>
+            <td><span class="pill pill-internal mono">PMC</span></td>
+            <td><span class="pill pill-green">YES</span></td>
+            <td class="text-xs">2024-10-01 → indefinite</td>
+            <td class="text-xs text-mute">No conflict</td>
+            <td><button class="btn-icon">⋯</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td><div class="text-sm font-medium">Schindler India Pvt Ltd</div><div class="text-xs text-mute mono">SCH</div></td>
+            <td><span class="pill pill-internal mono">Specialist_Subcontractor</span></td>
+            <td><span class="pill pill-draft">No</span></td>
+            <td class="text-xs">2026-08-01 → 2027-12-31</td>
+            <td class="text-xs text-mute">Specialist — exempt</td>
+            <td><button class="btn-icon">⋯</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td><div class="text-sm font-medium">HDFC Bank Ltd</div><div class="text-xs text-mute mono">HDFC</div></td>
+            <td><span class="pill pill-internal mono">Lender</span></td>
+            <td><span class="pill pill-green">YES</span></td>
+            <td class="text-xs">2025-04-01 → 2030-04-01</td>
+            <td class="text-xs text-mute">No conflict</td>
+            <td><button class="btn-icon">⋯</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Exclusivity exception warning -->
+      <div class="mt-5 surface-2 border severity-warning rounded p-4">
+        <div class="flex items-start gap-3">
+          <div class="text-amber-400 text-xl">⚠</div>
+          <div class="flex-1 text-xs">
+            <div class="text-amber-400 uppercase-tracked mb-1">Exclusivity Exception (BR-01-011)</div>
+            <div class="text-dim">L&T Construction is currently EPC_Contractor (primary) on 3 active projects: <span class="mono text-cyan">KDMC-001-DBOT</span>, <span class="mono text-cyan">PUNE-002-EPC</span>, <span class="mono text-cyan">NOIDA-003-PPP</span>.</div>
+            <div class="text-mute mt-2">Override approved 2024-09-12 by Priya Sharma (PMO_DIRECTOR). Reason: "Capacity verified via L&T resource matrix; 3 concurrent projects within their stated capacity envelope per their tender response."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 7: SCENARIO CONFIG                                       -->
+<!-- ============================================================ -->
+<section id="view-scenario" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 7 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Scenario Configuration</h2>
+    <div class="text-xs text-dim mt-1">Base / Best / Worst parameters. Active scenario change requires Decision Queue approval (BR-01-016).</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">edit_scenario_config</span> · PMO_DIRECTOR + PORTFOLIO_MANAGER (own program) · BR-01-007 + BR-01-008 (ordering rules)</div>
+
+  <div class="role-restricted hide-for-PROJECT_DIRECTOR hide-for-FINANCE_LEAD hide-for-PLANNING_ENGINEER hide-for-SITE_MANAGER hide-for-READ_ONLY">
+
+    <!-- Active scenario selector -->
+    <div class="surface-1 border severity-info rounded p-4 mb-4 flex items-center gap-4">
+      <div>
+        <div class="uppercase-tracked text-cyan text-xs">Active Scenario</div>
+        <div class="text-2xl font-semibold mono mt-1">Base</div>
+        <div class="text-xs text-mute mt-1">Last changed 2025-04-01 · Default at project creation</div>
+      </div>
+      <div class="ml-auto">
+        <button class="btn-secondary">Change Active Scenario</button>
+        <div class="text-xs text-amber-400 mt-2 max-w-xs text-right">Triggers Decision Queue: <span class="mono">SCENARIO_CHANGE_APPROVAL</span> · 24hr SLA</div>
+      </div>
+    </div>
+
+    <!-- 3-column scenario editor -->
+    <div class="grid grid-cols-3 gap-4">
+
+      <div class="surface-1 border border-cyan rounded p-5">
+        <div class="flex items-center justify-between mb-4">
+          <div class="uppercase-tracked text-cyan text-xs">Base Scenario</div>
+          <span class="pill pill-active">ACTIVE</span>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="uppercase-tracked text-mute">Escalation %</label>
+            <input type="number" value="0.05" step="0.01" class="mt-1 mono">
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Delay months</label>
+            <input type="number" value="2" class="mt-1 mono">
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Monsoon delay (months)</label>
+            <input type="number" value="2" class="mt-1 mono">
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Payment delay (days)</label>
+            <input type="number" value="15" class="mt-1 mono">
+          </div>
+        </div>
+      </div>
+
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-emerald-400 text-xs mb-4">Best Scenario</div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="uppercase-tracked text-mute">Escalation %</label>
+            <input type="number" value="0.03" step="0.01" class="mt-1 mono">
+            <div class="text-xs text-mute mt-1">Must be ≤ Base (BR-01-007)</div>
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Delay months</label>
+            <input type="number" value="0" class="mt-1 mono">
+            <div class="text-xs text-mute mt-1">Must be ≤ Base (BR-01-008)</div>
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Monsoon delay</label>
+            <input type="number" value="1" class="mt-1 mono">
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Payment delay (days)</label>
+            <input type="number" value="7" class="mt-1 mono">
+          </div>
+        </div>
+      </div>
+
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-red-400 text-xs mb-4">Worst Scenario</div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="uppercase-tracked text-mute">Escalation %</label>
+            <input type="number" value="0.10" step="0.01" class="mt-1 mono">
+            <div class="text-xs text-mute mt-1">Must be ≥ Base (BR-01-007)</div>
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Delay months</label>
+            <input type="number" value="6" class="mt-1 mono">
+            <div class="text-xs text-mute mt-1">Must be ≥ Base (BR-01-008)</div>
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Monsoon delay</label>
+            <input type="number" value="4" class="mt-1 mono">
+          </div>
+          <div>
+            <label class="uppercase-tracked text-mute">Payment delay (days)</label>
+            <input type="number" value="45" class="mt-1 mono">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-4 text-xs text-mute">Material escalation % is auto-selected from active scenario. Cascades to M06 + M07 on save.</div>
+    <div class="mt-4 flex justify-end gap-2"><button class="btn-secondary">Cancel</button><button class="btn-primary">Save Scenario Config</button></div>
+  </div>
+
+  <div class="role-only-PROJECT_DIRECTOR role-only-FINANCE_LEAD role-only-PLANNING_ENGINEER role-only-SITE_MANAGER role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">Scenario editing requires <span class="mono text-cyan">PMO_DIRECTOR</span> or <span class="mono text-cyan">PORTFOLIO_MANAGER</span>.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 8: KPI THRESHOLDS                                        -->
+<!-- ============================================================ -->
+<section id="view-kpi" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 8 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">KPI Thresholds</h2>
+    <div class="text-xs text-dim mt-1">Per-KPI RAG bands. Direction-aware (Higher_Is_Better vs Lower_Is_Better).</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">edit_kpi_threshold</span> · PMO_DIRECTOR + PORTFOLIO_MANAGER · BR-01-009 · BR-01-015 · Defaults pre-populated, must be confirmed before activation</div>
+
+  <div class="role-restricted hide-for-PROJECT_DIRECTOR hide-for-FINANCE_LEAD hide-for-PLANNING_ENGINEER hide-for-SITE_MANAGER hide-for-READ_ONLY">
+
+    <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 text-xs">
+      <div class="text-mute">KPI Threshold confirmation status: <span class="text-emerald-400 mono">✓ User-confirmed</span> (no longer using default flag)</div>
+      <button class="btn-secondary text-xs ml-auto">Reset to system defaults</button>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded overflow-hidden">
+      <table>
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Direction</th>
+            <th class="text-right">Green Threshold</th>
+            <th class="text-right">Amber Threshold</th>
+            <th class="text-right">Red (auto)</th>
+            <th>Defaults Applied</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover">
+            <td class="mono">CPI</td>
+            <td><span class="pill" style="background: rgba(34,211,238,0.15); color: #22d3ee;">Higher_Is_Better</span></td>
+            <td class="text-right"><input type="number" value="1.00" step="0.01" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right"><input type="number" value="0.95" step="0.01" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right mono text-red-400">&lt; 0.95</td>
+            <td><span class="pill pill-active">User confirmed</span></td>
+            <td><button class="btn-icon">Save</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono">SPI</td>
+            <td><span class="pill" style="background: rgba(34,211,238,0.15); color: #22d3ee;">Higher_Is_Better</span></td>
+            <td class="text-right"><input type="number" value="1.00" step="0.01" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right"><input type="number" value="0.95" step="0.01" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right mono text-red-400">&lt; 0.95</td>
+            <td><span class="pill pill-active">User confirmed</span></td>
+            <td><button class="btn-icon">Save</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono">Gross_Margin</td>
+            <td><span class="pill" style="background: rgba(34,211,238,0.15); color: #22d3ee;">Higher_Is_Better</span></td>
+            <td class="text-right"><input type="number" value="0.20" step="0.01" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right"><input type="number" value="0.10" step="0.01" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right mono text-red-400">&lt; 0.10</td>
+            <td><span class="pill pill-active">User confirmed</span></td>
+            <td><button class="btn-icon">Save</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono">Open_High_Risks</td>
+            <td><span class="pill" style="background: rgba(245,158,11,0.15); color: #f59e0b;">Lower_Is_Better</span></td>
+            <td class="text-right"><input type="number" value="5" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right"><input type="number" value="8" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right mono text-red-400">&gt; 8</td>
+            <td><span class="pill pill-active">User confirmed</span></td>
+            <td><button class="btn-icon">Save</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono">Pending_Clearances</td>
+            <td><span class="pill" style="background: rgba(245,158,11,0.15); color: #f59e0b;">Lower_Is_Better</span></td>
+            <td class="text-right"><input type="number" value="3" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right"><input type="number" value="6" class="mono !w-24 text-right inline-block"></td>
+            <td class="text-right mono text-red-400">&gt; 6</td>
+            <td><span class="pill pill-active">User confirmed</span></td>
+            <td><button class="btn-icon">Save</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <details class="mt-6 surface-1 border border-subtle rounded p-4">
+      <summary class="text-xs uppercase-tracked text-mute">► Threshold validation rules (BR-01-009)</summary>
+      <div class="mt-3 space-y-2 text-xs text-dim">
+        <div><span class="mono text-cyan">Higher_Is_Better:</span> green_threshold &gt; amber_threshold (CPI, SPI, Gross_Margin)</div>
+        <div><span class="mono text-cyan">Lower_Is_Better:</span> green_threshold &lt; amber_threshold (Open_High_Risks, Pending_Clearances)</div>
+        <div><span class="mono text-cyan">Red_threshold:</span> Auto-calculated as "below amber" (or "above amber" for inverse KPIs)</div>
+      </div>
+    </details>
+  </div>
+
+  <div class="role-only-PROJECT_DIRECTOR role-only-FINANCE_LEAD role-only-PLANNING_ENGINEER role-only-SITE_MANAGER role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">KPI threshold editing requires <span class="mono text-cyan">PMO_DIRECTOR</span> or <span class="mono text-cyan">PORTFOLIO_MANAGER</span>.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 9: EXCEPTION VIEW                                        -->
+<!-- ============================================================ -->
+<section id="view-exception" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 9 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Exception View</h2>
+    <div class="text-xs text-dim mt-1">PMO_DIRECTOR triage. Red + Amber projects. Stale reports. Pending decisions.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">view_project</span> with severity filter · PMO_DIRECTOR primary · Block 5d</div>
+
+  <div class="role-restricted hide-for-PORTFOLIO_MANAGER hide-for-PROJECT_DIRECTOR hide-for-FINANCE_LEAD hide-for-PLANNING_ENGINEER hide-for-SITE_MANAGER hide-for-READ_ONLY">
+
+    <div class="grid grid-cols-3 gap-3 mb-5">
+      <div class="kpi-card severity-critical"><div class="kpi-value text-red-400">2</div><div class="kpi-label">Red Projects</div></div>
+      <div class="kpi-card severity-warning"><div class="kpi-value text-amber-400">3</div><div class="kpi-label">Amber Projects</div></div>
+      <div class="kpi-card severity-warning"><div class="kpi-value text-amber-400">9</div><div class="kpi-label">Pending Decisions</div></div>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded overflow-hidden">
+      <table>
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>RAG</th>
+            <th>Reason</th>
+            <th>Severity</th>
+            <th>Pending Decisions</th>
+            <th>SLA Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover severity-critical">
+            <td><div class="mono text-cyan font-semibold">NOIDA-003-PPP</div><div class="text-xs text-mute mt-1">Noida Cancer</div></td>
+            <td><span class="rag-dot rag-red-dot"></span></td>
+            <td class="text-xs">CPI 0.81 · SPI 0.74 · BAC deviation +₹4.2 Cr</td>
+            <td><span class="pill pill-red">Critical</span></td>
+            <td class="mono">5</td>
+            <td><span class="pill pill-red">2 breached</span></td>
+            <td><button class="btn-icon">Triage</button></td>
+          </tr>
+          <tr class="row-hover severity-warning">
+            <td><div class="mono text-cyan font-semibold">KDMC-001-DBOT</div><div class="text-xs text-mute mt-1">KDMC 150-Bed</div></td>
+            <td><span class="rag-dot rag-amber-dot"></span></td>
+            <td class="text-xs">CPI 0.94 · BAC deviation +₹1.8 Cr · 1 exclusivity exception</td>
+            <td><span class="pill pill-amber">High</span></td>
+            <td class="mono">3</td>
+            <td><span class="pill pill-amber">1 risk</span></td>
+            <td><button class="btn-icon">Triage</button></td>
+          </tr>
+          <tr class="row-hover severity-warning">
+            <td><div class="mono text-cyan font-semibold">BLR-006-EPC</div><div class="text-xs text-mute mt-1">Bengaluru 100-Bed</div></td>
+            <td><span class="rag-dot rag-amber-dot"></span></td>
+            <td class="text-xs">Report date stale: 42 days (threshold 35)</td>
+            <td><span class="pill pill-amber">Medium</span></td>
+            <td class="mono">1</td>
+            <td><span class="pill pill-amber">Normal</span></td>
+            <td><button class="btn-icon">Triage</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="role-only-PORTFOLIO_MANAGER role-only-PROJECT_DIRECTOR role-only-FINANCE_LEAD role-only-PLANNING_ENGINEER role-only-SITE_MANAGER role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">Exception View is for <span class="mono text-cyan">PMO_DIRECTOR</span>.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 10: DECISION QUEUE (M01-generated)                       -->
+<!-- ============================================================ -->
+<section id="view-decisions" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 10 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">Decision Queue — M01 Items</h2>
+    <div class="text-xs text-dim mt-1">M01 generates 5 trigger types. Owner-routed. SLA-enforced. Items resolve in M11.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">view_decision_queue</span> · 5 trigger types per Block 3m · X8 §4.13</div>
+
+  <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 text-xs">
+    <select class="!w-auto">
+      <option>All trigger types</option>
+      <option>BAC_VS_CONTRACT_DEVIATION</option>
+      <option>EXCLUSIVITY_EXCEPTION_APPROVAL</option>
+      <option>PROJECT_REPORT_DATE_STALE</option>
+      <option>MULTIPLE_PRIMARY_CONTRACTS_FLAG</option>
+      <option>SCENARIO_CHANGE_APPROVAL</option>
+    </select>
+    <select class="!w-auto"><option>Open + In Review</option><option>Open</option><option>Closed</option></select>
+    <select class="!w-auto"><option>All severity</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+    <select class="!w-auto"><option>All projects</option></select>
+  </div>
+
+  <div class="surface-1 border border-subtle rounded overflow-hidden">
+    <table>
+      <thead>
+        <tr>
+          <th>Trigger Type</th>
+          <th>Project</th>
+          <th>Severity</th>
+          <th>Owner</th>
+          <th>Created</th>
+          <th>SLA Deadline</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-hover severity-critical">
+          <td class="mono text-xs text-red-400">BAC_VS_CONTRACT_DEVIATION</td>
+          <td class="mono text-xs text-cyan">NOIDA-003-PPP</td>
+          <td><span class="pill pill-red">High</span></td>
+          <td class="text-xs">FINANCE_LEAD + PMO_DIRECTOR</td>
+          <td class="mono text-xs">2026-05-02 14:20</td>
+          <td class="mono text-xs text-red-400">Breached 18h ago</td>
+          <td><span class="pill pill-red">Escalated</span></td>
+          <td><button class="btn-icon">Resolve</button></td>
+        </tr>
+        <tr class="row-hover severity-warning">
+          <td class="mono text-xs text-amber-400">EXCLUSIVITY_EXCEPTION_APPROVAL</td>
+          <td class="mono text-xs text-cyan">PUNE-002-EPC</td>
+          <td><span class="pill pill-amber">Medium</span></td>
+          <td class="text-xs">PMO_DIRECTOR</td>
+          <td class="mono text-xs">2026-05-03 06:14</td>
+          <td class="mono text-xs">in 6h 12m</td>
+          <td><span class="pill pill-active">Open</span></td>
+          <td><button class="btn-icon">Approve</button></td>
+        </tr>
+        <tr class="row-hover severity-info">
+          <td class="mono text-xs text-cyan">SCENARIO_CHANGE_APPROVAL</td>
+          <td class="mono text-xs text-cyan">KDMC-001-DBOT</td>
+          <td><span class="pill pill-amber">High</span></td>
+          <td class="text-xs">PMO_DIRECTOR</td>
+          <td class="mono text-xs">2026-05-03 09:01</td>
+          <td class="mono text-xs">in 23h 47m</td>
+          <td><span class="pill pill-active">Open</span></td>
+          <td><button class="btn-icon">Review</button></td>
+        </tr>
+        <tr class="row-hover severity-warning">
+          <td class="mono text-xs text-amber-400">PROJECT_REPORT_DATE_STALE</td>
+          <td class="mono text-xs text-cyan">BLR-006-EPC</td>
+          <td><span class="pill pill-amber">Low</span></td>
+          <td class="text-xs">PROJECT_DIRECTOR</td>
+          <td class="mono text-xs">2026-05-01 06:00</td>
+          <td class="text-xs text-mute">No SLA · informational</td>
+          <td><span class="pill pill-amber">Notified</span></td>
+          <td><button class="btn-icon">Update</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details class="mt-6 surface-1 border border-subtle rounded p-4">
+    <summary class="text-xs uppercase-tracked text-cyan">► SLA escalation rules (Block 3m)</summary>
+    <div class="mt-3 text-xs text-dim space-y-2">
+      <div>0–12 hr: Normal — no action</div>
+      <div>12–24 hr: Reminder notification to owner</div>
+      <div>24–36 hr: Escalate to next level (PMO_DIRECTOR if not already)</div>
+      <div>36+ hr: Auto-escalate + log governance breach + amber on M10</div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 11: PINCODE ADMIN                                        -->
+<!-- ============================================================ -->
+<section id="view-pincode" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 11 of 11</div>
+    <h2 class="text-xl font-semibold mt-1">PincodeMaster Administration</h2>
+    <div class="text-xs text-dim mt-1">Static snapshot dataset. ~155k records. SYSTEM_ADMIN refreshes annually.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">refresh_pincode_dataset</span> · SYSTEM_ADMIN only · BR-01-028 (all-or-nothing transaction)</div>
+
+  <div class="role-restricted hide-for-PMO_DIRECTOR hide-for-PORTFOLIO_MANAGER hide-for-PROJECT_DIRECTOR hide-for-FINANCE_LEAD hide-for-PLANNING_ENGINEER hide-for-SITE_MANAGER hide-for-READ_ONLY">
+
+    <div class="grid grid-cols-2 gap-6">
+
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">Current Dataset</div>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between"><span class="text-mute">Version</span><span class="mono text-cyan">IndiaPost_2026_Q1</span></div>
+          <div class="flex justify-between"><span class="text-mute">Loaded at</span><span class="mono">2026-02-14 03:00 IST</span></div>
+          <div class="flex justify-between"><span class="text-mute">Total records</span><span class="mono">155,128</span></div>
+          <div class="flex justify-between"><span class="text-mute">Approx size</span><span class="mono">2.1 MB</span></div>
+          <div class="flex justify-between"><span class="text-mute">Source</span><span class="text-dim text-xs">India Post official Q1 release</span></div>
+        </div>
+      </div>
+
+      <div class="surface-1 border severity-info rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">Refresh Dataset</div>
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute field-required">CSV file</label>
+            <div class="mt-1 surface-2 border-2 border-dashed border-subtle rounded p-6 text-center text-xs text-mute">
+              Drag CSV file here or <span class="text-cyan">click to browse</span>
+              <div class="mt-2">Format: pincode, state_code, state_name, district, city, region</div>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute field-required">Dataset version label</label>
+            <input type="text" placeholder="e.g., IndiaPost_2027_Q1" class="mt-1 mono">
+          </div>
+          <button class="btn-primary w-full">Validate + Stage</button>
+          <div class="text-xs text-mute">All-or-nothing transaction. Existing data preserved during stage. Replace on confirm.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <details class="mt-6 surface-1 border border-subtle rounded p-4">
+      <summary class="text-xs uppercase-tracked text-mute">► Refresh history (last 5)</summary>
+      <table class="mt-3">
+        <thead><tr><th>Version</th><th>Loaded At</th><th>Loaded By</th><th>Records</th></tr></thead>
+        <tbody>
+          <tr><td class="mono text-xs">IndiaPost_2026_Q1</td><td class="mono text-xs">2026-02-14 03:00</td><td class="text-dim text-xs">sysadmin</td><td class="mono text-xs">155,128</td></tr>
+          <tr><td class="mono text-xs text-mute">IndiaPost_2025_Q3</td><td class="mono text-xs text-mute">2025-11-02 02:30</td><td class="text-mute text-xs">sysadmin</td><td class="mono text-xs text-mute">154,892</td></tr>
+          <tr><td class="mono text-xs text-mute">IndiaPost_2024_Q4</td><td class="mono text-xs text-mute">2024-12-15 04:00</td><td class="text-mute text-xs">sysadmin</td><td class="mono text-xs text-mute">154,402</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <div class="role-only-PMO_DIRECTOR role-only-PORTFOLIO_MANAGER role-only-PROJECT_DIRECTOR role-only-FINANCE_LEAD role-only-PLANNING_ENGINEER role-only-SITE_MANAGER role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">PincodeMaster admin requires <span class="mono text-cyan">SYSTEM_ADMIN</span>.</div>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t border-subtle surface-1 mt-12 px-6 py-4 text-xs text-mute flex justify-between">
+  <div>M01_ProjectRegistry_Wireframes_v1.0 · 2026-05-03 · 11 views · 11 entities · 30 BRs</div>
+  <div class="mono">EPCC System · Round 7 deliverable</div>
+</footer>
+
+<script>
+  function switchView(viewId, evt) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + viewId).classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    if (evt && evt.target) evt.target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function switchRole() {
+    const role = document.getElementById('roleSwitcher').value;
+    document.querySelectorAll('.role-restricted').forEach(el => {
+      el.style.display = el.classList.contains('hide-for-' + role) ? 'none' : '';
+    });
+    document.querySelectorAll('[class*="role-only-"]').forEach(el => {
+      const classes = Array.from(el.classList);
+      const onlyClasses = classes.filter(c => c.startsWith('role-only-'));
+      const visibleRoles = onlyClasses.map(c => c.replace('role-only-',''));
+      el.style.display = visibleRoles.includes(role) ? '' : 'none';
+    });
+  }
+  switchRole();
+</script>
+
+</body>
+</html>

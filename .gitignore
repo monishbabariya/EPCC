@@ -1,0 +1,41 @@
+# Claude Code personal overrides (never committed)
+.claude/settings.local.json
+CLAUDE.local.md
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Office temp files
+~$*.docx
+~$*.xlsx
+~$*.xlsm
+~$*.pptx
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.env.local
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Build artefacts
+dist/
+build/
+*.log
+*.tmp
+*.bak

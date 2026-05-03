@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>M34 — System Administration & RBAC — Wireframes v1.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #e5e5e5; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .surface-1 { background: #141414; }
+  .surface-2 { background: #1c1c1c; }
+  .border-subtle { border-color: #262626; }
+  .text-cyan { color: #22d3ee; }
+  .bg-cyan { background: #22d3ee; }
+  .border-cyan { border-color: #22d3ee; }
+  .text-dim { color: #9ca3af; }
+  .text-mute { color: #6b7280; }
+  .severity-critical { border-left: 3px solid #ef4444; }
+  .severity-warning { border-left: 3px solid #f59e0b; }
+  .severity-info { border-left: 3px solid #3b82f6; }
+  .severity-success { border-left: 3px solid #10b981; }
+  .pill { padding: 2px 8px; font-size: 11px; border-radius: 3px; font-weight: 500; letter-spacing: 0.02em; }
+  .pill-active { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .pill-locked { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .pill-suspended { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .pill-archived { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+  .pill-internal { background: rgba(34,211,238,0.15); color: #22d3ee; border: 1px solid rgba(34,211,238,0.3); }
+  .pill-external { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+  .pill-system { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .annotation { background: rgba(168,85,247,0.08); border: 1px dashed rgba(168,85,247,0.4); color: #c4b5fd; padding: 10px 14px; font-size: 12px; border-radius: 4px; margin: 12px 0; font-family: 'JetBrains Mono', monospace; }
+  .annotation::before { content: '◆ REVIEWER NOTE — '; font-weight: 700; color: #a855f7; }
+  .field-required::after { content: ' *'; color: #ef4444; }
+  .uppercase-tracked { text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; font-weight: 600; }
+  .row-hover:hover { background: #1c1c1c; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .nav-tab { padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent; font-size: 13px; }
+  .nav-tab.active { color: #22d3ee; border-color: #22d3ee; }
+  .nav-tab:hover:not(.active) { color: #e5e5e5; background: #1c1c1c; }
+  table { font-size: 13px; }
+  th { text-align: left; padding: 10px 12px; background: #1c1c1c; font-weight: 500; color: #9ca3af; text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; border-bottom: 1px solid #262626; }
+  td { padding: 11px 12px; border-bottom: 1px solid #1f1f1f; }
+  input[type="text"], input[type="email"], input[type="date"], input[type="datetime-local"], input[type="password"], input[type="number"], select, textarea {
+    background: #0a0a0a; border: 1px solid #2a2a2a; color: #e5e5e5; padding: 8px 12px; font-size: 13px; border-radius: 3px; width: 100%; font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #22d3ee; box-shadow: 0 0 0 1px rgba(34,211,238,0.2); }
+  input[disabled] { background: #161616; color: #6b7280; cursor: not-allowed; }
+  .btn-primary { background: #22d3ee; color: #0a0a0a; padding: 8px 16px; border-radius: 3px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+  .btn-primary:hover { background: #06b6d4; }
+  .btn-secondary { background: #1c1c1c; color: #e5e5e5; border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 3px; font-size: 13px; cursor: pointer; }
+  .btn-secondary:hover { background: #262626; }
+  .btn-danger { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 8px 16px; border-radius: 3px; font-size: 13px; cursor: pointer; }
+  .btn-danger:hover { background: rgba(239,68,68,0.2); }
+  .btn-icon { padding: 4px 8px; background: transparent; border: 1px solid #2a2a2a; border-radius: 3px; color: #9ca3af; cursor: pointer; font-size: 12px; }
+  .btn-icon:hover { color: #22d3ee; border-color: #22d3ee; }
+  .scope-chip { display: inline-block; padding: 2px 6px; background: #1c1c1c; border: 1px solid #2a2a2a; border-radius: 2px; font-size: 11px; color: #9ca3af; font-family: 'JetBrains Mono', monospace; margin-right: 4px; }
+  .role-disabled { opacity: 0.4; pointer-events: none; }
+  .kpi-card { background: #141414; border: 1px solid #262626; border-radius: 4px; padding: 16px; }
+  .kpi-value { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .kpi-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  details summary { cursor: pointer; padding: 8px 0; }
+  details[open] summary { color: #22d3ee; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ============================================================ -->
+<!-- TOP NAV: Role + View Switcher                                 -->
+<!-- ============================================================ -->
+<header class="border-b border-subtle surface-1 sticky top-0 z-50">
+  <div class="px-6 py-3 flex items-center gap-6">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 bg-cyan rounded-sm flex items-center justify-center text-black font-bold mono">M</div>
+      <div>
+        <div class="text-sm font-semibold">M34 — System Admin & RBAC</div>
+        <div class="text-xs text-mute mono">Wireframes v1.0 · 2026-05-03</div>
+      </div>
+    </div>
+    <div class="ml-auto flex items-center gap-4">
+      <div class="text-xs text-mute uppercase-tracked">Acting as</div>
+      <select id="roleSwitcher" onchange="switchRole()" class="!w-auto">
+        <option value="SYSTEM_ADMIN">SYSTEM_ADMIN</option>
+        <option value="PMO_DIRECTOR" selected>PMO_DIRECTOR</option>
+        <option value="PORTFOLIO_MANAGER">PORTFOLIO_MANAGER</option>
+        <option value="PROJECT_DIRECTOR">PROJECT_DIRECTOR</option>
+        <option value="SITE_MANAGER">SITE_MANAGER</option>
+        <option value="FINANCE_LEAD">FINANCE_LEAD</option>
+        <option value="READ_ONLY">READ_ONLY</option>
+      </select>
+      <div class="text-xs text-dim mono">priya.sharma@kdmc</div>
+    </div>
+  </div>
+  <nav class="flex border-t border-subtle overflow-x-auto">
+    <div class="nav-tab active" onclick="switchView('login')">1. Login</div>
+    <div class="nav-tab" onclick="switchView('mfa')">2. MFA</div>
+    <div class="nav-tab" onclick="switchView('reset')">3. Password Reset</div>
+    <div class="nav-tab" onclick="switchView('users')">4. User Mgmt</div>
+    <div class="nav-tab" onclick="switchView('roles')">5. Role Assignment</div>
+    <div class="nav-tab" onclick="switchView('audit')">6. Audit Log</div>
+    <div class="nav-tab" onclick="switchView('profile')">7. Self-Profile</div>
+    <div class="nav-tab" onclick="switchView('tenant')">8. Tenant Config</div>
+    <div class="nav-tab" onclick="switchView('flags')">9. Feature Flags</div>
+    <div class="nav-tab" onclick="switchView('codes')">10. Code Masters</div>
+    <div class="nav-tab" onclick="switchView('external')">11. External Users</div>
+    <div class="nav-tab" onclick="switchView('apikeys')">12. API Keys</div>
+  </nav>
+</header>
+
+<main class="px-6 py-6 max-w-[1400px] mx-auto">
+
+<!-- ============================================================ -->
+<!-- VIEW 1: LOGIN                                                 -->
+<!-- ============================================================ -->
+<section id="view-login" class="view active">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 1 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">Login</h2>
+    <div class="text-xs text-dim mt-1">Public route. All roles. Local auth shown; OIDC button conditional on tenant config.</div>
+  </div>
+
+  <div class="annotation">
+    Permission required: PUBLIC · BR-34-003 (login attempt) · BR-34-004 (lockout at 5 fails) · BR-34-031 (rate-limit) · OQ-1.6 (Local + OIDC supported)
+  </div>
+
+  <div class="max-w-md mx-auto surface-1 border border-subtle rounded p-6 mt-8">
+    <div class="text-center mb-6">
+      <div class="w-12 h-12 mx-auto bg-cyan rounded flex items-center justify-center text-black font-bold text-xl mono">EPCC</div>
+      <div class="mt-3 text-sm text-dim">Sign in to your tenant</div>
+    </div>
+
+    <div class="mb-4">
+      <label class="text-xs uppercase-tracked text-mute field-required">Tenant Code</label>
+      <input type="text" placeholder="e.g., KDMC" value="KDMC" class="mt-1 mono uppercase">
+    </div>
+    <div class="mb-4">
+      <label class="text-xs uppercase-tracked text-mute field-required">Username or Email</label>
+      <input type="text" placeholder="username or email" class="mt-1">
+    </div>
+    <div class="mb-4">
+      <label class="text-xs uppercase-tracked text-mute field-required">Password</label>
+      <input type="password" placeholder="••••••••••••" class="mt-1">
+    </div>
+    <div class="flex items-center justify-between text-xs mb-4">
+      <label class="flex items-center gap-2 text-dim cursor-pointer">
+        <input type="checkbox" class="!w-auto">
+        Remember device 30 days
+      </label>
+      <a href="#" onclick="switchView('reset')" class="text-cyan hover:underline">Forgot password?</a>
+    </div>
+    <button class="btn-primary w-full">Sign in</button>
+
+    <div class="my-4 text-center text-xs text-mute uppercase-tracked relative">
+      <span class="surface-1 px-3 relative z-10">or</span>
+      <div class="absolute top-1/2 left-0 right-0 border-t border-subtle"></div>
+    </div>
+
+    <button class="btn-secondary w-full">Sign in with SSO (OIDC)</button>
+
+    <div class="mt-6 text-xs text-mute text-center">
+      Having trouble? Contact your <span class="text-dim">SYSTEM_ADMIN</span>
+    </div>
+  </div>
+
+  <div class="max-w-md mx-auto mt-4 surface-1 border severity-critical rounded p-4 text-xs">
+    <div class="text-red-400 uppercase-tracked mb-1">Lockout state (post-5-fails)</div>
+    <div class="text-dim">Account locked for security. Try again in <span class="mono text-red-400">28 min 14s</span>. <span class="text-cyan">Reset password</span> to unlock.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 2: MFA                                                   -->
+<!-- ============================================================ -->
+<section id="view-mfa" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 2 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">MFA Verification</h2>
+    <div class="text-xs text-dim mt-1">Mandatory for SYSTEM_ADMIN, PMO_DIRECTOR. Optional otherwise. Per BR-34-005.</div>
+  </div>
+
+  <div class="annotation">Permission required: PUBLIC (post-password) · OQ-2.6 (MFA mandatory roles) · BR-34-030 (backup codes)</div>
+
+  <div class="max-w-md mx-auto surface-1 border border-subtle rounded p-6 mt-8">
+    <div class="text-center mb-6">
+      <div class="text-cyan text-xs uppercase-tracked">Two-Factor Required</div>
+      <div class="mt-2 text-sm">Enter the 6-digit code from your authenticator app</div>
+    </div>
+
+    <div class="flex gap-2 justify-center mb-4">
+      <input type="text" maxlength="1" class="!w-12 h-14 text-center text-xl mono">
+      <input type="text" maxlength="1" class="!w-12 h-14 text-center text-xl mono">
+      <input type="text" maxlength="1" class="!w-12 h-14 text-center text-xl mono">
+      <input type="text" maxlength="1" class="!w-12 h-14 text-center text-xl mono">
+      <input type="text" maxlength="1" class="!w-12 h-14 text-center text-xl mono">
+      <input type="text" maxlength="1" class="!w-12 h-14 text-center text-xl mono">
+    </div>
+
+    <button class="btn-primary w-full">Verify</button>
+
+    <div class="mt-6 pt-4 border-t border-subtle text-xs text-center">
+      <a href="#" class="text-cyan hover:underline">Use a backup code instead →</a>
+      <div class="text-mute mt-2">Lost device? <a href="#" class="text-cyan hover:underline">Contact SYSTEM_ADMIN</a></div>
+    </div>
+  </div>
+
+  <details class="max-w-md mx-auto mt-6 surface-1 border border-subtle rounded p-4">
+    <summary class="text-xs uppercase-tracked text-mute">► MFA Enrollment Flow (first-time setup)</summary>
+    <div class="mt-4 space-y-3 text-xs text-dim">
+      <div class="flex gap-3">
+        <div class="mono text-cyan">1.</div>
+        <div>System generates TOTP secret + 10 backup codes (BR-34-016)</div>
+      </div>
+      <div class="flex gap-3">
+        <div class="mono text-cyan">2.</div>
+        <div>Display QR code (encrypted secret embedded). User scans with Google Authenticator / Authy / 1Password</div>
+      </div>
+      <div class="flex gap-3">
+        <div class="mono text-cyan">3.</div>
+        <div>User enters current 6-digit TOTP code to verify enrollment</div>
+      </div>
+      <div class="flex gap-3">
+        <div class="mono text-cyan">4.</div>
+        <div>Display backup codes ONCE. User downloads or copies. <span class="text-amber-400">Acknowledged checkbox required.</span></div>
+      </div>
+      <div class="flex gap-3">
+        <div class="mono text-cyan">5.</div>
+        <div>User.mfa_enabled = true. SystemAuditLog: MFA_ENROLLED.</div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 3: PASSWORD RESET                                        -->
+<!-- ============================================================ -->
+<section id="view-reset" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 3 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">Password Reset</h2>
+    <div class="text-xs text-dim mt-1">Self-service. 1-hour token, single-use. 3 requests/hour rate limit.</div>
+  </div>
+
+  <div class="annotation">Permission required: PUBLIC · BR-34-008 (reset request) · BR-34-009 (token consume) · BR-34-031 (rate-limit) · OQ-2.10 (1h expiry)</div>
+
+  <div class="grid grid-cols-2 gap-6 mt-6">
+    <div class="surface-1 border border-subtle rounded p-6">
+      <div class="uppercase-tracked text-cyan mb-1 text-xs">Step 1 — Request Reset</div>
+      <div class="text-sm mb-4">We'll email you a single-use reset link.</div>
+      <label class="text-xs uppercase-tracked text-mute field-required">Email</label>
+      <input type="email" placeholder="you@organisation.com" class="mt-1 mb-4">
+      <button class="btn-primary w-full">Send reset link</button>
+      <div class="mt-4 text-xs text-mute">For security, we always show the same message regardless of whether the email exists.</div>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded p-6">
+      <div class="uppercase-tracked text-cyan mb-1 text-xs">Step 2 — Set New Password</div>
+      <div class="text-sm mb-4">Token expires in <span class="mono text-amber-400">59:42</span></div>
+      <label class="text-xs uppercase-tracked text-mute field-required">New password</label>
+      <input type="password" placeholder="min 12 chars" class="mt-1 mb-2">
+      <div class="text-xs text-dim mb-1 mono">
+        ✓ 12+ chars &nbsp;✓ Upper &nbsp;✓ Lower &nbsp;✓ Digit &nbsp;<span class="text-red-400">✗ Symbol</span>
+      </div>
+      <div class="text-xs text-amber-400 mb-3 mono">⚠ Cannot reuse last 3 passwords</div>
+      <label class="text-xs uppercase-tracked text-mute field-required">Confirm new password</label>
+      <input type="password" class="mt-1 mb-4">
+      <button class="btn-primary w-full">Set password</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 4: USER MANAGEMENT DASHBOARD                             -->
+<!-- ============================================================ -->
+<section id="view-users" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 4 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">User Management</h2>
+    <div class="text-xs text-dim mt-1">Internal users. SYSTEM_ADMIN + PMO_DIRECTOR only.</div>
+  </div>
+
+  <div class="annotation">Permission required: <span class="mono">view_user, create_user, edit_user, suspend_user, terminate_user</span> · Hidden from PORTFOLIO_MANAGER, PROJECT_DIRECTOR, others</div>
+
+  <div class="role-restricted hide-for-PORTFOLIO_MANAGER hide-for-PROJECT_DIRECTOR hide-for-SITE_MANAGER hide-for-FINANCE_LEAD hide-for-READ_ONLY">
+
+    <!-- KPI strip -->
+    <div class="grid grid-cols-5 gap-3 mb-5">
+      <div class="kpi-card"><div class="kpi-value text-emerald-400">42</div><div class="kpi-label">Active</div></div>
+      <div class="kpi-card"><div class="kpi-value text-amber-400">3</div><div class="kpi-label">Suspended</div></div>
+      <div class="kpi-card"><div class="kpi-value text-red-400">1</div><div class="kpi-label">Locked</div></div>
+      <div class="kpi-card"><div class="kpi-value">5</div><div class="kpi-label">Pending First Login</div></div>
+      <div class="kpi-card"><div class="kpi-value text-cyan">38</div><div class="kpi-label">MFA Enabled</div></div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 flex-wrap text-xs">
+      <input type="text" placeholder="Search name, email, employee code..." class="!w-64">
+      <select class="!w-auto"><option>All statuses</option><option>Active</option><option>Suspended</option><option>Locked</option><option>Archived</option></select>
+      <select class="!w-auto"><option>All roles</option><option>PMO_DIRECTOR</option><option>PROJECT_DIRECTOR</option></select>
+      <select class="!w-auto"><option>All projects</option><option>KDMC-001-DBOT</option></select>
+      <select class="!w-auto"><option>Any login</option><option>Last 7 days</option><option>30+ days inactive</option><option>Never</option></select>
+      <select class="!w-auto"><option>MFA: any</option><option>Enabled</option><option>Disabled</option></select>
+      <div class="ml-auto flex gap-2">
+        <button class="btn-secondary">Export CSV</button>
+        <button class="btn-primary">+ Create User</button>
+      </div>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded overflow-hidden">
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th class="!w-8"><input type="checkbox" class="!w-auto"></th>
+            <th>User</th>
+            <th>Designation</th>
+            <th>Roles</th>
+            <th>Last Login</th>
+            <th>MFA</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover">
+            <td><input type="checkbox" class="!w-auto"></td>
+            <td>
+              <div class="font-medium">Priya Sharma</div>
+              <div class="text-xs text-mute mono">priya.sharma · priya@kdmc</div>
+            </td>
+            <td class="text-dim">PMO Director</td>
+            <td>
+              <span class="pill pill-internal mono">PMO_DIRECTOR</span>
+              <span class="text-mute text-xs">tenant-wide</span>
+            </td>
+            <td class="mono text-xs">2026-05-03 09:14</td>
+            <td><span class="pill pill-active">ON</span></td>
+            <td><span class="pill pill-active">Active</span></td>
+            <td><button class="btn-icon">···</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td><input type="checkbox" class="!w-auto"></td>
+            <td>
+              <div class="font-medium">Rahul Mehta</div>
+              <div class="text-xs text-mute mono">rahul.m · rahul@kdmc</div>
+            </td>
+            <td class="text-dim">Project Director, KDMC</td>
+            <td>
+              <span class="pill pill-internal mono">PROJECT_DIRECTOR</span>
+              <span class="scope-chip">KDMC-001</span>
+            </td>
+            <td class="mono text-xs">2026-05-03 08:42</td>
+            <td><span class="pill pill-active">ON</span></td>
+            <td><span class="pill pill-active">Active</span></td>
+            <td><button class="btn-icon">···</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td><input type="checkbox" class="!w-auto"></td>
+            <td>
+              <div class="font-medium">Anjali Iyer</div>
+              <div class="text-xs text-mute mono">anjali.i · anjali@kdmc</div>
+            </td>
+            <td class="text-dim">QS Manager</td>
+            <td>
+              <span class="pill pill-internal mono">QS_MANAGER</span>
+              <span class="scope-chip">KDMC-001</span>
+            </td>
+            <td class="mono text-xs">2026-05-02 17:20</td>
+            <td><span class="pill pill-archived">OFF</span></td>
+            <td><span class="pill pill-active">Active</span></td>
+            <td><button class="btn-icon">···</button></td>
+          </tr>
+          <tr class="row-hover severity-warning">
+            <td><input type="checkbox" class="!w-auto"></td>
+            <td>
+              <div class="font-medium">Suresh Kumar</div>
+              <div class="text-xs text-mute mono">suresh.k · suresh@kdmc</div>
+            </td>
+            <td class="text-dim">Site Manager</td>
+            <td>
+              <span class="pill pill-internal mono">SITE_MANAGER</span>
+              <span class="scope-chip">PKG-CIV-A</span>
+              <span class="scope-chip">PKG-CIV-B</span>
+            </td>
+            <td class="mono text-xs text-amber-400">2026-02-12 (89 d ago)</td>
+            <td><span class="pill pill-archived">OFF</span></td>
+            <td><span class="pill pill-suspended">Suspended</span></td>
+            <td><button class="btn-icon">···</button></td>
+          </tr>
+          <tr class="row-hover severity-critical">
+            <td><input type="checkbox" class="!w-auto"></td>
+            <td>
+              <div class="font-medium">Test User</div>
+              <div class="text-xs text-mute mono">test.user · test@kdmc</div>
+            </td>
+            <td class="text-mute">—</td>
+            <td><span class="pill pill-internal mono">READ_ONLY</span></td>
+            <td class="mono text-xs text-red-400">5 fails · locked</td>
+            <td><span class="pill pill-archived">OFF</span></td>
+            <td><span class="pill pill-locked">Locked</span></td>
+            <td><button class="btn-icon">···</button></td>
+          </tr>
+          <tr class="row-hover">
+            <td><input type="checkbox" class="!w-auto"></td>
+            <td>
+              <div class="font-medium">Sandeep Patel <span class="pill pill-active ml-2">NEW</span></div>
+              <div class="text-xs text-mute mono">sandeep.p · sandeep@kdmc</div>
+            </td>
+            <td class="text-dim">Planning Engineer</td>
+            <td>
+              <span class="pill pill-internal mono">PLANNING_ENGINEER</span>
+              <span class="scope-chip">KDMC-001</span>
+            </td>
+            <td class="mono text-xs text-mute">— (pending)</td>
+            <td><span class="pill pill-archived">OFF</span></td>
+            <td><span class="pill pill-suspended">Pending First Login</span></td>
+            <td><button class="btn-icon">···</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="px-4 py-3 border-t border-subtle text-xs text-mute flex items-center justify-between">
+        <div>Showing 1–6 of 47 users</div>
+        <div class="flex gap-2">
+          <button class="btn-icon">‹</button>
+          <span class="px-2 mono">1</span>
+          <span class="px-2 mono text-mute">2</span>
+          <span class="px-2 mono text-mute">3</span>
+          <button class="btn-icon">›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk action bar (shown on selection) -->
+    <div class="mt-4 surface-2 border border-cyan rounded p-3 flex items-center gap-3 text-xs">
+      <span class="text-cyan mono">3 selected</span>
+      <button class="btn-secondary">Suspend</button>
+      <button class="btn-secondary">Force password reset</button>
+      <button class="btn-danger">Terminate</button>
+      <button class="btn-icon ml-auto">Clear</button>
+    </div>
+
+    <!-- Create user modal sketch -->
+    <details class="mt-6 surface-1 border border-subtle rounded p-4">
+      <summary class="text-xs uppercase-tracked text-cyan">► Create User Modal (preview)</summary>
+      <div class="mt-4 grid grid-cols-2 gap-4">
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Username</label><input type="text" class="mt-1 mono"></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Email</label><input type="email" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Full name</label><input type="text" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute">Display name</label><input type="text" placeholder="auto from full name" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute">Phone (+91)</label><input type="text" class="mt-1 mono"></div>
+        <div><label class="text-xs uppercase-tracked text-mute">Employee code</label><input type="text" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute">Designation</label><input type="text" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute">Department</label><input type="text" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Auth method</label><select class="mt-1"><option>Local</option><option>OIDC</option></select></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Joined date</label><input type="date" class="mt-1"></div>
+        <div class="col-span-2"><label class="text-xs uppercase-tracked text-mute">Affiliated Party (optional)</label><select class="mt-1"><option>—None—</option><option>SN Joshi Consultants Pvt Ltd</option><option>L&T Construction</option></select><div class="text-xs text-mute mt-1">If user is employed by an external party (contractor, consultant), link here.</div></div>
+        <div class="col-span-2"><label class="text-xs uppercase-tracked text-cyan field-required">Initial role assignment</label>
+          <div class="surface-2 border border-subtle rounded p-3 mt-1 text-xs">
+            <div class="flex gap-2 items-center"><select class="!w-auto"><option>PLANNING_ENGINEER</option></select><select class="!w-auto"><option>KDMC-001-DBOT</option></select><span class="text-mute">scope:</span><select class="!w-auto"><option>Own_Project</option></select><button class="btn-icon">+ Add another</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-mute">Temp password emailed to user. password_must_change = true on first login.</div>
+      <div class="mt-4 flex gap-2 justify-end">
+        <button class="btn-secondary">Cancel</button>
+        <button class="btn-primary">Create user</button>
+      </div>
+    </details>
+  </div>
+
+  <!-- Restricted view for non-admins -->
+  <div class="role-only-PORTFOLIO_MANAGER role-only-PROJECT_DIRECTOR role-only-SITE_MANAGER role-only-FINANCE_LEAD role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">User Management is visible only to <span class="mono text-cyan">SYSTEM_ADMIN</span> and <span class="mono text-cyan">PMO_DIRECTOR</span>.</div>
+    <div class="text-xs text-mute mt-2">Switch role above to test this view.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 5: ROLE ASSIGNMENT (per user)                            -->
+<!-- ============================================================ -->
+<section id="view-roles" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 5 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">Role Assignment</h2>
+    <div class="text-xs text-dim mt-1">Per-user, per-project. PROJECT_DIRECTOR can assign only roles below own level.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">assign_role, revoke_role</span> · BR-34-010 (assignment) · BR-34-011 (revocation) · OQ-1.2 (per-project)</div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <!-- Left: User card -->
+    <div class="surface-1 border border-subtle rounded p-5">
+      <div class="flex items-start gap-3">
+        <div class="w-12 h-12 surface-2 rounded flex items-center justify-center mono text-xl">RM</div>
+        <div>
+          <div class="font-semibold">Rahul Mehta</div>
+          <div class="text-xs text-mute mono">rahul.m</div>
+          <div class="text-xs text-dim mt-1">rahul@kdmc</div>
+        </div>
+      </div>
+      <div class="mt-4 space-y-2 text-xs">
+        <div class="flex justify-between"><span class="text-mute uppercase-tracked">Status</span><span class="pill pill-active">Active</span></div>
+        <div class="flex justify-between"><span class="text-mute uppercase-tracked">MFA</span><span class="pill pill-active">ON</span></div>
+        <div class="flex justify-between"><span class="text-mute uppercase-tracked">Joined</span><span class="mono">2024-09-15</span></div>
+        <div class="flex justify-between"><span class="text-mute uppercase-tracked">Last login</span><span class="mono">2026-05-03 08:42</span></div>
+        <div class="flex justify-between"><span class="text-mute uppercase-tracked">Designation</span><span class="text-dim">Project Director</span></div>
+        <div class="flex justify-between"><span class="text-mute uppercase-tracked">Party</span><span class="text-dim">— (internal)</span></div>
+      </div>
+    </div>
+
+    <!-- Right: Role assignments -->
+    <div class="col-span-2 surface-1 border border-subtle rounded p-5">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="uppercase-tracked text-cyan text-xs">Active Role Assignments</div>
+          <div class="text-xs text-mute mt-1">Per-project. User can have different roles on different projects.</div>
+        </div>
+        <button class="btn-primary">+ Assign Role</button>
+      </div>
+
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Project</th>
+            <th>Scope</th>
+            <th>Valid Until</th>
+            <th>Assigned By</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover">
+            <td><span class="pill pill-internal mono">PROJECT_DIRECTOR</span></td>
+            <td class="mono text-xs">KDMC-001-DBOT</td>
+            <td><span class="scope-chip">All</span></td>
+            <td class="mono text-xs text-mute">— indefinite</td>
+            <td class="text-dim text-xs">Priya Sharma · 2024-09-15</td>
+            <td>
+              <button class="btn-icon">Edit</button>
+              <button class="btn-icon">Revoke</button>
+            </td>
+          </tr>
+          <tr class="row-hover">
+            <td><span class="pill pill-internal mono">PORTFOLIO_MANAGER</span></td>
+            <td class="text-xs text-mute">tenant-wide</td>
+            <td><span class="scope-chip">All</span></td>
+            <td class="mono text-xs">2026-12-31</td>
+            <td class="text-dim text-xs">Priya Sharma · 2025-03-12</td>
+            <td>
+              <button class="btn-icon">Edit</button>
+              <button class="btn-icon">Revoke</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-4">
+        <details class="surface-2 border border-subtle rounded p-3">
+          <summary class="text-xs uppercase-tracked text-mute">► Revoked / Expired (1)</summary>
+          <table class="w-full mt-3">
+            <tbody>
+              <tr class="text-mute opacity-60">
+                <td><span class="pill pill-archived mono">PLANNING_ENGINEER</span></td>
+                <td class="mono text-xs">KDMC-000-PILOT</td>
+                <td class="text-xs">Revoked: "Promoted to PM"</td>
+                <td class="mono text-xs">2024-09-15</td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+
+      <!-- Assign role panel -->
+      <div class="mt-6 surface-2 border border-cyan rounded p-4">
+        <div class="uppercase-tracked text-cyan text-xs mb-3">+ Assign New Role</div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute field-required">Role</label>
+            <select class="mt-1 mono">
+              <option>PLANNING_ENGINEER</option>
+              <option>QS_MANAGER</option>
+              <option>PROCUREMENT_OFFICER</option>
+              <option>SITE_MANAGER</option>
+              <option>COMPLIANCE_MANAGER</option>
+              <option>ANALYST</option>
+              <option>READ_ONLY</option>
+              <option disabled>──── above your level ────</option>
+              <option disabled>PROJECT_DIRECTOR (PROJECT_DIRECTOR cannot grant)</option>
+              <option disabled>PORTFOLIO_MANAGER (PROJECT_DIRECTOR cannot grant)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute field-required">Project</label>
+            <select class="mt-1 mono">
+              <option>KDMC-001-DBOT</option>
+              <option>—Tenant-wide— (PMO_DIRECTOR only)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Scope override</label>
+            <select class="mt-1"><option>Use role default (Own_Project)</option><option>Own_Package</option><option>Own_Record</option></select>
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Valid until</label>
+            <input type="date" class="mt-1 mono">
+            <div class="text-xs text-mute mt-1">Leave blank for indefinite</div>
+          </div>
+          <div class="col-span-2 role-only-SITE_MANAGER role-only-PLANNING_ENGINEER" style="display:none">
+            <label class="text-xs uppercase-tracked text-mute">Package scope (multi-select for SITE_MANAGER)</label>
+            <input type="text" placeholder="Search packages..." class="mt-1">
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-amber-400">
+          ⚠ Assigning a role logs SystemAuditLog.ROLE_ASSIGNED (privileged). User's permission cache invalidated immediately.
+        </div>
+        <div class="mt-3 flex gap-2 justify-end">
+          <button class="btn-secondary">Cancel</button>
+          <button class="btn-primary">Assign role</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 6: AUDIT LOG                                             -->
+<!-- ============================================================ -->
+<section id="view-audit" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 6 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">System Audit Log</h2>
+    <div class="text-xs text-dim mt-1">Cross-cutting events only (auth, RBAC, tenant, code masters, feature flags). Module events live in their own audit tables.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">view_system_audit</span> · SYSTEM_ADMIN, PMO_DIRECTOR · OQ-1.8 hybrid · OQ-2.7 retention (permanent privileged, 7y routine)</div>
+
+  <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 flex-wrap text-xs">
+    <select class="!w-auto"><option>All categories</option><option>Auth</option><option>RBAC</option><option>Tenant_Config</option><option>Code_Master</option><option>Feature_Flag</option><option>API_Key</option><option>User_Lifecycle</option></select>
+    <select class="!w-auto"><option>All event types</option><option>LOGIN_SUCCESS</option><option>LOGIN_FAILED</option><option>USER_LOCKED</option><option>ROLE_ASSIGNED</option><option>ROLE_REVOKED</option></select>
+    <input type="text" placeholder="Actor user..." class="!w-48">
+    <input type="text" placeholder="Target user..." class="!w-48">
+    <select class="!w-auto"><option>All severity</option><option>Critical</option><option>Warning</option><option>Info</option></select>
+    <input type="datetime-local" class="!w-48 mono text-xs">
+    <span class="text-mute">to</span>
+    <input type="datetime-local" class="!w-48 mono text-xs">
+    <div class="ml-auto"><button class="btn-secondary">Export CSV</button></div>
+  </div>
+
+  <div class="surface-1 border border-subtle rounded overflow-hidden">
+    <table class="w-full">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Category</th>
+          <th>Event Type</th>
+          <th>Actor</th>
+          <th>Target</th>
+          <th>Detail</th>
+          <th>IP</th>
+          <th>Severity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-hover severity-critical">
+          <td class="mono text-xs">2026-05-03 09:14:22</td>
+          <td class="text-xs uppercase-tracked text-mute">RBAC</td>
+          <td class="mono text-xs">ROLE_ASSIGNED</td>
+          <td class="text-dim text-xs">priya.sharma</td>
+          <td class="text-dim text-xs">sandeep.p</td>
+          <td class="text-xs">PLANNING_ENGINEER on KDMC-001</td>
+          <td class="mono text-xs text-mute">10.40.2.18</td>
+          <td><span class="pill pill-internal">Info</span></td>
+        </tr>
+        <tr class="row-hover severity-info">
+          <td class="mono text-xs">2026-05-03 09:01:08</td>
+          <td class="text-xs uppercase-tracked text-mute">Auth</td>
+          <td class="mono text-xs">LOGIN_SUCCESS</td>
+          <td class="text-dim text-xs">priya.sharma</td>
+          <td class="text-mute text-xs">—</td>
+          <td class="text-xs">MFA verified · session 8h</td>
+          <td class="mono text-xs text-mute">10.40.2.18</td>
+          <td><span class="pill pill-internal">Info</span></td>
+        </tr>
+        <tr class="row-hover severity-warning">
+          <td class="mono text-xs">2026-05-03 08:53:44</td>
+          <td class="text-xs uppercase-tracked text-mute">Auth</td>
+          <td class="mono text-xs text-amber-400">USER_LOCKED</td>
+          <td class="text-mute text-xs">— system</td>
+          <td class="text-dim text-xs">test.user</td>
+          <td class="text-xs text-amber-400">5 failed attempts in 7 min</td>
+          <td class="mono text-xs text-amber-400">203.0.113.42</td>
+          <td><span class="pill pill-suspended">Warning</span></td>
+        </tr>
+        <tr class="row-hover severity-critical">
+          <td class="mono text-xs">2026-05-02 18:22:11</td>
+          <td class="text-xs uppercase-tracked text-mute">User_Lifecycle</td>
+          <td class="mono text-xs text-red-400">USER_TERMINATED</td>
+          <td class="text-dim text-xs">priya.sharma</td>
+          <td class="text-dim text-xs">old.engineer</td>
+          <td class="text-xs">5 role assignments revoked · 2 sessions killed</td>
+          <td class="mono text-xs text-mute">10.40.2.18</td>
+          <td><span class="pill pill-locked">Critical</span></td>
+        </tr>
+        <tr class="row-hover severity-info">
+          <td class="mono text-xs">2026-05-02 16:40:33</td>
+          <td class="text-xs uppercase-tracked text-mute">Feature_Flag</td>
+          <td class="mono text-xs">FEATURE_FLAG_CHANGED</td>
+          <td class="text-dim text-xs">priya.sharma</td>
+          <td class="text-mute text-xs">—</td>
+          <td class="text-xs"><span class="mono text-cyan">M26_AI_INTELLIGENCE_ENABLED</span> false → true · scope: KDMC-001</td>
+          <td class="mono text-xs text-mute">10.40.2.18</td>
+          <td><span class="pill pill-internal">Info</span></td>
+        </tr>
+        <tr class="row-hover severity-info">
+          <td class="mono text-xs">2026-05-02 14:11:09</td>
+          <td class="text-xs uppercase-tracked text-mute">Auth</td>
+          <td class="mono text-xs">PASSWORD_CHANGED</td>
+          <td class="text-dim text-xs">anjali.i</td>
+          <td class="text-mute text-xs">self</td>
+          <td class="text-xs">All other sessions revoked</td>
+          <td class="mono text-xs text-mute">10.40.2.66</td>
+          <td><span class="pill pill-internal">Info</span></td>
+        </tr>
+        <tr class="row-hover severity-critical">
+          <td class="mono text-xs">2026-05-02 11:00:14</td>
+          <td class="text-xs uppercase-tracked text-mute">API_Key</td>
+          <td class="mono text-xs text-red-400">API_KEY_CREATED</td>
+          <td class="text-dim text-xs">sysadmin</td>
+          <td class="text-mute text-xs">—</td>
+          <td class="text-xs">Tally_Export_KDMC_Prod · expires 2027-05-02</td>
+          <td class="mono text-xs text-mute">10.40.1.5</td>
+          <td><span class="pill pill-locked">Critical</span></td>
+        </tr>
+        <tr class="row-hover severity-info">
+          <td class="mono text-xs">2026-05-01 22:30:00</td>
+          <td class="text-xs uppercase-tracked text-mute">Auth</td>
+          <td class="mono text-xs text-mute">PASSWORD_EXPIRY_FORCED</td>
+          <td class="text-mute text-xs">— system</td>
+          <td class="text-dim text-xs">3 users</td>
+          <td class="text-xs">90-day rotation policy · daily batch</td>
+          <td class="text-mute text-xs">—</td>
+          <td><span class="pill pill-internal">Info</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="px-4 py-3 border-t border-subtle text-xs text-mute flex items-center justify-between">
+      <div>Showing 1–8 of 14,892 events · Retention: privileged permanent, routine 7y</div>
+      <div class="flex gap-2 mono">
+        <button class="btn-icon">‹</button>
+        <span class="px-2">1</span> <span class="text-mute">/ 1862</span>
+        <button class="btn-icon">›</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 surface-2 border border-subtle rounded p-3 text-xs text-mute">
+    <span class="uppercase-tracked text-mute">◆ Field-level audit detail expand</span> — clicking any row opens drawer with full from/to JSON, request headers, and related events on same session.
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 7: SELF-SERVICE PROFILE                                  -->
+<!-- ============================================================ -->
+<section id="view-profile" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 7 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">My Profile</h2>
+    <div class="text-xs text-dim mt-1">Self-service. Available to all authenticated users.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">view_self_profile, edit_self_profile</span> · All roles · BR-34-006 (password change) · BR-34-016 (MFA enroll)</div>
+
+  <div class="grid grid-cols-3 gap-6">
+
+    <div class="col-span-2 space-y-6">
+      <!-- Profile section -->
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">Profile</div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="text-xs uppercase-tracked text-mute">Username</label><input type="text" value="priya.sharma" disabled class="mt-1 mono"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">Email</label><input type="email" value="priya@kdmc" disabled class="mt-1"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">Full name</label><input type="text" value="Priya Sharma" class="mt-1"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">Display name</label><input type="text" value="Priya" class="mt-1"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">Phone</label><input type="text" value="+919820012345" class="mt-1 mono"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">Designation</label><input type="text" value="PMO Director" class="mt-1"></div>
+        </div>
+        <div class="mt-3 flex justify-end"><button class="btn-primary">Save changes</button></div>
+      </div>
+
+      <!-- Security section -->
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">Security</div>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 surface-2 rounded">
+            <div>
+              <div class="text-sm">Password</div>
+              <div class="text-xs text-mute mt-1">Last changed <span class="mono">2026-04-12</span> · expires in <span class="mono text-amber-400">22 days</span></div>
+            </div>
+            <button class="btn-secondary">Change password</button>
+          </div>
+
+          <div class="flex items-center justify-between p-3 surface-2 rounded severity-success">
+            <div>
+              <div class="text-sm flex items-center gap-2">Multi-Factor Authentication <span class="pill pill-active">REQUIRED</span></div>
+              <div class="text-xs text-mute mt-1">TOTP enrolled · 7 of 10 backup codes remaining</div>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn-secondary">Regenerate backup codes</button>
+              <button class="btn-icon" disabled title="MFA mandatory for PMO_DIRECTOR">Disable</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between p-3 surface-2 rounded">
+            <div>
+              <div class="text-sm">Active Sessions</div>
+              <div class="text-xs text-mute mt-1">2 devices · max 3 allowed</div>
+            </div>
+            <button class="btn-secondary">Manage sessions</button>
+          </div>
+        </div>
+
+        <details class="mt-4">
+          <summary class="text-xs uppercase-tracked text-mute">► Active sessions detail</summary>
+          <table class="w-full mt-3">
+            <thead><tr><th>Device</th><th>Started</th><th>Last activity</th><th>IP</th><th></th></tr></thead>
+            <tbody>
+              <tr class="row-hover">
+                <td class="text-xs">Mac · Chrome 130 <span class="pill pill-active ml-2">CURRENT</span></td>
+                <td class="mono text-xs">2026-05-03 09:01</td>
+                <td class="mono text-xs">just now</td>
+                <td class="mono text-xs text-mute">10.40.2.18</td>
+                <td class="text-mute text-xs">—</td>
+              </tr>
+              <tr class="row-hover">
+                <td class="text-xs">iPhone · Safari · PF01 mobile</td>
+                <td class="mono text-xs">2026-05-02 18:30</td>
+                <td class="mono text-xs">2h ago</td>
+                <td class="mono text-xs text-mute">10.40.5.22</td>
+                <td><button class="btn-icon">Revoke</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+
+      <!-- Notifications section -->
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">Notification Preferences</div>
+        <table class="w-full">
+          <thead><tr><th>Severity</th><th class="text-center !w-24">In-App</th><th class="text-center !w-24">Email</th><th class="text-center !w-24">WhatsApp</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill pill-locked">Critical</span></td><td class="text-center"><input type="checkbox" checked disabled></td><td class="text-center"><input type="checkbox" checked disabled></td><td class="text-center"><input type="checkbox" checked></td></tr>
+            <tr><td><span class="pill pill-suspended">High</span></td><td class="text-center"><input type="checkbox" checked></td><td class="text-center"><input type="checkbox" checked></td><td class="text-center"><input type="checkbox" checked></td></tr>
+            <tr><td><span class="pill pill-internal">Medium</span></td><td class="text-center"><input type="checkbox" checked></td><td class="text-center"><input type="checkbox"></td><td class="text-center"><input type="checkbox"></td></tr>
+            <tr><td><span class="pill pill-archived">Low</span></td><td class="text-center"><input type="checkbox" checked></td><td class="text-center"><input type="checkbox"></td><td class="text-center"><input type="checkbox"></td></tr>
+            <tr><td><span class="text-mute text-xs">Info</span></td><td class="text-center"><input type="checkbox" checked></td><td class="text-center"><input type="checkbox"></td><td class="text-center"><input type="checkbox"></td></tr>
+          </tbody>
+        </table>
+        <div class="mt-4 grid grid-cols-3 gap-3 items-end">
+          <div><label class="text-xs uppercase-tracked text-mute">WhatsApp number</label><input type="text" value="+919820012345" class="mt-1 mono"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">Quiet hours start</label><input type="text" value="22:00" class="mt-1 mono"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">Quiet hours end</label><input type="text" value="07:00" class="mt-1 mono"></div>
+        </div>
+        <label class="flex items-center gap-2 text-xs text-dim mt-3"><input type="checkbox" class="!w-auto"> Critical bypasses quiet hours (recommended)</label>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <!-- My roles -->
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">My Roles</div>
+        <div class="space-y-2 text-xs">
+          <div class="p-3 surface-2 rounded">
+            <span class="pill pill-internal mono">PMO_DIRECTOR</span>
+            <div class="text-mute mt-2">Tenant-wide</div>
+            <div class="text-mute mt-1">Indefinite</div>
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-mute">Need a different role? Contact your <span class="text-cyan">SYSTEM_ADMIN</span></div>
+      </div>
+
+      <!-- Recent self-audit -->
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">My Recent Activity</div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between text-dim"><span class="mono">2026-05-03 09:01</span><span>Login success</span></div>
+          <div class="flex justify-between text-dim"><span class="mono">2026-05-02 18:30</span><span>Login success (mobile)</span></div>
+          <div class="flex justify-between text-dim"><span class="mono">2026-05-02 16:40</span><span>Toggled feature flag</span></div>
+          <div class="flex justify-between text-dim"><span class="mono">2026-04-12 11:22</span><span>Changed password</span></div>
+        </div>
+        <button class="btn-secondary w-full mt-3 text-xs">View full audit →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 8: TENANT CONFIG                                         -->
+<!-- ============================================================ -->
+<section id="view-tenant" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 8 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">Tenant Configuration</h2>
+    <div class="text-xs text-dim mt-1">SYSTEM_ADMIN only. Critical action — every change is privileged audit.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">edit_tenant_config</span> · SYSTEM_ADMIN only · BR-34-018 (config change) · BR-34-033 (suspension)</div>
+
+  <div class="role-restricted hide-for-PMO_DIRECTOR hide-for-PORTFOLIO_MANAGER hide-for-PROJECT_DIRECTOR hide-for-SITE_MANAGER hide-for-FINANCE_LEAD hide-for-READ_ONLY">
+    <div class="grid grid-cols-2 gap-6">
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">Identity</div>
+        <div class="space-y-3">
+          <div><label class="text-xs uppercase-tracked text-mute">Tenant code</label><input type="text" value="KDMC" disabled class="mt-1 mono uppercase"><div class="text-xs text-red-400 mt-1">Immutable after creation</div></div>
+          <div><label class="text-xs uppercase-tracked text-mute field-required">Tenant name</label><input type="text" value="Kalyan-Dombivli Municipal Corporation" class="mt-1"></div>
+          <div><label class="text-xs uppercase-tracked text-mute field-required">Tenant type</label><select class="mt-1"><option>Production</option><option>Pilot</option><option>Sandbox</option><option>Demo</option></select></div>
+          <div><label class="text-xs uppercase-tracked text-mute field-required">Subscription tier</label><select class="mt-1"><option>Tier_1_Standard</option><option>Tier_2_Premium</option></select></div>
+          <div><label class="text-xs uppercase-tracked text-mute">DB schema name</label><input type="text" value="t_kdmc" disabled class="mt-1 mono"><div class="text-xs text-mute mt-1">Auto from tenant_code</div></div>
+        </div>
+      </div>
+
+      <div class="surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">Authentication</div>
+        <div class="space-y-3">
+          <div><label class="text-xs uppercase-tracked text-mute field-required">Default auth method</label><select class="mt-1"><option>Local</option><option>OIDC</option><option>Both</option></select></div>
+          <div><label class="text-xs uppercase-tracked text-mute">OIDC issuer URL</label><input type="text" placeholder="https://login.microsoftonline.com/..." class="mt-1 mono"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">OIDC client ID</label><input type="text" class="mt-1 mono"></div>
+          <div><label class="text-xs uppercase-tracked text-mute">OIDC client secret (Vault ref)</label><input type="text" placeholder="vault://kdmc/oidc/secret" class="mt-1 mono"></div>
+          <label class="flex items-center gap-2 text-xs text-dim mt-2"><input type="checkbox" class="!w-auto"> SSO_AUTO_PROVISION — auto-create users with READ_ONLY role on first SSO login</label>
+        </div>
+      </div>
+
+      <div class="col-span-2 surface-1 border border-subtle rounded p-5">
+        <div class="uppercase-tracked text-cyan text-xs mb-4">DPDP Act 2023 Compliance</div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="text-xs uppercase-tracked text-mute field-required">Data Fiduciary name</label><input type="text" value="KDMC EPCC PMO" class="mt-1"></div>
+          <div><label class="text-xs uppercase-tracked text-mute field-required">Grievance Officer email</label><input type="email" value="dpo@kdmc-epcc.in" class="mt-1"></div>
+        </div>
+      </div>
+
+      <div class="col-span-2 surface-1 border severity-critical rounded p-5">
+        <div class="uppercase-tracked text-red-400 text-xs mb-4">⚠ Tenant Status — Destructive Actions</div>
+        <div class="grid grid-cols-3 gap-4 text-xs">
+          <div>
+            <div class="font-medium">Status: <span class="pill pill-active">Active</span></div>
+            <div class="text-mute mt-2">Tenant operating normally.</div>
+          </div>
+          <div>
+            <button class="btn-secondary w-full">Suspend tenant</button>
+            <div class="text-mute mt-2">Revokes all sessions. Blocks logins. Data preserved.</div>
+          </div>
+          <div>
+            <button class="btn-danger w-full">Archive tenant</button>
+            <div class="text-mute mt-2">Permanent. Use only on tenant termination.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-span-2 flex justify-end gap-2">
+        <button class="btn-secondary">Cancel</button>
+        <button class="btn-primary">Save tenant config</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="role-only-PMO_DIRECTOR role-only-PORTFOLIO_MANAGER role-only-PROJECT_DIRECTOR role-only-SITE_MANAGER role-only-FINANCE_LEAD role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">Tenant Configuration is visible only to <span class="mono text-cyan">SYSTEM_ADMIN</span>.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 9: FEATURE FLAGS                                         -->
+<!-- ============================================================ -->
+<section id="view-flags" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 9 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">Feature Flags</h2>
+    <div class="text-xs text-dim mt-1">Per-tenant + per-project overrides. SYSTEM_ADMIN + PMO_DIRECTOR.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">edit_feature_flag</span> · SYSTEM_ADMIN, PMO_DIRECTOR · BR-34-019 · OQ-1.9 (tenant + project)</div>
+
+  <div class="role-restricted hide-for-PORTFOLIO_MANAGER hide-for-PROJECT_DIRECTOR hide-for-SITE_MANAGER hide-for-FINANCE_LEAD hide-for-READ_ONLY">
+    <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 text-xs">
+      <input type="text" placeholder="Search flag code..." class="!w-64 mono">
+      <select class="!w-auto"><option>All modules</option><option>M01</option><option>M07</option><option>M26</option></select>
+      <select class="!w-auto"><option>Tenant scope</option><option>Project: KDMC-001</option></select>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded overflow-hidden">
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th>Flag Code</th>
+            <th>Module</th>
+            <th>Description</th>
+            <th>Tenant Default</th>
+            <th>Project Overrides</th>
+            <th>Last Changed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover">
+            <td class="mono text-xs text-cyan">M26_AI_INTELLIGENCE_ENABLED</td>
+            <td class="mono text-xs">M26</td>
+            <td class="text-xs text-dim">AI portfolio pattern recognition</td>
+            <td><label class="inline-flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="text-xs text-mute">OFF</span></label></td>
+            <td class="text-xs">
+              <span class="scope-chip text-cyan">KDMC-001 · ON</span>
+            </td>
+            <td class="mono text-xs text-mute">2026-05-02 16:40</td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono text-xs text-cyan">M11_WHATSAPP_NOTIFICATIONS</td>
+            <td class="mono text-xs">M11</td>
+            <td class="text-xs text-dim">Send action notifications via WhatsApp</td>
+            <td><label class="inline-flex items-center gap-2"><input type="checkbox" checked class="!w-auto"><span class="text-xs text-emerald-400">ON</span></label></td>
+            <td class="text-xs text-mute">—</td>
+            <td class="mono text-xs text-mute">2026-04-15 09:30</td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono text-xs text-cyan">SSO_AUTO_PROVISION</td>
+            <td class="mono text-xs">M34</td>
+            <td class="text-xs text-dim">Auto-create user on first SSO login (READ_ONLY)</td>
+            <td><label class="inline-flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="text-xs text-mute">OFF</span></label></td>
+            <td class="text-xs text-mute">—</td>
+            <td class="mono text-xs text-mute">2026-05-01 (default)</td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono text-xs text-cyan">PIOE_MILP_SOLVER_VERBOSE</td>
+            <td class="mono text-xs">PIOE</td>
+            <td class="text-xs text-dim">Verbose MILP solver logs (debug)</td>
+            <td><label class="inline-flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="text-xs text-mute">OFF</span></label></td>
+            <td class="text-xs text-mute">—</td>
+            <td class="mono text-xs text-mute">2026-05-01 (default)</td>
+          </tr>
+          <tr class="row-hover">
+            <td class="mono text-xs text-cyan">HDI_CORRECTION_WINDOW_EXTENDED</td>
+            <td class="mono text-xs">HDI</td>
+            <td class="text-xs text-dim">Extend HDI correction window beyond 7 days</td>
+            <td><label class="inline-flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="text-xs text-mute">OFF</span></label></td>
+            <td class="text-xs text-mute">—</td>
+            <td class="mono text-xs text-mute">2026-05-01 (default)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-4 text-xs text-mute">Toggling a flag triggers SystemAuditLog: FEATURE_FLAG_CHANGED. Module-owned cache invalidated immediately.</div>
+  </div>
+
+  <div class="role-only-PORTFOLIO_MANAGER role-only-PROJECT_DIRECTOR role-only-SITE_MANAGER role-only-FINANCE_LEAD role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">Feature Flags require <span class="mono text-cyan">SYSTEM_ADMIN</span> or <span class="mono text-cyan">PMO_DIRECTOR</span>.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 10: CODE MASTER EDITOR                                   -->
+<!-- ============================================================ -->
+<section id="view-codes" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 10 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">Code Master Editor</h2>
+    <div class="text-xs text-dim mt-1">3-tier system: Standard_Core (locked), Domain_Specific (PMO_DIRECTOR), Custom (PROJECT_DIRECTOR own project).</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">edit_code_master</span> with tier-based scoping · BR-34-020 · M02 unit-master pattern</div>
+
+  <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 flex-wrap text-xs">
+    <select class="!w-auto">
+      <option>Category: All</option>
+      <option>Unit</option>
+      <option>DocumentType</option>
+      <option>Sector</option>
+      <option>Discipline</option>
+      <option>Currency</option>
+      <option>Severity</option>
+    </select>
+    <select class="!w-auto"><option>Tier: All</option><option>Standard_Core</option><option>Domain_Specific</option><option>Custom</option></select>
+    <input type="text" placeholder="Search code or label..." class="!w-64">
+    <div class="ml-auto"><button class="btn-primary">+ Add code</button></div>
+  </div>
+
+  <div class="surface-1 border border-subtle rounded overflow-hidden">
+    <table class="w-full">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Code</th>
+          <th>Display Label</th>
+          <th>Tier</th>
+          <th>Parent</th>
+          <th>Sort</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-hover">
+          <td class="text-xs uppercase-tracked text-mute">Unit</td>
+          <td class="mono text-xs">kg</td>
+          <td>Kilogram</td>
+          <td><span class="pill pill-system">Standard_Core</span></td>
+          <td class="text-mute text-xs">—</td>
+          <td class="mono text-xs">10</td>
+          <td><span class="pill pill-active">ON</span></td>
+          <td class="text-mute text-xs">🔒 system</td>
+        </tr>
+        <tr class="row-hover">
+          <td class="text-xs uppercase-tracked text-mute">Unit</td>
+          <td class="mono text-xs">m3</td>
+          <td>Cubic Metre</td>
+          <td><span class="pill pill-system">Standard_Core</span></td>
+          <td class="text-mute text-xs">—</td>
+          <td class="mono text-xs">20</td>
+          <td><span class="pill pill-active">ON</span></td>
+          <td class="text-mute text-xs">🔒 system</td>
+        </tr>
+        <tr class="row-hover">
+          <td class="text-xs uppercase-tracked text-mute">DocumentType</td>
+          <td class="mono text-xs">RFI</td>
+          <td>Request for Information</td>
+          <td><span class="pill pill-internal">Domain_Specific</span></td>
+          <td class="text-mute text-xs">—</td>
+          <td class="mono text-xs">100</td>
+          <td><span class="pill pill-active">ON</span></td>
+          <td><button class="btn-icon">Edit</button></td>
+        </tr>
+        <tr class="row-hover">
+          <td class="text-xs uppercase-tracked text-mute">DocumentType</td>
+          <td class="mono text-xs">SUBMITTAL</td>
+          <td>Contractor Submittal</td>
+          <td><span class="pill pill-internal">Domain_Specific</span></td>
+          <td class="text-mute text-xs">—</td>
+          <td class="mono text-xs">110</td>
+          <td><span class="pill pill-active">ON</span></td>
+          <td><button class="btn-icon">Edit</button></td>
+        </tr>
+        <tr class="row-hover">
+          <td class="text-xs uppercase-tracked text-mute">Sector</td>
+          <td class="mono text-xs">Hospital_DBOT</td>
+          <td>Hospital — Design-Build-Operate-Transfer</td>
+          <td><span class="pill pill-internal">Domain_Specific</span></td>
+          <td class="mono text-xs text-mute">Hospital</td>
+          <td class="mono text-xs">10</td>
+          <td><span class="pill pill-active">ON</span></td>
+          <td><button class="btn-icon">Edit</button></td>
+        </tr>
+        <tr class="row-hover">
+          <td class="text-xs uppercase-tracked text-mute">Discipline</td>
+          <td class="mono text-xs">CIV_PILE</td>
+          <td>Civil — Piling Foundation</td>
+          <td><span class="pill pill-external">Custom</span></td>
+          <td class="mono text-xs text-mute">CIV</td>
+          <td class="mono text-xs">100</td>
+          <td><span class="pill pill-active">ON</span></td>
+          <td><button class="btn-icon">Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 grid grid-cols-3 gap-4 text-xs">
+    <div class="surface-2 border border-subtle rounded p-3">
+      <div class="uppercase-tracked text-mute mb-1">Standard_Core</div>
+      <div class="text-dim">System-locked. Edit only by SYSTEM_ADMIN via release.</div>
+    </div>
+    <div class="surface-2 border border-subtle rounded p-3">
+      <div class="uppercase-tracked text-mute mb-1">Domain_Specific</div>
+      <div class="text-dim">PMO_DIRECTOR can edit. Affects whole tenant.</div>
+    </div>
+    <div class="surface-2 border border-subtle rounded p-3">
+      <div class="uppercase-tracked text-mute mb-1">Custom</div>
+      <div class="text-dim">PROJECT_DIRECTOR can edit on own project. Tenant override.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 11: EXTERNAL USERS                                       -->
+<!-- ============================================================ -->
+<section id="view-external" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 11 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">External Users</h2>
+    <div class="text-xs text-dim mt-1">Phase 2 surface — clients, lenders, NABH assessors, contractor portal users. NDA + valid_until mandatory.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">create_external_user</span> · PMO_DIRECTOR + PROJECT_DIRECTOR (own project) · OQ-1.5 (separate ExternalUser entity)</div>
+
+  <div class="role-restricted hide-for-PORTFOLIO_MANAGER hide-for-SITE_MANAGER hide-for-FINANCE_LEAD hide-for-READ_ONLY">
+    <div class="grid grid-cols-4 gap-3 mb-4">
+      <div class="kpi-card"><div class="kpi-value text-emerald-400">8</div><div class="kpi-label">Active</div></div>
+      <div class="kpi-card"><div class="kpi-value text-amber-400">2</div><div class="kpi-label">Expiring &lt; 30d</div></div>
+      <div class="kpi-card"><div class="kpi-value text-mute">3</div><div class="kpi-label">Expired</div></div>
+      <div class="kpi-card"><div class="kpi-value">11</div><div class="kpi-label">Total</div></div>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded overflow-hidden">
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th>External User</th>
+            <th>Role</th>
+            <th>Affiliated Party</th>
+            <th>Project Access</th>
+            <th>Valid Until</th>
+            <th>NDA</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover">
+            <td>
+              <div class="font-medium">Mr. Vikram Joshi</div>
+              <div class="text-xs text-mute mono">vikram.j@hdfc-bank.com</div>
+            </td>
+            <td><span class="pill pill-external mono">LENDER_VIEWER</span></td>
+            <td class="text-dim text-xs">HDFC Bank</td>
+            <td><span class="scope-chip">KDMC-001</span></td>
+            <td class="mono text-xs">2027-03-31</td>
+            <td><span class="pill pill-active">Signed</span></td>
+            <td><span class="pill pill-active">Active</span></td>
+          </tr>
+          <tr class="row-hover severity-warning">
+            <td>
+              <div class="font-medium">Dr. Lakshmi Iyer</div>
+              <div class="text-xs text-mute mono">l.iyer@nabh.in</div>
+            </td>
+            <td><span class="pill pill-external mono">NABH_ASSESSOR</span></td>
+            <td class="text-dim text-xs">NABH</td>
+            <td><span class="scope-chip">KDMC-001</span></td>
+            <td class="mono text-xs text-amber-400">2026-05-22 (19d)</td>
+            <td><span class="pill pill-active">Signed</span></td>
+            <td><span class="pill pill-active">Active</span></td>
+          </tr>
+          <tr class="row-hover">
+            <td>
+              <div class="font-medium">Prakash Mishra</div>
+              <div class="text-xs text-mute mono">prakash@kdmc.gov.in</div>
+            </td>
+            <td><span class="pill pill-external mono">CLIENT_VIEWER</span></td>
+            <td class="text-dim text-xs">KDMC Municipal</td>
+            <td><span class="scope-chip">KDMC-001</span></td>
+            <td class="mono text-xs text-mute">— indefinite (client)</td>
+            <td><span class="pill pill-active">Signed</span></td>
+            <td><span class="pill pill-active">Active</span></td>
+          </tr>
+          <tr class="row-hover">
+            <td>
+              <div class="font-medium">Sunil Reddy</div>
+              <div class="text-xs text-mute mono">sunil@lt-construction.com</div>
+            </td>
+            <td><span class="pill pill-external mono">CONTRACTOR_LIMITED</span></td>
+            <td class="text-dim text-xs">L&T Construction</td>
+            <td><span class="scope-chip">KDMC-001 · pkgs CIV-A,B,C</span></td>
+            <td class="mono text-xs">2026-12-31</td>
+            <td><span class="pill pill-active">Signed</span></td>
+            <td><span class="pill pill-active">Active</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <details class="mt-6 surface-1 border border-subtle rounded p-4">
+      <summary class="text-xs uppercase-tracked text-cyan">► Provision External User (modal)</summary>
+      <div class="mt-4 grid grid-cols-2 gap-4">
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Email</label><input type="email" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Full name</label><input type="text" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute">Phone (+91)</label><input type="text" class="mt-1 mono"></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">External role</label><select class="mt-1"><option>CLIENT_VIEWER</option><option>LENDER_VIEWER</option><option>NABH_ASSESSOR</option><option>CONTRACTOR_LIMITED</option></select></div>
+        <div><label class="text-xs uppercase-tracked text-mute">Affiliated Party</label><select class="mt-1"><option>—None—</option><option>HDFC Bank</option><option>NABH</option></select></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Auth method</label><select class="mt-1"><option>Local_External (password)</option><option>Email_Magic_Link</option></select></div>
+        <div class="col-span-2"><label class="text-xs uppercase-tracked text-mute field-required">Project access (multi-select)</label><input type="text" placeholder="Search projects..." class="mt-1"><div class="text-xs text-mute mt-1">Strict whitelist. External user can only see selected projects.</div></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Valid from</label><input type="date" class="mt-1 mono"></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Valid until</label><input type="date" value="2027-05-03" class="mt-1 mono"><div class="text-xs text-amber-400 mt-1">Max 365 days. Renewable.</div></div>
+        <div class="col-span-2 surface-2 border severity-warning rounded p-3"><label class="flex items-center gap-2 text-xs"><input type="checkbox" class="!w-auto"> <span class="text-amber-400">NDA acknowledged</span> — required for status = Active</label><div class="text-xs text-mute mt-1">External user receives NDA via email and acknowledges before first login.</div></div>
+      </div>
+      <div class="mt-4 flex gap-2 justify-end">
+        <button class="btn-secondary">Cancel</button>
+        <button class="btn-primary">Provision external user</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="role-only-PORTFOLIO_MANAGER role-only-SITE_MANAGER role-only-FINANCE_LEAD role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">External User Mgmt requires <span class="mono text-cyan">PMO_DIRECTOR</span> or <span class="mono text-cyan">PROJECT_DIRECTOR</span>.</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 12: API KEYS                                             -->
+<!-- ============================================================ -->
+<section id="view-apikeys" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 12 of 12</div>
+    <h2 class="text-xl font-semibold mt-1">API Key Management</h2>
+    <div class="text-xs text-dim mt-1">Service-to-service tokens. SYSTEM_ADMIN only. Phase 2 active; Phase 1 schema-ready.</div>
+  </div>
+
+  <div class="annotation">Permission: <span class="mono">create_api_key, revoke_api_key</span> · SYSTEM_ADMIN only · BR-34-021 · BR-34-022 · max 365d expiry</div>
+
+  <div class="role-restricted hide-for-PMO_DIRECTOR hide-for-PORTFOLIO_MANAGER hide-for-PROJECT_DIRECTOR hide-for-SITE_MANAGER hide-for-FINANCE_LEAD hide-for-READ_ONLY">
+    <div class="surface-1 border border-subtle rounded p-3 mb-4 flex items-center gap-3 text-xs">
+      <input type="text" placeholder="Search by name or prefix..." class="!w-64">
+      <select class="!w-auto"><option>All status</option><option>Active</option><option>Expired</option><option>Revoked</option></select>
+      <div class="ml-auto"><button class="btn-primary">+ Generate API Key</button></div>
+    </div>
+
+    <div class="surface-1 border border-subtle rounded overflow-hidden">
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th>Key Name</th>
+            <th>Prefix</th>
+            <th>Permissions Scoped</th>
+            <th>Last Used</th>
+            <th>Created By</th>
+            <th>Expires</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover">
+            <td>Tally Export — KDMC Prod</td>
+            <td class="mono text-xs text-cyan">epcc_a4f9...</td>
+            <td class="text-xs"><span class="scope-chip">export_m06</span></td>
+            <td class="mono text-xs">2026-05-03 02:00</td>
+            <td class="text-dim text-xs">sysadmin</td>
+            <td class="mono text-xs">2027-05-02</td>
+            <td><span class="pill pill-active">Active</span></td>
+            <td><button class="btn-icon">Revoke</button></td>
+          </tr>
+          <tr class="row-hover severity-warning">
+            <td>BIM viewer — read-only</td>
+            <td class="mono text-xs text-cyan">epcc_b1c2...</td>
+            <td class="text-xs"><span class="scope-chip">view_m02_wbs</span><span class="scope-chip">view_m04_progress</span></td>
+            <td class="mono text-xs text-mute">never</td>
+            <td class="text-dim text-xs">sysadmin</td>
+            <td class="mono text-xs text-amber-400">2026-05-30 (27d)</td>
+            <td><span class="pill pill-active">Active</span></td>
+            <td><button class="btn-icon">Renew</button> <button class="btn-icon">Revoke</button></td>
+          </tr>
+          <tr class="row-hover opacity-60">
+            <td class="text-mute">Old M07 EVM exporter</td>
+            <td class="mono text-xs text-mute">epcc_e8d5...</td>
+            <td class="text-xs text-mute"><span class="scope-chip">view_m07</span></td>
+            <td class="mono text-xs text-mute">2026-04-12</td>
+            <td class="text-mute text-xs">sysadmin</td>
+            <td class="mono text-xs text-mute">2026-05-01</td>
+            <td><span class="pill pill-archived">Expired</span></td>
+            <td class="text-mute text-xs">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <details class="mt-6 surface-1 border border-subtle rounded p-4">
+      <summary class="text-xs uppercase-tracked text-cyan">► Generate New API Key (modal)</summary>
+      <div class="mt-4 space-y-3">
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Key name</label><input type="text" placeholder="e.g., Zoho_Books_KDMC_Sync" class="mt-1"></div>
+        <div><label class="text-xs uppercase-tracked text-mute field-required">Permissions scoped (whitelist)</label>
+          <div class="surface-2 border border-subtle rounded p-3 mt-1 max-h-48 overflow-y-auto text-xs space-y-1">
+            <label class="flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="mono">export_m06_costledger</span></label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="mono">export_m07_evmsnapshot</span></label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="mono">view_m02_wbs</span></label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="mono">view_m04_progress</span></label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="!w-auto"><span class="mono">view_m10_dashboard</span></label>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="text-xs uppercase-tracked text-mute field-required">Expires</label><input type="date" value="2027-05-03" class="mt-1 mono"><div class="text-xs text-mute mt-1">Max 365 days from today</div></div>
+        </div>
+      </div>
+      <div class="mt-4 surface-2 border severity-critical rounded p-3 text-xs">
+        <div class="text-red-400 uppercase-tracked mb-1">⚠ One-time display</div>
+        <div class="text-dim">The raw API key will be shown ONCE after creation. Copy and store securely. After this screen, only the prefix and hash are retained.</div>
+      </div>
+      <div class="mt-4 flex gap-2 justify-end">
+        <button class="btn-secondary">Cancel</button>
+        <button class="btn-primary">Generate key</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="role-only-PMO_DIRECTOR role-only-PORTFOLIO_MANAGER role-only-PROJECT_DIRECTOR role-only-SITE_MANAGER role-only-FINANCE_LEAD role-only-READ_ONLY surface-1 border severity-warning rounded p-6 text-center">
+    <div class="text-amber-400 uppercase-tracked text-xs mb-2">⚠ Restricted</div>
+    <div class="text-sm">API Keys require <span class="mono text-cyan">SYSTEM_ADMIN</span>.</div>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-subtle surface-1 mt-12 px-6 py-4 text-xs text-mute flex justify-between">
+  <div>M34_SystemAdminRBAC_Wireframes_v1.0 · 2026-05-03 · 12 views · 17 entities · 35 BRs</div>
+  <div class="mono">EPCC System · Round 3 deliverable</div>
+</footer>
+
+<script>
+  // View switcher
+  function switchView(viewId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + viewId).classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // Role switcher — toggles visibility of role-restricted blocks
+  function switchRole() {
+    const role = document.getElementById('roleSwitcher').value;
+    // Hide all role-only blocks
+    const allRoles = ['SYSTEM_ADMIN','PMO_DIRECTOR','PORTFOLIO_MANAGER','PROJECT_DIRECTOR','SITE_MANAGER','FINANCE_LEAD','READ_ONLY'];
+    document.querySelectorAll('.role-restricted').forEach(el => {
+      // Show by default; hide if class hide-for-{role} present
+      el.style.display = el.classList.contains('hide-for-' + role) ? 'none' : '';
+    });
+    // Show/hide role-only blocks
+    document.querySelectorAll('[class*="role-only-"]').forEach(el => {
+      const classes = Array.from(el.classList);
+      const onlyClasses = classes.filter(c => c.startsWith('role-only-'));
+      const visibleRoles = onlyClasses.map(c => c.replace('role-only-',''));
+      el.style.display = visibleRoles.includes(role) ? '' : 'none';
+    });
+  }
+  // Init
+  switchRole();
+</script>
+
+</body>
+</html>

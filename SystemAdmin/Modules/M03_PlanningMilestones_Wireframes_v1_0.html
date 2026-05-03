@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>M03 — Planning & Milestones — Wireframes v1.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #e5e5e5; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .surface-1 { background: #141414; }
+  .surface-2 { background: #1c1c1c; }
+  .surface-3 { background: #232323; }
+  .border-subtle { border-color: #262626; }
+  .text-cyan { color: #22d3ee; }
+  .bg-cyan { background: #22d3ee; }
+  .border-cyan { border-color: #22d3ee; }
+  .text-dim { color: #9ca3af; }
+  .text-mute { color: #6b7280; }
+  .severity-critical { border-left: 3px solid #ef4444; }
+  .severity-warning { border-left: 3px solid #f59e0b; }
+  .severity-info { border-left: 3px solid #3b82f6; }
+  .severity-success { border-left: 3px solid #10b981; }
+  .pill { padding: 2px 8px; font-size: 11px; border-radius: 3px; font-weight: 500; letter-spacing: 0.02em; display:inline-block; }
+  .pill-active { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .pill-stale { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .pill-locked { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .pill-internal { background: rgba(34,211,238,0.15); color: #22d3ee; border: 1px solid rgba(34,211,238,0.3); }
+  .pill-system { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+  .pill-info { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+  .annotation { background: rgba(168,85,247,0.08); border: 1px dashed rgba(168,85,247,0.4); color: #c4b5fd; padding: 10px 14px; font-size: 12px; border-radius: 4px; margin: 12px 0; font-family: 'JetBrains Mono', monospace; }
+  .annotation::before { content: '◆ X9 NOTE — '; font-weight: 700; color: #a855f7; }
+  .x9-banner { background: rgba(34,211,238,0.05); border: 1px solid rgba(34,211,238,0.2); padding: 10px 14px; font-size: 12px; border-radius: 4px; margin: 8px 0; }
+  .uppercase-tracked { text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; font-weight: 600; }
+  .row-hover:hover { background: #1c1c1c; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .nav-tab { padding: 8px 14px; cursor: pointer; border-bottom: 2px solid transparent; font-size: 13px; white-space: nowrap; }
+  .nav-tab.active { color: #22d3ee; border-color: #22d3ee; }
+  .nav-tab:hover:not(.active) { color: #e5e5e5; background: #1c1c1c; }
+  .nav-tab.role-hidden { opacity: 0.3; pointer-events: none; }
+  .role-default-marker::after { content: ' ★'; color: #22d3ee; font-size: 10px; }
+  table { font-size: 13px; width: 100%; }
+  th { text-align: left; padding: 10px 12px; background: #1c1c1c; font-weight: 500; color: #9ca3af; text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; border-bottom: 1px solid #262626; }
+  td { padding: 11px 12px; border-bottom: 1px solid #1f1f1f; }
+  input[type="text"], input[type="email"], input[type="date"], input[type="number"], select, textarea {
+    background: #0a0a0a; border: 1px solid #2a2a2a; color: #e5e5e5; padding: 8px 12px; font-size: 13px; border-radius: 3px; width: 100%; font-family: inherit;
+  }
+  textarea { font-family: 'JetBrains Mono', monospace; min-height: 60px; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #22d3ee; box-shadow: 0 0 0 1px rgba(34,211,238,0.2); }
+  input[disabled], select[disabled] { background: #161616; color: #6b7280; cursor: not-allowed; }
+  .btn-primary { background: #22d3ee; color: #0a0a0a; padding: 8px 16px; border-radius: 3px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+  .btn-primary:hover { background: #06b6d4; }
+  .btn-secondary { background: #1c1c1c; color: #e5e5e5; border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 3px; font-size: 13px; cursor: pointer; }
+  .btn-secondary:hover { background: #262626; }
+  .btn-icon { padding: 4px 10px; background: transparent; border: 1px solid #2a2a2a; border-radius: 3px; color: #9ca3af; cursor: pointer; font-size: 12px; }
+  .btn-icon:hover { color: #22d3ee; border-color: #22d3ee; }
+  .kpi-card { background: #141414; border: 1px solid #262626; border-radius: 4px; padding: 16px; }
+  .kpi-value { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .kpi-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  
+  /* X9 Chart Card Anatomy */
+  .chart-card { background: #141414; border: 1px solid #262626; border-radius: 4px; padding: 24px; margin-bottom: 16px; }
+  .chart-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .chart-card-title { font-size: 14px; font-weight: 600; letter-spacing: 0.02em; }
+  .chart-card-subtitle { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+  .chart-card-actions { display: flex; gap: 6px; }
+  .chart-card-source { font-size: 11px; color: #6b7280; margin-top: 12px; padding-top: 8px; border-top: 1px solid #1f1f1f; }
+  .chart-decision { font-size: 11px; color: #a855f7; font-style: italic; margin-bottom: 8px; }
+
+  /* Gantt rendering */
+  .gantt-row { display: flex; align-items: center; height: 32px; border-bottom: 1px solid #1f1f1f; }
+  .gantt-label { width: 240px; padding: 0 12px; font-size: 12px; flex-shrink: 0; }
+  .gantt-track { flex: 1; position: relative; height: 100%; background: linear-gradient(90deg, #1c1c1c 0%, #1c1c1c 100%); }
+  .gantt-bar { position: absolute; top: 8px; height: 16px; border-radius: 2px; cursor: pointer; }
+  .gantt-bar-baseline { background: rgba(245,158,11,0.4); border: 1px solid rgba(245,158,11,0.6); top: 6px; height: 8px; }
+  .gantt-bar-actual { background: #22d3ee; }
+  .gantt-bar-actual.critical { background: #ef4444; }
+  .gantt-bar-forecast { background: rgba(34,211,238,0.4); border: 1px dashed #22d3ee; }
+  .gantt-today { position: absolute; width: 1px; background: #ef4444; top: 0; bottom: 0; z-index: 10; }
+  .gantt-milestone { position: absolute; top: 6px; width: 16px; height: 16px; transform: rotate(45deg); border: 1px solid; }
+  .gantt-milestone-pending { background: rgba(245,158,11,0.4); border-color: #f59e0b; }
+  .gantt-milestone-done { background: #10b981; border-color: #10b981; }
+  .gantt-milestone-delayed { background: #ef4444; border-color: #ef4444; }
+  .gantt-axis { display: flex; height: 32px; border-bottom: 1px solid #2a2a2a; background: #1c1c1c; }
+  .gantt-axis-month { flex: 1; padding: 8px 4px; font-size: 10px; color: #9ca3af; text-align: center; border-right: 1px solid #1f1f1f; font-family: 'JetBrains Mono', monospace; }
+  
+  /* S-curve / Line chart SVG sizing */
+  .chart-svg { width: 100%; height: 280px; display: block; }
+  
+  /* Heatmap cells */
+  .heatmap-cell { width: 32px; height: 32px; border: 1px solid #262626; }
+  
+  /* Network/DAG */
+  .dag-canvas { width: 100%; height: 360px; background: #1c1c1c; border-radius: 4px; position: relative; }
+  .dag-node { position: absolute; padding: 6px 12px; border: 1px solid; border-radius: 3px; font-size: 11px; cursor: pointer; }
+  .dag-node-critical { background: rgba(239,68,68,0.15); border-color: #ef4444; color: #ef4444; }
+  .dag-node-normal { background: rgba(34,211,238,0.15); border-color: #22d3ee; color: #22d3ee; }
+  .dag-node-done { background: rgba(16,185,129,0.15); border-color: #10b981; color: #10b981; }
+  
+  .step-marker { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; font-family: 'JetBrains Mono', monospace; flex-shrink:0; }
+  .step-active { background: #22d3ee; color: #0a0a0a; }
+  .step-done { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
+  .step-pending { background: #1c1c1c; color: #6b7280; border: 1px solid #2a2a2a; }
+  .step-line { flex:1; height: 1px; background: #2a2a2a; margin: 0 8px; min-width: 20px; }
+
+  /* Float visibility role tiering */
+  .float-value { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+  .float-redacted { color: #6b7280; font-style: italic; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ============================================================ -->
+<!-- TOP NAV: Role + Project Switcher                              -->
+<!-- ============================================================ -->
+<header class="border-b border-subtle surface-1 sticky top-0 z-50">
+  <div class="px-6 py-3 flex items-center gap-6">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 bg-cyan rounded-sm flex items-center justify-center text-black font-bold mono">M</div>
+      <div>
+        <div class="text-sm font-semibold">M03 — Planning & Milestones</div>
+        <div class="text-xs text-mute mono">Wireframes v1.0 · 2026-05-03 · KDMC-001-DBOT</div>
+      </div>
+    </div>
+    <div class="ml-auto flex items-center gap-4">
+      <div class="text-xs text-mute uppercase-tracked">Acting as</div>
+      <select id="roleSwitcher" onchange="switchRole()" class="!w-auto">
+        <option value="PMO_DIRECTOR" selected>PMO_DIRECTOR</option>
+        <option value="PORTFOLIO_MANAGER">PORTFOLIO_MANAGER</option>
+        <option value="PROJECT_DIRECTOR">PROJECT_DIRECTOR</option>
+        <option value="PLANNING_ENGINEER">PLANNING_ENGINEER</option>
+        <option value="QS_MANAGER">QS_MANAGER</option>
+        <option value="FINANCE_LEAD">FINANCE_LEAD</option>
+        <option value="PROCUREMENT_OFFICER">PROCUREMENT_OFFICER</option>
+        <option value="SITE_MANAGER">SITE_MANAGER</option>
+        <option value="COMPLIANCE_MANAGER">COMPLIANCE_MANAGER</option>
+        <option value="READ_ONLY">READ_ONLY</option>
+      </select>
+      <div class="text-xs text-dim mono" id="userBadge">priya.sharma@kdmc</div>
+    </div>
+  </div>
+  <nav class="flex border-t border-subtle overflow-x-auto" id="viewTabs">
+    <div class="nav-tab active" data-view="gantt" onclick="switchView('gantt', event)">1. Master Gantt</div>
+    <div class="nav-tab" data-view="lookahead" onclick="switchView('lookahead', event)">2. Look-ahead</div>
+    <div class="nav-tab" data-view="variance" onclick="switchView('variance', event)">3. Variance Bar</div>
+    <div class="nav-tab" data-view="critical" onclick="switchView('critical', event)">4. Critical Path</div>
+    <div class="nav-tab" data-view="milestones" onclick="switchView('milestones', event)">5. Milestones</div>
+    <div class="nav-tab" data-view="scurve" onclick="switchView('scurve', event)">6. S-curve</div>
+    <div class="nav-tab" data-view="pv" onclick="switchView('pv', event)">7. PV S-curve</div>
+    <div class="nav-tab" data-view="resources" onclick="switchView('resources', event)">8. Resources</div>
+    <div class="nav-tab" data-view="procurement" onclick="switchView('procurement', event)">9. Procurement</div>
+    <div class="nav-tab" data-view="float" onclick="switchView('float', event)">10. Float</div>
+    <div class="nav-tab" data-view="extension" onclick="switchView('extension', event)">11. Extension Form</div>
+    <div class="nav-tab" data-view="import" onclick="switchView('import', event)">12. Import</div>
+    <div class="nav-tab" data-view="weather" onclick="switchView('weather', event)">13. Weather/Look-ahead Cfg</div>
+  </nav>
+</header>
+
+<!-- Role-default banner -->
+<div id="defaultBanner" class="px-6 py-2 surface-2 border-b border-subtle text-xs flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <span class="text-cyan">★</span>
+    <span class="text-mute uppercase-tracked">Default landing for</span>
+    <span class="mono text-cyan font-semibold" id="defaultRole">PMO_DIRECTOR</span>
+    <span class="text-mute">→</span>
+    <span class="text-dim" id="defaultView">Master Gantt with baseline + critical path</span>
+  </div>
+  <div class="text-mute mono">Per X9 v0.2 §13.3.3</div>
+</div>
+
+<main class="px-6 py-6 max-w-[1400px] mx-auto">
+
+<!-- ============================================================ -->
+<!-- VIEW 1: MASTER GANTT (X9 §7.5.1 — 6 layered elements)         -->
+<!-- ============================================================ -->
+<section id="view-gantt" class="view active">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 1 of 13</div>
+    <h2 class="text-xl font-semibold mt-1 role-default-marker" id="ganttTitle">Master Gantt with Baseline + Critical Path</h2>
+    <div class="text-xs text-dim mt-1">PMO_DIRECTOR + PROJECT_DIRECTOR default landing view</div>
+  </div>
+
+  <div class="annotation">X9 §7.5.1 — 6-layer Gantt: time-axis grid + amber baseline + cyan actual + red critical path + diamond milestones + red today line + float trailing. <strong>frappe-gantt</strong> library v0.7.x.</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Master Gantt — KDMC-001-DBOT</div>
+        <div class="chart-card-subtitle">438 WBS nodes · Baseline locked at SG-6 (2026-02-15) · Today: 2026-05-03</div>
+      </div>
+      <div class="chart-card-actions">
+        <button class="btn-icon">PNG</button>
+        <button class="btn-icon">CSV</button>
+        <button class="btn-icon">View as table</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: Is the project on schedule against baseline? (X9 §3.1)</div>
+
+    <div class="flex gap-4 mb-3 text-xs">
+      <div class="flex items-center gap-1"><span class="inline-block w-3 h-2 rounded-sm" style="background:rgba(245,158,11,0.6)"></span><span class="text-dim">Baseline</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-3 h-2 rounded-sm bg-cyan"></span><span class="text-dim">Actual</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-3 h-2 rounded-sm" style="background:#ef4444"></span><span class="text-dim">Critical Path</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block transform rotate-45" style="width:8px;height:8px;background:rgba(245,158,11,0.6)"></span><span class="text-dim ml-1">Milestone</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-px h-3" style="background:#ef4444"></span><span class="text-dim">Today</span></div>
+    </div>
+
+    <!-- Gantt with axis -->
+    <div class="border border-subtle rounded overflow-hidden">
+      <div class="gantt-axis">
+        <div style="width:240px" class="surface-2 px-3 py-2 text-xs uppercase-tracked text-mute">WBS</div>
+        <div class="gantt-axis-month">Jan 26</div>
+        <div class="gantt-axis-month">Feb</div>
+        <div class="gantt-axis-month">Mar</div>
+        <div class="gantt-axis-month">Apr</div>
+        <div class="gantt-axis-month" style="background:rgba(34,211,238,0.05)">May</div>
+        <div class="gantt-axis-month">Jun</div>
+        <div class="gantt-axis-month">Jul</div>
+        <div class="gantt-axis-month">Aug</div>
+        <div class="gantt-axis-month">Sep</div>
+        <div class="gantt-axis-month">Oct</div>
+        <div class="gantt-axis-month">Nov</div>
+        <div class="gantt-axis-month">Dec 26</div>
+      </div>
+
+      <!-- Project Setup -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">1</span> Project Setup</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:0%;width:8%"></div>
+          <div class="gantt-bar gantt-bar-actual" style="left:0%;width:8%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+        </div>
+      </div>
+
+      <!-- Civil Substructure (CRITICAL PATH, slightly delayed) -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">2.1</span> Civil — Substructure <span class="text-red-400 ml-1">●</span></div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:8%;width:18%"></div>
+          <div class="gantt-bar gantt-bar-actual critical" style="left:8%;width:20%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+        </div>
+      </div>
+
+      <!-- Civil Superstructure (CRITICAL) -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">2.2</span> Civil — Superstructure <span class="text-red-400 ml-1">●</span></div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:24%;width:25%"></div>
+          <div class="gantt-bar gantt-bar-actual critical" style="left:26%;width:13%"></div>
+          <div class="gantt-bar gantt-bar-forecast" style="left:39%;width:14%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+        </div>
+      </div>
+
+      <!-- MEP Plumbing -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">3.1</span> MEP — Plumbing</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:35%;width:22%"></div>
+          <div class="gantt-bar gantt-bar-actual" style="left:35%;width:0%"></div>
+          <div class="gantt-bar gantt-bar-forecast" style="left:35%;width:22%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+        </div>
+      </div>
+
+      <!-- HVAC -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">3.2</span> HVAC</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:42%;width:20%"></div>
+          <div class="gantt-bar gantt-bar-forecast" style="left:42%;width:20%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+        </div>
+      </div>
+
+      <!-- Electrical (CRITICAL) -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">3.3</span> Electrical <span class="text-red-400 ml-1">●</span></div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:48%;width:25%"></div>
+          <div class="gantt-bar gantt-bar-forecast" style="left:48%;width:25%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+        </div>
+      </div>
+
+      <!-- Medical Equipment - LINAC (CRITICAL) -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">4.1</span> LINAC Suite <span class="text-red-400 ml-1">●</span></div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:60%;width:20%"></div>
+          <div class="gantt-bar gantt-bar-forecast" style="left:60%;width:20%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+          <div class="gantt-milestone gantt-milestone-pending" style="left:79%" title="MS-014 LINAC Commissioning"></div>
+        </div>
+      </div>
+
+      <!-- MRI -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">4.2</span> MRI 1.5T</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:65%;width:15%"></div>
+          <div class="gantt-bar gantt-bar-forecast" style="left:65%;width:15%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+        </div>
+      </div>
+
+      <!-- Commissioning (CRITICAL) -->
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-cyan">5</span> Commissioning <span class="text-red-400 ml-1">●</span></div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-baseline" style="left:85%;width:13%"></div>
+          <div class="gantt-bar gantt-bar-forecast" style="left:85%;width:13%"></div>
+          <div class="gantt-today" style="left:33.3%"></div>
+          <div class="gantt-milestone gantt-milestone-pending" style="left:97%" title="MS-022 Substantial Completion"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card-source">Source: M03 ScheduleEntry · Last updated: 2026-05-03 09:14</div>
+  </div>
+
+  <!-- Secondary widget for PMO_DIRECTOR: RAG Status Strip -->
+  <div class="grid grid-cols-3 gap-4">
+    <div class="kpi-card severity-warning">
+      <div class="kpi-value text-amber-400">2.2 Civil Super</div>
+      <div class="kpi-label">Critical Path Slip · 5 days</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">22 of 24</div>
+      <div class="kpi-label">Milestones On Track</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value mono">94 days</div>
+      <div class="kpi-label">Total Project Float (avg)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 2: LOOK-AHEAD GANTT (Site Manager primary)               -->
+<!-- ============================================================ -->
+<section id="view-lookahead" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 2 of 13</div>
+    <h2 class="text-xl font-semibold mt-1 role-default-marker" id="lookaheadTitle">4-Week Look-ahead Gantt</h2>
+    <div class="text-xs text-dim mt-1"><strong class="text-cyan">SITE_MANAGER default landing</strong> — site execution focus, no strategic complexity</div>
+  </div>
+
+  <div class="annotation">X9 §13.3.3 — Site Manager subtraction principle: hide Master Gantt, hide financials, hide baseline detail. Show what to do this month, today's milestones, resource roster.</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Look-ahead — 4-Week Window</div>
+        <div class="chart-card-subtitle">2026-05-03 to 2026-05-31 · 23 active activities · 3 milestones</div>
+      </div>
+      <div class="chart-card-actions">
+        <select class="!w-32 text-xs"><option>4 weeks</option><option>2 weeks</option><option>6 weeks</option><option>8 weeks</option></select>
+        <button class="btn-icon">PNG</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: What needs to happen in next 4 weeks?</div>
+
+    <div class="border border-subtle rounded overflow-hidden">
+      <div class="gantt-axis">
+        <div style="width:240px" class="surface-2 px-3 py-2 text-xs uppercase-tracked text-mute">Activity</div>
+        <div class="gantt-axis-month">W1 (May 3-9)</div>
+        <div class="gantt-axis-month">W2 (May 10-16)</div>
+        <div class="gantt-axis-month">W3 (May 17-23)</div>
+        <div class="gantt-axis-month">W4 (May 24-31)</div>
+      </div>
+
+      <div class="gantt-row">
+        <div class="gantt-label mono">2.2.3 Brickwork Block A</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-actual" style="left:0%;width:60%"></div>
+          <div class="gantt-today" style="left:1%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono">2.2.4 Plaster Block A</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-actual" style="left:30%;width:50%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono">3.1.1 UG Drainage</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-actual critical" style="left:0%;width:100%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono">2.1.4 Plinth Beams</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-actual" style="left:0%;width:35%"></div>
+          <div class="gantt-milestone gantt-milestone-pending" style="left:35%" title="MS-007 Plinth Complete"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono">3.3.1 HT Transformer (long-lead)</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-actual" style="left:75%;width:25%"></div>
+          <div class="gantt-milestone gantt-milestone-pending" style="left:99%" title="MS-009 HT Delivery"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card-source">Source: M03 ScheduleEntry filtered to next 4 weeks · 2026-05-03 09:14</div>
+  </div>
+
+  <!-- Today's milestones secondary widget -->
+  <div class="grid grid-cols-2 gap-4">
+    <div class="chart-card">
+      <div class="uppercase-tracked text-cyan text-xs mb-3">Today's Milestones</div>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3 text-sm">
+          <span class="inline-block transform rotate-45" style="width:10px;height:10px;background:#10b981"></span>
+          <span class="mono text-xs text-mute">MS-006</span>
+          <span>Foundation Concrete Pour Block B — <span class="text-emerald-400">Achieved</span></span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="inline-block transform rotate-45" style="width:10px;height:10px;background:rgba(245,158,11,0.6);border:1px solid #f59e0b"></span>
+          <span class="mono text-xs text-mute">MS-007</span>
+          <span>Plinth Complete — <span class="text-amber-400">Pending (planned 2026-05-20)</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="uppercase-tracked text-cyan text-xs mb-3">Resource Roster — Today</div>
+      <div class="space-y-1 text-sm">
+        <div class="flex justify-between"><span>Civil Workers</span><span class="mono text-cyan">142</span></div>
+        <div class="flex justify-between"><span>MEP Technicians</span><span class="mono text-cyan">28</span></div>
+        <div class="flex justify-between"><span>Site Engineers</span><span class="mono text-cyan">8</span></div>
+        <div class="flex justify-between"><span>Safety Officers</span><span class="mono text-cyan">3</span></div>
+        <div class="flex justify-between text-xs text-mute pt-2 border-t border-subtle"><span>Total</span><span class="mono">181</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 3: VARIANCE BAR (Project Director secondary)             -->
+<!-- ============================================================ -->
+<section id="view-variance" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 3 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Variance Bar — Schedule Variance per WBS</h2>
+    <div class="text-xs text-dim mt-1">Sorted by magnitude DESC. Worst-first identification.</div>
+  </div>
+
+  <div class="annotation">X9 §4.1.2 Bar (horizontal, sortable). Decision: Which WBS has the highest schedule variance?</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Variance to Baseline — KDMC-001-DBOT</div>
+        <div class="chart-card-subtitle">438 WBS nodes · Sorted by schedule_variance_days DESC</div>
+      </div>
+      <div class="chart-card-actions">
+        <select class="!w-auto text-xs"><option>Top 10</option><option>Top 25</option><option>All</option></select>
+        <button class="btn-icon">PNG</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: What's the variance to baseline by WBS?</div>
+
+    <div class="space-y-2">
+      <div class="flex items-center gap-3">
+        <div class="w-44 mono text-xs text-cyan">2.2 Civil Superstructure</div>
+        <div class="flex-1 surface-2 rounded h-6 relative">
+          <div class="absolute h-full rounded" style="left:50%;width:7%;background:#ef4444"></div>
+        </div>
+        <div class="w-20 text-right mono text-xs text-red-400">+14 days</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-44 mono text-xs text-cyan">2.1.3 Foundation RCC M25</div>
+        <div class="flex-1 surface-2 rounded h-6 relative">
+          <div class="absolute h-full rounded" style="left:50%;width:5%;background:#f59e0b"></div>
+        </div>
+        <div class="w-20 text-right mono text-xs text-amber-400">+10 days</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-44 mono text-xs text-cyan">3.3.2 LT Distribution</div>
+        <div class="flex-1 surface-2 rounded h-6 relative">
+          <div class="absolute h-full rounded" style="left:50%;width:4%;background:#f59e0b"></div>
+        </div>
+        <div class="w-20 text-right mono text-xs text-amber-400">+8 days</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-44 mono text-xs text-cyan">3.1.1 UG Drainage</div>
+        <div class="flex-1 surface-2 rounded h-6 relative">
+          <div class="absolute h-full rounded" style="left:50%;width:3%;background:#f59e0b"></div>
+        </div>
+        <div class="w-20 text-right mono text-xs text-amber-400">+6 days</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-44 mono text-xs text-cyan">2.2.3 Brickwork Block A</div>
+        <div class="flex-1 surface-2 rounded h-6 relative">
+          <div class="absolute h-full rounded" style="left:50%;width:2%;background:#10b981"></div>
+        </div>
+        <div class="w-20 text-right mono text-xs text-emerald-400">+3 days</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-44 mono text-xs text-cyan">1.2 Mobilisation</div>
+        <div class="flex-1 surface-2 rounded h-6 relative">
+          <div class="absolute h-full rounded" style="left:48%;width:2%;background:#10b981"></div>
+        </div>
+        <div class="w-20 text-right mono text-xs text-emerald-400">−2 days</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-44 mono text-xs text-cyan">2.1.1 Site Clearance</div>
+        <div class="flex-1 surface-2 rounded h-6 relative">
+          <div class="absolute h-full rounded" style="left:46%;width:4%;background:#10b981"></div>
+        </div>
+        <div class="w-20 text-right mono text-xs text-emerald-400">−5 days</div>
+      </div>
+    </div>
+
+    <div class="chart-card-source">Source: M03 ScheduleEntry.schedule_variance_days · 2026-05-03 09:14</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 4: CRITICAL PATH DAG (X9 §4.2.1)                         -->
+<!-- ============================================================ -->
+<section id="view-critical" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 4 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Critical Path Network</h2>
+    <div class="text-xs text-dim mt-1">PLANNING_ENGINEER secondary view. Topology + bottleneck identification.</div>
+  </div>
+
+  <div class="annotation">X9 §4.2.1 Network/DAG via <strong>react-flow</strong>. Auto-layout Dagre. Click node → detail. Up to 100 nodes desktop.</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Critical Path — KDMC-001-DBOT</div>
+        <div class="chart-card-subtitle">17 critical activities · float ≤ 0 days · click node for detail</div>
+      </div>
+      <div class="chart-card-actions">
+        <button class="btn-icon">Auto-layout</button>
+        <button class="btn-icon">Zoom fit</button>
+        <button class="btn-icon">PNG</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: Are critical path activities healthy?</div>
+
+    <div class="dag-canvas">
+      <!-- Critical path nodes -->
+      <div class="dag-node dag-node-done" style="left:30px;top:20px">2.1.1 Site Clearance ✓</div>
+      <div class="dag-node dag-node-done" style="left:200px;top:20px">2.1.2 PCC ✓</div>
+      <div class="dag-node dag-node-critical" style="left:370px;top:20px">2.1.3 Foundation RCC<br/><span class="text-xs">+10d delay</span></div>
+      <div class="dag-node dag-node-critical" style="left:560px;top:20px">2.1.4 Plinth Beams</div>
+      <div class="dag-node dag-node-critical" style="left:750px;top:20px">2.2.1 Columns<br/><span class="text-xs">+14d delay</span></div>
+      <div class="dag-node dag-node-critical" style="left:940px;top:20px">2.2.2 Beams + Slabs</div>
+      <div class="dag-node dag-node-critical" style="left:30px;top:120px">2.2.3 Brickwork</div>
+      <div class="dag-node dag-node-normal" style="left:240px;top:120px">2.2.4 Plaster</div>
+      <div class="dag-node dag-node-critical" style="left:430px;top:120px">3.3.1 HT Transformer</div>
+      <div class="dag-node dag-node-critical" style="left:640px;top:120px">3.3.2 LT Distribution<br/><span class="text-xs">+8d delay</span></div>
+      <div class="dag-node dag-node-critical" style="left:30px;top:220px">4.1 LINAC Bunker</div>
+      <div class="dag-node dag-node-critical" style="left:240px;top:220px">4.1.2 LINAC Install</div>
+      <div class="dag-node dag-node-critical" style="left:450px;top:220px">5.1 Integrated Comm.</div>
+      <div class="dag-node dag-node-critical" style="left:670px;top:220px">5.2 NABH Audit</div>
+      <div class="dag-node dag-node-critical" style="left:900px;top:220px">5.3 Substantial Completion</div>
+
+      <!-- Edges drawn as SVG -->
+      <svg style="position:absolute;inset:0;pointer-events:none;width:100%;height:100%">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+          </marker>
+        </defs>
+        <line x1="155" y1="40" x2="200" y2="40" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="280" y1="40" x2="370" y2="40" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="490" y1="40" x2="560" y2="40" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="680" y1="40" x2="750" y2="40" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="870" y1="40" x2="940" y2="40" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="1010" y1="60" x2="160" y2="120" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="160" y1="140" x2="240" y2="140" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="370" y1="140" x2="430" y2="140" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="570" y1="140" x2="640" y2="140" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="780" y1="160" x2="160" y2="220" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="180" y1="240" x2="240" y2="240" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="380" y1="240" x2="450" y2="240" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="580" y1="240" x2="670" y2="240" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="800" y1="240" x2="900" y2="240" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+      </svg>
+    </div>
+
+    <div class="flex gap-4 mt-3 text-xs">
+      <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm dag-node-critical inline-block"></span><span class="text-dim">Critical (delayed)</span></div>
+      <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm dag-node-done inline-block"></span><span class="text-dim">Completed</span></div>
+      <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm dag-node-normal inline-block"></span><span class="text-dim">On Track</span></div>
+    </div>
+    <div class="chart-card-source">Source: M03 CPM algorithm output · Critical path = float ≤ 0 days · 2026-05-03</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 5: MILESTONE TIMELINE (X9 §4.1.10)                        -->
+<!-- ============================================================ -->
+<section id="view-milestones" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 5 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Milestone Timeline</h2>
+    <div class="text-xs text-dim mt-1">Project milestones with status, gate links, delay tracking</div>
+  </div>
+
+  <div class="annotation">X9 §4.1.10 Timeline. Status colour-coded per X8 §3.44 MilestoneStatus. Gate-linked milestones marked.</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Milestone Timeline — KDMC-001-DBOT</div>
+        <div class="chart-card-subtitle">24 milestones · 8 gate-linked · 22 on track · 2 delayed</div>
+      </div>
+      <div class="chart-card-actions">
+        <select class="!w-auto text-xs"><option>All milestones</option><option>Gate-linked only</option><option>Delayed only</option></select>
+        <button class="btn-icon">PNG</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: Are milestones being hit?</div>
+
+    <div class="surface-1 border border-subtle rounded p-4">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Milestone</th><th>Type</th><th>Phase</th><th>Planned</th><th>Actual / Forecast</th><th>Delay</th><th>Status</th><th>Gate</th></tr>
+        </thead>
+        <tbody>
+          <tr class="row-hover severity-success"><td class="mono">MS-001</td><td>Project Mobilisation</td><td><span class="pill pill-info">Construction</span></td><td>Construction</td><td class="mono text-xs">2026-01-15</td><td class="mono text-xs">2026-01-15</td><td class="mono text-emerald-400">0</td><td><span class="pill pill-active">Achieved</span></td><td>—</td></tr>
+          <tr class="row-hover severity-success"><td class="mono">MS-002</td><td>Site Establishment</td><td><span class="pill pill-info">Construction</span></td><td>Construction</td><td class="mono text-xs">2026-02-15</td><td class="mono text-xs">2026-02-13</td><td class="mono text-emerald-400">−2</td><td><span class="pill pill-active">Achieved</span></td><td>—</td></tr>
+          <tr class="row-hover severity-success"><td class="mono">MS-003</td><td>Baseline Lock (SG-6)</td><td><span class="pill pill-system">Financial</span></td><td>Construction</td><td class="mono text-xs">2026-02-15</td><td class="mono text-xs">2026-02-15</td><td class="mono text-emerald-400">0</td><td><span class="pill pill-active">Achieved</span></td><td class="mono text-cyan">SG-6</td></tr>
+          <tr class="row-hover severity-warning"><td class="mono">MS-004</td><td>Foundation Complete</td><td><span class="pill pill-info">Construction</span></td><td>Construction</td><td class="mono text-xs">2026-04-30</td><td class="mono text-xs text-amber-400">2026-05-10</td><td class="mono text-amber-400">+10</td><td><span class="pill pill-stale">Delayed</span></td><td>—</td></tr>
+          <tr class="row-hover"><td class="mono">MS-005</td><td>Substructure Complete</td><td><span class="pill pill-info">Construction</span></td><td>Construction</td><td class="mono text-xs">2026-05-30</td><td class="mono text-xs">2026-06-08</td><td class="mono text-amber-400">+9</td><td><span class="pill pill-stale">At_Risk</span></td><td>—</td></tr>
+          <tr class="row-hover"><td class="mono">MS-006</td><td>Foundation Concrete Block B</td><td><span class="pill pill-info">Construction</span></td><td>Construction</td><td class="mono text-xs">2026-05-03</td><td class="mono text-xs">2026-05-03</td><td class="mono text-emerald-400">0</td><td><span class="pill pill-active">Achieved</span></td><td>—</td></tr>
+          <tr class="row-hover"><td class="mono">MS-014</td><td>LINAC Commissioning</td><td><span class="pill pill-info">Commissioning</span></td><td>Commissioning</td><td class="mono text-xs">2026-11-20</td><td class="mono text-xs">2026-11-20</td><td class="mono text-mute">—</td><td><span class="pill pill-info">Not_Started</span></td><td class="mono text-cyan">SG-9</td></tr>
+          <tr class="row-hover"><td class="mono">MS-022</td><td>Substantial Completion</td><td><span class="pill pill-system">Handover</span></td><td>Handover</td><td class="mono text-xs">2026-12-15</td><td class="mono text-xs">2026-12-15</td><td class="mono text-mute">—</td><td><span class="pill pill-info">Not_Started</span></td><td class="mono text-cyan">SG-11</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-card-source">Source: M03 Milestone · Gate links via M08 · Compliance dates auto-pop via M09 · 2026-05-03</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 6: SCHEDULE S-CURVE (Combined chart)                     -->
+<!-- ============================================================ -->
+<section id="view-scurve" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 6 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Schedule S-Curve — Planned vs Actual</h2>
+    <div class="text-xs text-dim mt-1">Combined chart per X9 §7.5.5 — two series sharing time + cumulative % axes</div>
+  </div>
+
+  <div class="annotation">X9 §4.1.1 Line multi-series via <strong>Recharts</strong>. Combined chart per §7.5.5: Planned (amber) + Actual (cyan); variance area shaded.</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Schedule S-Curve — KDMC-001-DBOT</div>
+        <div class="chart-card-subtitle">Cumulative completion % · Planned vs Actual</div>
+      </div>
+      <div class="chart-card-actions">
+        <button class="btn-icon">PNG</button>
+        <button class="btn-icon">CSV</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: Is planned vs actual progress tracking?</div>
+
+    <svg class="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none">
+      <!-- Grid -->
+      <line x1="40" y1="240" x2="780" y2="240" stroke="#262626" stroke-width="1"/>
+      <line x1="40" y1="180" x2="780" y2="180" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="40" y1="120" x2="780" y2="120" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="40" y1="60" x2="780" y2="60" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="40" y1="20" x2="40" y2="240" stroke="#262626" stroke-width="1"/>
+      <!-- Y axis labels -->
+      <text x="32" y="244" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">0%</text>
+      <text x="32" y="184" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">25%</text>
+      <text x="32" y="124" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">50%</text>
+      <text x="32" y="64" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">75%</text>
+      <text x="32" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">100%</text>
+      <!-- X axis labels -->
+      <text x="40" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jan</text>
+      <text x="100" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Feb</text>
+      <text x="160" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Mar</text>
+      <text x="220" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Apr</text>
+      <text x="280" y="260" fill="#22d3ee" font-size="10" text-anchor="middle" font-family="JetBrains Mono">May</text>
+      <text x="340" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jun</text>
+      <text x="400" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jul</text>
+      <text x="460" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Aug</text>
+      <text x="520" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Sep</text>
+      <text x="580" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Oct</text>
+      <text x="640" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Nov</text>
+      <text x="700" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Dec</text>
+
+      <!-- Variance shaded area between planned and actual -->
+      <path d="M 40 240 Q 100 232, 160 215 T 280 165 L 280 175 Q 220 195, 160 220 T 40 240 Z" fill="rgba(245,158,11,0.15)"/>
+
+      <!-- Planned curve (amber) -->
+      <path d="M 40 240 Q 100 232, 160 215 T 280 165 T 400 110 T 520 70 T 640 40 T 760 22" fill="none" stroke="#f59e0b" stroke-width="2"/>
+      <!-- Actual curve (cyan) - lags slightly behind -->
+      <path d="M 40 240 Q 100 235, 160 225 T 280 175" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+      <!-- Forecast continuation (cyan dashed) -->
+      <path d="M 280 175 Q 340 145, 400 120 T 520 80 T 640 45 T 760 25" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4 3" opacity="0.6"/>
+
+      <!-- Today line -->
+      <line x1="280" y1="20" x2="280" y2="240" stroke="#ef4444" stroke-width="1" stroke-dasharray="2 2"/>
+      <text x="280" y="14" fill="#ef4444" font-size="10" text-anchor="middle" font-family="JetBrains Mono">TODAY</text>
+
+      <!-- Data points -->
+      <circle cx="280" cy="175" r="4" fill="#22d3ee"/>
+      <circle cx="280" cy="165" r="4" fill="#f59e0b"/>
+
+      <!-- Variance callout -->
+      <text x="290" y="172" fill="#22d3ee" font-size="11" font-family="JetBrains Mono" font-weight="600">42%</text>
+      <text x="290" y="162" fill="#f59e0b" font-size="11" font-family="JetBrains Mono" font-weight="600">46%</text>
+    </svg>
+
+    <div class="flex gap-4 mt-3 text-xs">
+      <div class="flex items-center gap-1"><span class="inline-block w-4 h-0.5 rounded" style="background:#f59e0b"></span><span class="text-dim">Planned (cumulative %)</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-4 h-0.5 rounded bg-cyan"></span><span class="text-dim">Actual</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-4 h-0.5 rounded" style="background:#22d3ee" style="opacity:0.6;border-bottom:1px dashed #22d3ee"></span><span class="text-dim">Forecast</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-4 h-2" style="background:rgba(245,158,11,0.15)"></span><span class="text-dim">Variance</span></div>
+    </div>
+
+    <div class="chart-card-source">Source: M03 PVProfile (planned) + M04 ProgressEntry (actual) · 2026-05-03</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 7: PV S-CURVE — ROLE TIERED (X9 v0.2 §13.3.3)            -->
+<!-- ============================================================ -->
+<section id="view-pv" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 7 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">PV S-Curve — Cumulative Planned Value</h2>
+    <div class="text-xs text-dim mt-1"><strong class="text-cyan">CRITICAL VIEW</strong> — FINANCE_LEAD primary; PROJECT_DIRECTOR secondary (X9 v0.2 cascade); PLANNING_ENGINEER sees shape only</div>
+  </div>
+
+  <div class="annotation">X9 v0.2 §13.3.3 cascade — PV S-curve added to PROJECT_DIRECTOR + PLANNING_ENGINEER secondary views. Inherits M02 BR-02-008 spike formula at API serialiser. <strong>Switch role above to see ₹ visibility change.</strong></div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">PV S-Curve — KDMC-001-DBOT</div>
+        <div class="chart-card-subtitle">Cumulative Planned Value over time · Foundation of EVM</div>
+      </div>
+      <div class="chart-card-actions">
+        <select class="!w-auto text-xs"><option>Monthly</option><option>Weekly</option></select>
+        <button class="btn-icon">PNG</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision (FINANCE_LEAD): What is the cumulative planned value over time?<br/>Decision (PROJECT_DIRECTOR): Is schedule progress matching cost commitment trajectory?</div>
+
+    <svg class="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none">
+      <line x1="50" y1="240" x2="780" y2="240" stroke="#262626" stroke-width="1"/>
+      <line x1="50" y1="180" x2="780" y2="180" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="50" y1="120" x2="780" y2="120" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="50" y1="60" x2="780" y2="60" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2 2"/>
+      <line x1="50" y1="20" x2="50" y2="240" stroke="#262626" stroke-width="1"/>
+      <!-- Y axis labels - role tiered -->
+      <text x="42" y="244" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">0</text>
+      <text x="42" y="184" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-actual">₹17 Cr</text>
+      <text x="42" y="184" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-loaded" style="display:none">₹19.5 Cr</text>
+      <text x="42" y="184" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-indexed" style="display:none">₹18.4 Cr</text>
+      <text x="42" y="184" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-shape" style="display:none">25%</text>
+      <text x="42" y="184" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-redacted" style="display:none">[—]</text>
+
+      <text x="42" y="124" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-actual">₹34 Cr</text>
+      <text x="42" y="124" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-loaded" style="display:none">₹39 Cr</text>
+      <text x="42" y="124" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-indexed" style="display:none">₹36.7 Cr</text>
+      <text x="42" y="124" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-shape" style="display:none">50%</text>
+      <text x="42" y="124" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-redacted" style="display:none">[—]</text>
+
+      <text x="42" y="64" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-actual">₹51 Cr</text>
+      <text x="42" y="64" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-loaded" style="display:none">₹58.7 Cr</text>
+      <text x="42" y="64" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-indexed" style="display:none">₹55.1 Cr</text>
+      <text x="42" y="64" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-shape" style="display:none">75%</text>
+      <text x="42" y="64" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-redacted" style="display:none">[—]</text>
+
+      <text x="42" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-actual">₹68.4 Cr</text>
+      <text x="42" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-loaded" style="display:none">₹78.7 Cr</text>
+      <text x="42" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-indexed" style="display:none">₹73.9 Cr</text>
+      <text x="42" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-shape" style="display:none">100%</text>
+      <text x="42" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono" class="rate-label rate-redacted" style="display:none">[—]</text>
+
+      <!-- X axis -->
+      <text x="50" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jan</text>
+      <text x="115" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Feb</text>
+      <text x="180" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Mar</text>
+      <text x="245" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Apr</text>
+      <text x="310" y="260" fill="#22d3ee" font-size="10" text-anchor="middle" font-family="JetBrains Mono">May</text>
+      <text x="375" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jun</text>
+      <text x="440" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jul</text>
+      <text x="505" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Aug</text>
+      <text x="570" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Sep</text>
+      <text x="635" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Oct</text>
+      <text x="700" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Nov</text>
+      <text x="765" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Dec</text>
+
+      <!-- PV cumulative curve (S-curve shape) -->
+      <path d="M 50 240 Q 115 235, 180 220 T 310 165 T 440 95 T 570 50 T 700 25 L 765 22" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+      <!-- Today marker -->
+      <line x1="310" y1="20" x2="310" y2="240" stroke="#ef4444" stroke-width="1" stroke-dasharray="2 2"/>
+      <text x="310" y="14" fill="#ef4444" font-size="10" text-anchor="middle" font-family="JetBrains Mono">TODAY</text>
+      <circle cx="310" cy="165" r="4" fill="#22d3ee"/>
+      <text x="320" y="160" fill="#22d3ee" font-size="11" font-family="JetBrains Mono" font-weight="600" class="rate-label rate-actual">₹34.2 Cr</text>
+      <text x="320" y="160" fill="#22d3ee" font-size="11" font-family="JetBrains Mono" font-weight="600" class="rate-label rate-loaded" style="display:none">₹39.3 Cr</text>
+      <text x="320" y="160" fill="#22d3ee" font-size="11" font-family="JetBrains Mono" font-weight="600" class="rate-label rate-indexed" style="display:none">₹36.9 Cr</text>
+      <text x="320" y="160" fill="#22d3ee" font-size="11" font-family="JetBrains Mono" font-weight="600" class="rate-label rate-shape" style="display:none">50%</text>
+      <text x="320" y="160" fill="#22d3ee" font-size="11" font-family="JetBrains Mono" font-weight="600" class="rate-label rate-redacted" style="display:none">[—]</text>
+    </svg>
+
+    <div id="pvRoleNote" class="x9-banner mt-3">
+      <span class="text-cyan font-semibold mono">Current view:</span> 
+      <span id="pvRoleNoteText" class="text-dim">Actual ₹ values (PMO_DIRECTOR / FINANCE_LEAD privilege)</span>
+    </div>
+
+    <div class="chart-card-source">Source: M03 PVProfile via API serialiser (M02 BR-02-008 spike formula applied per role) · 2026-05-03</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 8: RESOURCE HISTOGRAM (X9 §4.1.3 Stacked Bar)            -->
+<!-- ============================================================ -->
+<section id="view-resources" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 8 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Resource Histogram — Loading by Period</h2>
+    <div class="text-xs text-dim mt-1">Stacked by ResourceType (X8 §3.42 — 4 types incl. Vendor_Resource)</div>
+  </div>
+
+  <div class="annotation">X9 §4.1.3 Stacked Bar (time). Shows resource demand per period; 4 resource types stacked. Bell-shaped loading typical for hospital MEP-heavy projects.</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Resource Loading — Monthly</div>
+        <div class="chart-card-subtitle">Total headcount per month · 4 resource types (X8 §3.42)</div>
+      </div>
+      <div class="chart-card-actions">
+        <select class="!w-auto text-xs"><option>Monthly</option><option>Weekly</option></select>
+        <button class="btn-icon">PNG</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: Are resources over/under-loaded across time?</div>
+
+    <svg class="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none">
+      <line x1="50" y1="240" x2="780" y2="240" stroke="#262626" stroke-width="1"/>
+      <line x1="50" y1="20" x2="50" y2="240" stroke="#262626" stroke-width="1"/>
+      <text x="42" y="244" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">0</text>
+      <text x="42" y="180" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">75</text>
+      <text x="42" y="120" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">150</text>
+      <text x="42" y="60" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">225</text>
+      <text x="42" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">300</text>
+
+      <!-- Stacked bars per month -->
+      <!-- Jan: 60 total -->
+      <rect x="60" y="190" width="40" height="50" fill="#22d3ee"/>
+      <rect x="60" y="170" width="40" height="20" fill="#f59e0b"/>
+      <rect x="60" y="160" width="40" height="10" fill="#a855f7"/>
+      <rect x="60" y="150" width="40" height="10" fill="#10b981"/>
+      <text x="80" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jan</text>
+      <!-- Feb: 100 -->
+      <rect x="120" y="170" width="40" height="70" fill="#22d3ee"/>
+      <rect x="120" y="140" width="40" height="30" fill="#f59e0b"/>
+      <rect x="120" y="130" width="40" height="10" fill="#a855f7"/>
+      <rect x="120" y="120" width="40" height="10" fill="#10b981"/>
+      <text x="140" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Feb</text>
+      <!-- Mar: 145 -->
+      <rect x="180" y="135" width="40" height="105" fill="#22d3ee"/>
+      <rect x="180" y="100" width="40" height="35" fill="#f59e0b"/>
+      <rect x="180" y="90" width="40" height="10" fill="#a855f7"/>
+      <rect x="180" y="80" width="40" height="10" fill="#10b981"/>
+      <text x="200" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Mar</text>
+      <!-- Apr: 165 -->
+      <rect x="240" y="115" width="40" height="125" fill="#22d3ee"/>
+      <rect x="240" y="80" width="40" height="35" fill="#f59e0b"/>
+      <rect x="240" y="70" width="40" height="10" fill="#a855f7"/>
+      <rect x="240" y="60" width="40" height="10" fill="#10b981"/>
+      <text x="260" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Apr</text>
+      <!-- May (today): 181 -->
+      <rect x="300" y="100" width="40" height="140" fill="#22d3ee"/>
+      <rect x="300" y="65" width="40" height="35" fill="#f59e0b"/>
+      <rect x="300" y="55" width="40" height="10" fill="#a855f7"/>
+      <rect x="300" y="45" width="40" height="10" fill="#10b981"/>
+      <text x="320" y="260" fill="#22d3ee" font-size="10" text-anchor="middle" font-family="JetBrains Mono">May</text>
+      <!-- Jun: 230 -->
+      <rect x="360" y="80" width="40" height="160" fill="#22d3ee"/>
+      <rect x="360" y="35" width="40" height="45" fill="#f59e0b"/>
+      <rect x="360" y="20" width="40" height="15" fill="#a855f7"/>
+      <text x="380" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jun</text>
+      <!-- Jul (peak): 260 -->
+      <rect x="420" y="60" width="40" height="180" fill="#22d3ee"/>
+      <rect x="420" y="25" width="40" height="35" fill="#f59e0b"/>
+      <rect x="420" y="15" width="40" height="10" fill="#a855f7"/>
+      <text x="440" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Jul</text>
+      <!-- Aug: 245 -->
+      <rect x="480" y="70" width="40" height="170" fill="#22d3ee"/>
+      <rect x="480" y="40" width="40" height="30" fill="#f59e0b"/>
+      <rect x="480" y="25" width="40" height="15" fill="#a855f7"/>
+      <text x="500" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Aug</text>
+      <!-- Sep: 200 -->
+      <rect x="540" y="120" width="40" height="120" fill="#22d3ee"/>
+      <rect x="540" y="80" width="40" height="40" fill="#f59e0b"/>
+      <rect x="540" y="60" width="40" height="20" fill="#a855f7"/>
+      <rect x="540" y="50" width="40" height="10" fill="#10b981"/>
+      <text x="560" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Sep</text>
+      <!-- Oct: 165 -->
+      <rect x="600" y="160" width="40" height="80" fill="#22d3ee"/>
+      <rect x="600" y="120" width="40" height="40" fill="#f59e0b"/>
+      <rect x="600" y="95" width="40" height="25" fill="#a855f7"/>
+      <rect x="600" y="80" width="40" height="15" fill="#10b981"/>
+      <text x="620" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Oct</text>
+      <!-- Nov: 110 -->
+      <rect x="660" y="195" width="40" height="45" fill="#22d3ee"/>
+      <rect x="660" y="170" width="40" height="25" fill="#f59e0b"/>
+      <rect x="660" y="150" width="40" height="20" fill="#a855f7"/>
+      <rect x="660" y="135" width="40" height="15" fill="#10b981"/>
+      <text x="680" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Nov</text>
+      <!-- Dec: 60 -->
+      <rect x="720" y="225" width="40" height="15" fill="#22d3ee"/>
+      <rect x="720" y="210" width="40" height="15" fill="#f59e0b"/>
+      <rect x="720" y="195" width="40" height="15" fill="#a855f7"/>
+      <rect x="720" y="180" width="40" height="15" fill="#10b981"/>
+      <text x="740" y="260" fill="#9ca3af" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Dec</text>
+    </svg>
+
+    <div class="flex gap-4 mt-3 text-xs">
+      <div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-sm bg-cyan"></span><span class="text-dim">Internal</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-sm" style="background:#f59e0b"></span><span class="text-dim">Contractor_Resource</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-sm" style="background:#a855f7"></span><span class="text-dim">Consultant_Resource</span></div>
+      <div class="flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-sm" style="background:#10b981"></span><span class="text-dim">Vendor_Resource</span></div>
+    </div>
+
+    <div class="chart-card-source">Source: M03 ResourceAllocation × ResourceMaster · 2026-05-03</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 9: PROCUREMENT GANTT                                     -->
+<!-- ============================================================ -->
+<section id="view-procurement" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 9 of 13</div>
+    <h2 class="text-xl font-semibold mt-1 role-default-marker" id="procurementTitle">Procurement Schedule</h2>
+    <div class="text-xs text-dim mt-1"><strong>PROCUREMENT_OFFICER default landing</strong> — long-lead-time alerts highlighted</div>
+  </div>
+
+  <div class="annotation">X9 §4.1.6 Gantt. Vendor identity NOT shown here (M06 owns; OQ-1.9=B). Long-lead items (≥90 days) red-tagged. Today's status: 6 long-lead items tracked.</div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Procurement Schedule — Long-Lead Items</div>
+        <div class="chart-card-subtitle">6 long-lead items · LINAC + MRI on critical path</div>
+      </div>
+      <div class="chart-card-actions">
+        <select class="!w-auto text-xs"><option>All items</option><option>Long-lead only</option><option>Delayed</option></select>
+        <button class="btn-icon">PNG</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: Are long-lead items ordered in time?</div>
+
+    <div class="border border-subtle rounded overflow-hidden">
+      <div class="gantt-axis">
+        <div style="width:240px" class="surface-2 px-3 py-2 text-xs uppercase-tracked text-mute">Item · Lead time</div>
+        <div class="gantt-axis-month">Jan</div>
+        <div class="gantt-axis-month">Mar</div>
+        <div class="gantt-axis-month">May</div>
+        <div class="gantt-axis-month">Jul</div>
+        <div class="gantt-axis-month">Sep</div>
+        <div class="gantt-axis-month">Nov</div>
+      </div>
+
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-red-400">●</span> LINAC · 18-24m</div>
+        <div class="gantt-track">
+          <div class="gantt-bar" style="left:0%;width:80%;background:#ef4444"></div>
+          <div class="gantt-today" style="left:33%"></div>
+          <div class="gantt-milestone gantt-milestone-pending" style="left:80%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-red-400">●</span> MRI 1.5T · 14-16m</div>
+        <div class="gantt-track">
+          <div class="gantt-bar" style="left:8%;width:62%;background:#ef4444"></div>
+          <div class="gantt-today" style="left:33%"></div>
+          <div class="gantt-milestone gantt-milestone-pending" style="left:70%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-amber-400">●</span> CT Scanner · 10-12m</div>
+        <div class="gantt-track">
+          <div class="gantt-bar" style="left:15%;width:50%;background:#f59e0b"></div>
+          <div class="gantt-today" style="left:33%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono"><span class="text-amber-400">●</span> Cath Lab · 12-14m</div>
+        <div class="gantt-track">
+          <div class="gantt-bar" style="left:10%;width:55%;background:#f59e0b"></div>
+          <div class="gantt-today" style="left:33%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono">OT Equipment · 8-10m</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-actual" style="left:25%;width:45%"></div>
+          <div class="gantt-today" style="left:33%"></div>
+        </div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label mono">MGPS · 6-8m</div>
+        <div class="gantt-track">
+          <div class="gantt-bar gantt-bar-actual" style="left:35%;width:40%"></div>
+          <div class="gantt-today" style="left:33%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="x9-banner mt-3">
+      <span class="text-cyan mono font-semibold">⚠ Status:</span>
+      <span class="text-dim">LINAC order placed 2026-02-12 (latest_order_date 2026-02-15) — on track. MRI order placed 2026-02-20 — on track. CT Scanner order pending; latest_order_date 2026-05-15. </span>
+    </div>
+
+    <div class="chart-card-source">Source: M03 ProcurementScheduleItem · Vendor identity from M06 PO · 2026-05-03</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 10: FLOAT HISTOGRAM (X9 §4.2.2)                          -->
+<!-- ============================================================ -->
+<section id="view-float" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 10 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Float Histogram</h2>
+    <div class="text-xs text-dim mt-1">Distribution of float days across all WBS · BR-03-031 role-tiered visibility</div>
+  </div>
+
+  <div class="annotation">X9 §4.2.2 Histogram. Identifies near-critical activities. Float < 10 days = amber RAG (OQ-2.6). <strong>READ_ONLY sees count by status only — no float values per BR-03-031.</strong></div>
+
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">Float Distribution — KDMC-001-DBOT</div>
+        <div class="chart-card-subtitle">438 WBS nodes · float in days</div>
+      </div>
+      <div class="chart-card-actions">
+        <button class="btn-icon">PNG</button>
+        <button class="btn-icon">CSV</button>
+      </div>
+    </div>
+    <div class="chart-decision">Decision: How close are activities to critical path?</div>
+
+    <div class="float-section-actual">
+      <svg class="chart-svg" viewBox="0 0 800 280" preserveAspectRatio="none">
+        <line x1="50" y1="240" x2="780" y2="240" stroke="#262626" stroke-width="1"/>
+        <line x1="50" y1="20" x2="50" y2="240" stroke="#262626" stroke-width="1"/>
+        <text x="42" y="244" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">0</text>
+        <text x="42" y="180" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">25</text>
+        <text x="42" y="120" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">50</text>
+        <text x="42" y="60" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">75</text>
+        <text x="42" y="24" fill="#6b7280" font-size="10" text-anchor="end" font-family="JetBrains Mono">100</text>
+        <!-- Histogram bars -->
+        <rect x="60" y="100" width="60" height="140" fill="#ef4444"/>
+        <text x="90" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">≤0 (critical)</text>
+        <text x="90" y="92" fill="#ef4444" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">17</text>
+        <rect x="130" y="80" width="60" height="160" fill="#f59e0b"/>
+        <text x="160" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">1-9</text>
+        <text x="160" y="72" fill="#f59e0b" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">28</text>
+        <rect x="200" y="40" width="60" height="200" fill="#22d3ee"/>
+        <text x="230" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">10-29</text>
+        <text x="230" y="32" fill="#22d3ee" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">94</text>
+        <rect x="270" y="60" width="60" height="180" fill="#22d3ee"/>
+        <text x="300" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">30-59</text>
+        <text x="300" y="52" fill="#22d3ee" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">126</text>
+        <rect x="340" y="100" width="60" height="140" fill="#10b981"/>
+        <text x="370" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">60-89</text>
+        <text x="370" y="92" fill="#10b981" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">87</text>
+        <rect x="410" y="140" width="60" height="100" fill="#10b981"/>
+        <text x="440" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">90-119</text>
+        <text x="440" y="132" fill="#10b981" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">52</text>
+        <rect x="480" y="170" width="60" height="70" fill="#10b981"/>
+        <text x="510" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">120-149</text>
+        <text x="510" y="162" fill="#10b981" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">21</text>
+        <rect x="550" y="200" width="60" height="40" fill="#10b981"/>
+        <text x="580" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">150-179</text>
+        <text x="580" y="192" fill="#10b981" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">10</text>
+        <rect x="620" y="220" width="60" height="20" fill="#10b981"/>
+        <text x="650" y="260" fill="#6b7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">180+</text>
+        <text x="650" y="212" fill="#10b981" font-size="11" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">3</text>
+      </svg>
+      <div class="text-xs text-mute mt-2">Total: 438 WBS nodes · 17 critical (float ≤ 0) · 28 near-critical (1-9 days)</div>
+    </div>
+
+    <div class="float-section-redacted hidden">
+      <div class="surface-2 border severity-warning rounded p-6 text-center">
+        <div class="uppercase-tracked text-amber-400 text-xs mb-2">Float values redacted (BR-03-031)</div>
+        <div class="text-sm text-dim mb-4">Per X9 §13 + M03 BR-03-031, READ_ONLY sees status badges only — no float numerics.</div>
+        <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
+          <div class="kpi-card severity-critical"><div class="kpi-value text-red-400">17</div><div class="kpi-label">Critical activities</div></div>
+          <div class="kpi-card severity-warning"><div class="kpi-value text-amber-400">28</div><div class="kpi-label">Near-critical</div></div>
+          <div class="kpi-card severity-success"><div class="kpi-value text-emerald-400">393</div><div class="kpi-label">Healthy</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card-source">Source: M03 ScheduleEntry.total_float_days · Role-tiered per BR-03-031 · 2026-05-03</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 11: BASELINE EXTENSION FORM                              -->
+<!-- ============================================================ -->
+<section id="view-extension" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 11 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Submit Baseline Extension</h2>
+    <div class="text-xs text-dim mt-1">PMO_DIRECTOR / PROJECT_DIRECTOR / PLANNING_ENGINEER may submit; PMO approves</div>
+  </div>
+
+  <div class="annotation">BR-03-008 auto-reclassify Neutral_Event blank → Contractor_Delay. BR-03-009 evidence mandatory for Neutral_Event/Force_Majeure. BR-03-010 VO link mandatory for billable.</div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div class="col-span-2 chart-card">
+      <div class="chart-card-title mb-4">New Baseline Extension</div>
+
+      <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Extension Code</label>
+            <input type="text" value="EXT-007" disabled class="mt-1 mono">
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Project</label>
+            <input type="text" value="KDMC-001-DBOT" disabled class="mt-1 mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs uppercase-tracked text-mute">Primary Affected WBS *</label>
+          <select class="mt-1"><option>2.2 — Civil Superstructure</option><option>2.1 — Civil Substructure</option></select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Cause Category *</label>
+            <select class="mt-1" id="extCauseCategory" onchange="updateExtensionForm()">
+              <option value="Scope_Addition">Scope_Addition</option>
+              <option value="Design_Change">Design_Change</option>
+              <option value="Force_Majeure">Force_Majeure</option>
+              <option value="Client_Delay">Client_Delay</option>
+              <option value="Contractor_Delay">Contractor_Delay</option>
+              <option value="Neutral_Event" selected>Neutral_Event</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs uppercase-tracked text-mute">Extension Days *</label>
+            <input type="number" value="14" min="1" class="mt-1 mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs uppercase-tracked text-mute">Cause Description (min 50 chars) *</label>
+          <textarea>Unforeseen rock encounter during foundation excavation in Block B requiring additional rock breaking and re-engineering of footing depth. Geotechnical report dated 2026-04-22 attached.</textarea>
+        </div>
+
+        <div id="contractClauseRow">
+          <label class="text-xs uppercase-tracked text-mute">Contract Clause Reference <span class="text-amber-400">(required for Neutral_Event — else auto-reclassify)</span></label>
+          <input type="text" placeholder="e.g., Clause 8.4.2 — Unforeseen ground conditions" class="mt-1">
+          <div id="autoReclassifyWarning" class="severity-warning surface-2 rounded p-2 mt-2 text-xs">
+            <strong class="text-amber-400">⚠ BR-03-008 Auto-reclassify warning:</strong> If contract clause is left blank, this Neutral_Event will be automatically reclassified to <span class="mono text-cyan">Contractor_Delay</span>.
+          </div>
+        </div>
+
+        <div id="evidenceRow">
+          <label class="text-xs uppercase-tracked text-mute">Supporting Evidence URL <span class="text-amber-400">(required for Neutral_Event/Force_Majeure)</span></label>
+          <input type="text" placeholder="Data Lake URL after upload..." class="mt-1">
+          <button class="btn-secondary text-xs mt-1">Upload Evidence (PDF/images)</button>
+        </div>
+
+        <div id="voLinkRow" class="hidden">
+          <label class="text-xs uppercase-tracked text-mute">Variation Order Link <span class="text-amber-400">(required if billable)</span></label>
+          <select class="mt-1"><option>VO-2026-014</option><option>VO-2026-018</option></select>
+        </div>
+
+        <div class="surface-2 border border-subtle rounded p-3">
+          <div class="uppercase-tracked text-xs text-mute mb-2">Auto-Classification (per cause)</div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="flex justify-between"><span>is_billable_to_client</span><span class="mono text-amber-400" id="billableFlag">false</span></div>
+            <div class="flex justify-between"><span>counts_against_vendor</span><span class="mono text-mute" id="vendorFlag">false</span></div>
+          </div>
+          <div class="text-xs text-mute mt-2">PMO_DIRECTOR can override these flags with reason.</div>
+        </div>
+
+        <div class="flex gap-2 pt-3">
+          <button class="btn-secondary flex-1">Cancel</button>
+          <button class="btn-primary flex-1">Submit for PMO Approval</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="uppercase-tracked text-cyan text-xs mb-3">Workflow</div>
+      <div class="space-y-2 text-xs">
+        <div class="flex items-center gap-2"><div class="step-marker step-active">1</div><span>Submit (current)</span></div>
+        <div class="flex items-center gap-2"><div class="step-marker step-pending">2</div><span class="text-mute">PMO Review</span></div>
+        <div class="flex items-center gap-2"><div class="step-marker step-pending">3</div><span class="text-mute">Approve / Reject</span></div>
+        <div class="flex items-center gap-2"><div class="step-marker step-pending">4</div><span class="text-mute">Schedule cascade</span></div>
+        <div class="flex items-center gap-2"><div class="step-marker step-pending">5</div><span class="text-mute">M07 EAC update</span></div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-subtle text-xs">
+        <div class="uppercase-tracked text-mute mb-2">Recent Extensions</div>
+        <div class="space-y-1">
+          <div class="flex justify-between"><span class="mono text-xs">EXT-006</span><span class="pill pill-active text-xs">Approved</span></div>
+          <div class="flex justify-between"><span class="mono text-xs">EXT-005</span><span class="pill pill-active text-xs">Approved</span></div>
+          <div class="flex justify-between"><span class="mono text-xs">EXT-004</span><span class="pill pill-locked text-xs">Rejected</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 12: SCHEDULE IMPORT WIZARD                               -->
+<!-- ============================================================ -->
+<section id="view-import" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 12 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Schedule Import Wizard</h2>
+    <div class="text-xs text-dim mt-1">Primavera P6 (XML/XER) or MSP (XML) · 5-step modal-gated</div>
+  </div>
+
+  <div class="annotation">BR-03-023 mode required (no default). BR-03-024 conflict detection. BR-03-025 post-baseline routes through extension workflow. Pattern matches M02 CSV import.</div>
+
+  <div class="chart-card">
+    <div class="flex items-center mb-6">
+      <div class="step-marker step-done">✓</div>
+      <div class="ml-2 text-xs">Source</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-done">✓</div>
+      <div class="ml-2 text-xs">Mode</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-active">3</div>
+      <div class="ml-2 text-xs">Upload</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">4</div>
+      <div class="ml-2 text-xs text-mute">Preview</div>
+      <div class="step-line"></div>
+      <div class="step-marker step-pending">5</div>
+      <div class="ml-2 text-xs text-mute">Commit</div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4">
+      <div class="col-span-2">
+        <div class="uppercase-tracked text-cyan text-xs mb-1">Step 3 of 5</div>
+        <h3 class="text-lg font-semibold">Upload Schedule File</h3>
+        <div class="text-xs text-mute mb-5">Max 20 MB · Max 10,000 activities (BR-03-024)</div>
+
+        <div class="surface-2 border-2 border-dashed border-subtle rounded p-8 text-center">
+          <div class="text-3xl mb-3">📂</div>
+          <div class="text-sm">Drag schedule file here</div>
+          <div class="text-xs text-mute mt-1">or <span class="text-cyan cursor-pointer">click to browse</span></div>
+          <div class="text-xs text-mute mt-3">Source: <span class="mono text-cyan">Primavera_P6_XER</span></div>
+          <div class="text-xs text-mute mt-1">Required activity fields: activity_id, name, start_date, finish_date, predecessors</div>
+        </div>
+
+        <div class="mt-6 flex justify-between">
+          <button class="btn-secondary">← Back</button>
+          <button class="btn-primary" disabled>Validate →</button>
+        </div>
+      </div>
+
+      <div class="surface-2 border border-subtle rounded p-4 text-xs">
+        <div class="uppercase-tracked text-cyan mb-3">Session Summary</div>
+        <div class="space-y-2">
+          <div class="flex justify-between"><span class="text-mute">Project</span><span class="mono">KDMC-001-DBOT</span></div>
+          <div class="flex justify-between"><span class="text-mute">Source</span><span class="mono">Primavera_P6_XER</span></div>
+          <div class="flex justify-between"><span class="text-mute">Mode</span><span class="text-cyan font-semibold mono">Create_And_Update</span></div>
+          <div class="flex justify-between"><span class="text-mute">Initiated by</span><span class="mono">priya.sharma</span></div>
+          <div class="flex justify-between"><span class="text-mute">Baseline state</span><span class="text-amber-400">LOCKED (SG-6)</span></div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-subtle">
+          <div class="uppercase-tracked text-mute mb-2">⚠ Post-baseline behaviour</div>
+          <div class="text-dim text-xs">Per BR-03-025: any date changes will route through BaselineExtension workflow. User must classify cause_category for each change.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW 13: WEATHER + LOOK-AHEAD CONFIG                          -->
+<!-- ============================================================ -->
+<section id="view-weather" class="view">
+  <div class="mb-4">
+    <div class="uppercase-tracked text-mute">View 13 of 13</div>
+    <h2 class="text-xl font-semibold mt-1">Weather Window + Look-ahead Configuration</h2>
+    <div class="text-xs text-dim mt-1">Monsoon overlay, productivity factors, look-ahead window, reporting period</div>
+  </div>
+
+  <div class="annotation">BR-03-020 weather window adjusts effective float. BR-03-028 reporting_period_type change post-baseline requires PMO approval. Default 4w look-ahead, range 2-12 (OQ-1.7).</div>
+
+  <div class="grid grid-cols-2 gap-6">
+    <div class="chart-card">
+      <div class="chart-card-title mb-4">Weather Windows — KDMC Region</div>
+      <div class="space-y-3">
+        <div class="surface-2 border severity-warning rounded p-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="text-sm font-medium">Monsoon 2026</div>
+              <div class="text-xs text-mute mt-1 mono">2026-06-15 → 2026-09-30 · 107 days</div>
+            </div>
+            <span class="pill pill-stale">High severity</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3 text-xs">
+            <div class="flex justify-between"><span class="text-mute">Productivity factor</span><span class="mono text-amber-400">0.55</span></div>
+            <div class="flex justify-between"><span class="text-mute">Affected categories</span><span class="mono">Civil, MEP outdoor</span></div>
+            <div class="flex justify-between"><span class="text-mute">Region default</span><span class="mono text-cyan">Kalyan-Dombivli</span></div>
+            <div class="flex justify-between"><span class="text-mute">Factored in schedule</span><span class="mono text-emerald-400">Yes</span></div>
+          </div>
+        </div>
+        <div class="surface-2 border severity-info rounded p-3">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="text-sm font-medium">Cyclone Watch (Oct-Nov)</div>
+              <div class="text-xs text-mute mt-1 mono">Conditional · west coast Maharashtra</div>
+            </div>
+            <span class="pill pill-info">Low severity</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-3 text-xs">
+            <div class="flex justify-between"><span class="text-mute">Productivity factor</span><span class="mono">0.90</span></div>
+            <div class="flex justify-between"><span class="text-mute">Trigger</span><span class="mono">IMD alerts</span></div>
+          </div>
+        </div>
+        <button class="btn-primary w-full">+ Add Weather Window</button>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-title mb-4">Look-ahead Configuration</div>
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs uppercase-tracked text-mute">Look-ahead Window (weeks)</label>
+          <div class="flex items-center gap-3 mt-2">
+            <input type="number" value="4" min="2" max="12" class="!w-24 mono">
+            <span class="text-xs text-mute">Range 2-12 · default 4 · current setting</span>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs uppercase-tracked text-mute">Reporting Period Type</label>
+          <select class="mt-2">
+            <option selected>Monthly (default)</option>
+            <option>Weekly</option>
+            <option>Daily</option>
+            <option>Event_Driven</option>
+          </select>
+          <div class="text-xs text-mute mt-1">⚠ BR-03-028: Post-baseline change requires PMO approval + full PV regeneration</div>
+        </div>
+        <div class="surface-2 border border-subtle rounded p-3 text-xs">
+          <div class="uppercase-tracked text-mute mb-2">Configuration Audit</div>
+          <div class="space-y-1">
+            <div class="flex justify-between"><span class="text-mute">Last changed by</span><span class="mono">priya.sharma</span></div>
+            <div class="flex justify-between"><span class="text-mute">Last changed at</span><span class="mono">2026-02-15 11:00</span></div>
+            <div class="flex justify-between"><span class="text-mute">Owner</span><span class="mono text-cyan">M03 LookAheadConfig</span></div>
+            <div class="flex justify-between"><span class="text-mute">M01 reads via</span><span class="mono">internal API</span></div>
+          </div>
+          <div class="text-xs text-mute mt-2">Per OQ-1.8=A · M03 owns reporting_period_type · M01 v1.2 cascade applied</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t border-subtle surface-1 mt-12 px-6 py-4 text-xs text-mute flex justify-between">
+  <div>M03_PlanningMilestones_Wireframes_v1.0 · 2026-05-03 · 13 views · 14 entities · 32 BRs · X9 v0.2 first-use</div>
+  <div class="mono">EPCC System · Round 17 deliverable</div>
+</footer>
+
+<script>
+  // Role default views per X9 v0.2 §13.3.3
+  const roleDefaultViews = {
+    'PMO_DIRECTOR':       { primary: 'gantt',       label: 'Master Gantt with baseline + critical path' },
+    'PORTFOLIO_MANAGER':  { primary: 'variance',    label: 'Schedule variance summary (multi-project)' },
+    'PROJECT_DIRECTOR':   { primary: 'gantt',       label: 'Master Gantt + variance bar' },
+    'PLANNING_ENGINEER':  { primary: 'gantt',       label: 'WBS Gantt builder + float histogram' },
+    'QS_MANAGER':         { primary: 'gantt',       label: 'Master Gantt (read) + procurement schedule' },
+    'FINANCE_LEAD':       { primary: 'pv',          label: 'PV S-curve + procurement Gantt' },
+    'PROCUREMENT_OFFICER':{ primary: 'procurement', label: 'Procurement Gantt' },
+    'SITE_MANAGER':       { primary: 'lookahead',   label: '4-week Look-ahead Gantt' },
+    'COMPLIANCE_MANAGER': { primary: 'milestones',  label: 'Permit Gantt + milestone timeline' },
+    'READ_ONLY':          { primary: 'gantt',       label: 'Master Gantt (read-only, no float)' }
+  };
+
+  // Role × view visibility (hidden views per X9 §13.3.3)
+  const roleHiddenViews = {
+    'SITE_MANAGER':  ['gantt','variance','critical','scurve','pv','resources','float','extension','import','weather'],
+    'READ_ONLY':     ['extension','import','weather'],
+    'QS_MANAGER':    ['extension','weather'],
+    'PROCUREMENT_OFFICER': ['critical','float','extension','weather','pv'],
+    'COMPLIANCE_MANAGER':  ['critical','float','extension','import','weather','pv','resources']
+  };
+
+  // PV rate display per role (M02 BR-02-008 inheritance)
+  const pvRateMap = {
+    'SYSTEM_ADMIN':       { mode: 'actual',   note: 'Actual ₹ values (privileged audit)' },
+    'PMO_DIRECTOR':       { mode: 'actual',   note: 'Actual ₹ values (PMO_DIRECTOR / FINANCE_LEAD privilege)' },
+    'PORTFOLIO_MANAGER':  { mode: 'loaded',   note: 'Loaded ₹ values (× 1.15 spike)' },
+    'PROJECT_DIRECTOR':   { mode: 'loaded',   note: 'Loaded ₹ values (× 1.15 spike)' },
+    'PLANNING_ENGINEER':  { mode: 'shape',    note: 'Curve shape only — no ₹ values (X9 v0.2 §13.3.3 + M02 BR-02-008)' },
+    'QS_MANAGER':         { mode: 'indexed',  note: 'Indexed ₹ values (× 1.08 spike)' },
+    'FINANCE_LEAD':       { mode: 'actual',   note: 'Actual ₹ values (FINANCE_LEAD privilege)' },
+    'PROCUREMENT_OFFICER':{ mode: 'loaded',   note: 'Loaded ₹ values (× 1.15 spike)' },
+    'SITE_MANAGER':       { mode: 'redacted', note: '[RESTRICTED] — no PV access' },
+    'READ_ONLY':          { mode: 'redacted', note: '[RESTRICTED] — no PV access' }
+  };
+
+  function switchRole() {
+    const role = document.getElementById('roleSwitcher').value;
+    const def = roleDefaultViews[role];
+    const hidden = roleHiddenViews[role] || [];
+
+    // Update default banner
+    document.getElementById('defaultRole').textContent = role;
+    document.getElementById('defaultView').textContent = def.label;
+
+    // Hide views not in role's allowed set
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      const view = tab.getAttribute('data-view');
+      if (hidden.includes(view)) {
+        tab.classList.add('role-hidden');
+      } else {
+        tab.classList.remove('role-hidden');
+      }
+    });
+
+    // Switch to default view for the role
+    switchView(def.primary, null);
+
+    // Apply PV rate display per role
+    const pvCfg = pvRateMap[role];
+    document.querySelectorAll('.rate-label').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.rate-label.rate-' + pvCfg.mode).forEach(el => el.style.display = '');
+    const pvNote = document.getElementById('pvRoleNoteText');
+    if (pvNote) pvNote.textContent = pvCfg.note;
+
+    // Float visibility (BR-03-031)
+    if (role === 'READ_ONLY') {
+      document.querySelector('.float-section-actual').classList.add('hidden');
+      document.querySelector('.float-section-redacted').classList.remove('hidden');
+    } else {
+      document.querySelector('.float-section-actual').classList.remove('hidden');
+      document.querySelector('.float-section-redacted').classList.add('hidden');
+    }
+  }
+
+  function switchView(viewId, evt) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const view = document.getElementById('view-' + viewId);
+    if (view) view.classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    const tab = document.querySelector('[data-view="' + viewId + '"]');
+    if (tab) tab.classList.add('active');
+    if (evt) window.scrollTo(0, 0);
+  }
+
+  // Extension form auto-classify behaviour
+  function updateExtensionForm() {
+    const cause = document.getElementById('extCauseCategory').value;
+    const billable = document.getElementById('billableFlag');
+    const vendor = document.getElementById('vendorFlag');
+    const contractClause = document.getElementById('contractClauseRow');
+    const evidence = document.getElementById('evidenceRow');
+    const voLink = document.getElementById('voLinkRow');
+    const warning = document.getElementById('autoReclassifyWarning');
+
+    const flags = {
+      'Scope_Addition':    { billable: 'true',  vendor: 'false', clauseReq: true,  evidenceReq: false, voReq: true },
+      'Design_Change':     { billable: 'true',  vendor: 'false', clauseReq: true,  evidenceReq: false, voReq: true },
+      'Force_Majeure':     { billable: 'case',  vendor: 'false', clauseReq: true,  evidenceReq: true,  voReq: false },
+      'Client_Delay':      { billable: 'true',  vendor: 'false', clauseReq: true,  evidenceReq: false, voReq: true },
+      'Contractor_Delay':  { billable: 'false', vendor: 'true',  clauseReq: false, evidenceReq: false, voReq: false },
+      'Neutral_Event':     { billable: 'false', vendor: 'false', clauseReq: true,  evidenceReq: true,  voReq: false }
+    };
+    const cfg = flags[cause];
+    billable.textContent = cfg.billable;
+    billable.className = 'mono ' + (cfg.billable === 'true' ? 'text-emerald-400' : cfg.billable === 'case' ? 'text-amber-400' : 'text-mute');
+    vendor.textContent = cfg.vendor;
+    vendor.className = 'mono ' + (cfg.vendor === 'true' ? 'text-red-400' : 'text-mute');
+    voLink.classList.toggle('hidden', !cfg.voReq);
+    warning.style.display = cause === 'Neutral_Event' ? '' : 'none';
+  }
+
+  switchRole();
+  updateExtensionForm();
+</script>
+
+</body>
+</html>
