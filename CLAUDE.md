@@ -2,9 +2,9 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-03 (Rounds 21 + 22 LOCKED — M04 Wireframes + Workflows; M04 ExecutionCapture module COMPLETE)
-**Current Phase:** Phase 1 — Foundational Module Specifications
-**Active Round:** Round 22 LOCKED. M04 module COMPLETE (Brief, Spec, Wireframes, Workflows + X8 v0.5 + X9 v0.3 cascades). Awaiting Round 23.
+**Last Updated:** 2026-05-03 (Round 23 OPENED — EPCC_BuildArchitecture Brief v1.0 in DRAFT)
+**Current Phase:** Phase 1 — Foundational Module Specifications → **transitioning to Phase 1B: Build Architecture lock + scaffold**
+**Active Round:** Round 23 IN DRAFT. `System Specs/EPCC_BuildArchitecture_Brief_v1_0.md` surfaces 10 OQ-1 + ~30 OQ-2 decisions for the build (repo strategy, branch model, sequencing, OIDC, multi-tenancy, pilot seed, CI host, BR-tagged tests, ENUM codegen). Recommends monorepo on `main` + thin vertical slice (M34 → M01 demo) before module deepening. **Awaiting Monish OQ-1 answers** before Round 24 (Spec) drafts.
 
 ---
 
