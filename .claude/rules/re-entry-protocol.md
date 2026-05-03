@@ -43,7 +43,7 @@ Always cite the canonical reference rather than answering from memory:
 | Topic | Canonical Source |
 |---|---|
 | Authentication, RBAC, roles, permissions | `SystemAdmin/M34_SystemAdminRBAC_Spec_v1_0.md` |
-| Project lifecycle, phase, status, contract structure | `SystemAdmin/Modules/M01_ProjectRegistry_Spec_v1_0.md` |
+| Project lifecycle, phase, status, contract structure | `SystemAdmin/Modules/M01_ProjectRegistry_Spec_v1_0.md` (read with `M01_ProjectRegistry_v1_1_CascadeNote.md` adding `min_wbs_depth` and `M01_ProjectRegistry_v1_2_CascadeNote.md` removing `reporting_period_type`) |
 | WBS, BOQ, packages, BAC, templates, units | `SystemAdmin/Modules/M02_StructureWBS_Spec_v1_0.md` |
 | Schedule, baseline, milestones, PV, procurement timing, audit events | `SystemAdmin/Modules/M03_PlanningMilestones_Spec_v1_1.md` |
 | ENUMs (any) | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_4.md` |

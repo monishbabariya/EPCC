@@ -105,6 +105,10 @@ No personalisation in v1.0. No tenant override of role defaults (system-wide con
 
 ## 17 Canonical Roles (M34)
 
-**Internal (13):** SYSTEM_ADMIN, PMO_DIRECTOR, PORTFOLIO_MANAGER, PROJECT_DIRECTOR, FINANCE_LEAD, PROCUREMENT_OFFICER, PLANNING_ENGINEER, QS_MANAGER, SITE_MANAGER, COMPLIANCE_MANAGER, READ_ONLY, EXTERNAL_AUDITOR, plus 1 utility.
+> Authoritative source: `SystemAdmin/M34_SystemAdminRBAC_Spec_v1_0.md` Block 3 "Locked Role Taxonomy v1.0". Names below match the M34 ENUMs exactly.
 
-**External (4):** Client, Contractor, Consultant, Vendor portal users.
+**Internal (13):** `SYSTEM_ADMIN`, `PMO_DIRECTOR`, `PORTFOLIO_MANAGER`, `PROJECT_DIRECTOR`, `PLANNING_ENGINEER`, `QS_MANAGER`, `FINANCE_LEAD`, `PROCUREMENT_OFFICER`, `SITE_MANAGER`, `COMPLIANCE_MANAGER`, `ANALYST`, `READ_ONLY`, `EXTERNAL_AUDITOR`.
+
+**External (4):** `CLIENT_VIEWER`, `LENDER_VIEWER`, `NABH_ASSESSOR`, `CONTRACTOR_LIMITED` (all Phase 2 — gated by PF03 ExternalPartyPortal).
+
+**MFA-required (5):** `SYSTEM_ADMIN`, `PMO_DIRECTOR`, `PORTFOLIO_MANAGER`, `FINANCE_LEAD`, `EXTERNAL_AUDITOR`.

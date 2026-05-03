@@ -1,10 +1,10 @@
 # M03 — Planning & Milestones
 ## Brief v1.1
-**Status:** Draft — Pending Review
+**Status:** Locked (Round 15) — superseded by M03_PlanningMilestones_Spec_v1_1
 **Author:** PMO Director / System Architect
-**Created:** 2026-05-03 (v1.0) | **Updated:** 2026-05-03 (v1.1)
+**Created:** 2026-05-03 (v1.0) | **Updated:** 2026-05-03 (v1.1; Round 18 audit refreshed reference standards to current versions)
 **Re-Issue Of:** Legacy `M03_Planning_Milestones_v2.3.md` (consolidated from v1.0 → v2.3 chain)
-**Reference Standards:** X8_GlossaryENUMs_v0_3.md, X9_VisualisationStandards_Spec_v0_1.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md, M02_StructureWBS_Spec_v1_0.md
+**Reference Standards:** X8_GlossaryENUMs_v0_4.md, X9_VisualisationStandards_Spec_v0_2.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote), M02_StructureWBS_Spec_v1_0.md
 **Layer:** L2 Control — Planning & Structure
 **Phase:** 1 — Foundational
 **Build Priority:** 🔴 Critical (precedes M04, M05, M07, M08, M10)

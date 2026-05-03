@@ -2,9 +2,9 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-03 (Round 18 LOCKED — M03 module COMPLETE; Spec v1.1 cascade absorbed)
+**Last Updated:** 2026-05-03 (Round 18 LOCKED + audit corrections — M03 complete; M01 v1.1 cascade closed; rules amended for cascade pattern + audit stamp formats + folder placement)
 **Current Phase:** Phase 1 — Foundational Module Specifications
-**Active Round:** Awaiting Round 19 (next module — TBD)
+**Active Round:** Awaiting Round 19 (next module — TBD; recommend M07 EVMEngine)
 
 ---
 
@@ -48,7 +48,7 @@
 | Module | Brief | Spec | Wireframes | Workflows | Round |
 |---|---|---|---|---|---|
 | M34 SystemAdminRBAC | Done | Done | Done | Done | 1–4 |
-| M01 ProjectRegistry | Done | Done (v1.2 cascade note) | Done | Done | 5b–8, 16 |
+| M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 cascade notes) | Done | Done | 5b–8, 16, 18-audit |
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
 | **M03 PlanningMilestones** | Done | Done (v1.1) | Done | Done | 15–18 |
 
@@ -60,17 +60,17 @@
 | X9 VisualisationStandards | **v0.2** | Living |
 | EPCC_NamingConvention | v1.0 | Locked |
 | EPCC_FolderIndex | v1.0 | Locked |
-| EPCC_VersionLog | v1.0 | Locked (appended per round) |
+| EPCC_VersionLog | v1.1 | Living (reconciled Round 18) |
 | AUDIT_Round00 | v1.0 | Locked (22 findings) |
 | EPCC_DevSkillsRequired | v1.0 | Locked (~8.5 FTE Phase 1) |
 
 ### Pending cascades
 
-- **M01 v1.1** — add `Project.min_wbs_depth` field (per OQ-1.1=B from M02)
+- _(none — M01 v1.1 cascade closed Round 18 audit, now documented in `M01_ProjectRegistry_v1_1_CascadeNote.md`)_
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 19 · **Remaining:** 66
+**Total deliverables:** ~85 · **Done:** 20 · **Remaining:** 65 (M01 v1.1 cascade note added Round 18 audit)
 
 ---
 
@@ -99,6 +99,10 @@ These have been resolved through deliberation. Do not re-open without explicit u
 | Field-level rate display | API-serialiser enforced (M02 OQ-2.11) |
 | Three-tier templates | Copy-down only; no upward promotion (BR-02-035) |
 | BACIntegrityLedger | DB-level UPDATE/DELETE forbidden |
+| Cascade pattern | Surgical changes (1 field/BR) → cascade note. Substantive changes (new appendix, multiple BRs, new entity) → full spec re-issue with `git mv` rename (Round 18 audit) |
+| Audit stamp formats | 3 accepted: YAML frontmatter (preferred new), markdown bold-header (grandfathered M34/M01/M02/M03), HTML comment (wireframes). See spec-protocol.md (Round 18 audit) |
+| Folder placement | Active modules: `SystemAdmin/Modules/`. X-series: `SystemAdmin/Cross-link files/`. Governance: `System Specs/`. 13-folder hierarchy aspirational only (Round 18 audit) |
+| Role taxonomy | 13 internal + 4 external = 17. Authoritative source: M34 Spec Block 3. Includes ANALYST (was missing from cross-cutting-standards.md until Round 18 audit) |
 
 ---
 

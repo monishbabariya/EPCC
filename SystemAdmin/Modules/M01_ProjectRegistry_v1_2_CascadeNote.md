@@ -15,7 +15,7 @@
 | Version | Date | Change Summary |
 |---|---|---|
 | v1.0 | 2026-05-03 | Initial standalone consolidated spec (Round 6) |
-| v1.1 | (deferred) | `Project.min_wbs_depth` field addition per M02 OQ-1.1=B |
+| v1.1 | 2026-05-03 (backfilled in Round 18 audit) | `Project.min_wbs_depth` field addition per M02 OQ-1.1=B. See `M01_ProjectRegistry_v1_1_CascadeNote.md`. |
 | **v1.2** | **2026-05-03** | **`Project.reporting_period_type` field REMOVED. Ownership shifts to M03 LookAheadConfig.reporting_period_type. M01 reads via API per Single-Owner rule (F-005).** |
 
 ---
@@ -150,7 +150,7 @@ For tracking — pending M01 cascades that should be consolidated into M01 v2.0 
 
 | Pending | Source | Status |
 |---|---|---|
-| Add `Project.min_wbs_depth` field | M02 OQ-1.1=B | Deferred (cascade note exists) |
+| Add `Project.min_wbs_depth` field | M02 OQ-1.1=B | **DONE** — see `M01_ProjectRegistry_v1_1_CascadeNote.md` (Round 18 audit backfill) |
 | Remove `Project.reporting_period_type` | M03 OQ-1.8=A | **This document** |
 
 When 2-3+ cascades accumulate, M01 v2.0 re-issue becomes worthwhile. For now, cascade notes are the contained, auditable approach.

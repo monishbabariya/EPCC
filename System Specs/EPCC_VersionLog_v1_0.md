@@ -59,7 +59,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | File | Type | Version | Status | Notes |
 |---|---|---|---|---|
 | M34_SystemAdminRBAC_*_v1_0.* | Brief/Spec/WF/WL | v1.0 | **Locked** | Rounds 1–4 (foundation) |
-| M01_ProjectRegistry_*_v1_0.* | Brief/Spec/WF/WL | v1.0 (Spec v1.2 per cascade ref) | **Locked** | Rounds 5b–8 + Round 16 cascade. Pending v1.1 — `Project.min_wbs_depth` field per M02 OQ-1.1=B |
+| M01_ProjectRegistry_*_v1_0.* + v1.1 + v1.2 cascade notes | Brief/Spec/WF/WL + cascade notes | v1.0 (full) + v1.1 (cascade note) + v1.2 (cascade note) | **Locked** | Rounds 5b–8 + Round 16 + Round 18 audit (v1.1 cascade backfilled). v1.1 adds `Project.min_wbs_depth`; v1.2 removes `Project.reporting_period_type` (ownership → M03) |
 | M23_BGInsuranceTracker_*_v1_0.* | Brief/Spec/WF/WL | — | Pending | New (was unspecced) |
 
 ### 3.5 L2 Planning (03_L2_Planning)
@@ -161,6 +161,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 |---|---|---|
 | 2026-05-03 | v1.0 | Initial creation. All artefacts inventoried. 70+ artefacts pending. |
 | 2026-05-03 | v1.1 | Round 18 reconciliation pass. §3 registry state aligned with actual locked artefacts (M34 R1–4, M01 R5b–8+R16, M02 R9–12, M03 R15–18 + Spec v1.1 cascade). §6 activity log catch-up entry consolidated for Rounds 1–18. §7 next-round preview refreshed to reflect Round 19 readiness. §3.12 cross-cutting expanded with X9 living-doc row + X8 version trail. Activity log was last updated at Round 0; gap acknowledged and back-filled at the round level (per-artefact granularity preserved in CLAUDE.md §3 status table and per-artefact change logs). |
+| 2026-05-03 | v1.2 | Round 18 audit pass — corrections from 3-axis audit (cross-references, conformance, locked-decisions). Backfilled M01 v1.1 cascade note (`Project.min_wbs_depth`) — closed an architectural gap where M02 BR-02-001/032 referenced an M01 field that didn't exist. Fixed M03 Spec v1.1 + M03 Brief v1.1 stale Reference Standards lines (X8 v0.3→v0.4, X9 v0.1→v0.2, M01 v1.2-file-doesn't-exist → v1.0+cascade-notes). Added retro audit stamps to all 4 wireframes (M34/M01/M02/M03). Fixed cross-cutting-standards.md role taxonomy (added missing ANALYST; corrected external role names to M34 ENUMs). Amended spec-protocol.md to lock 3 audit-stamp formats (YAML / markdown-bold / HTML-comment) + cascade-vs-re-issue decision rule. Amended naming-folders.md to lock canonical placement at `SystemAdmin/{Modules,Cross-link files}/` + downgrade 13-folder hierarchy to aspirational. CLAUDE.md locked-decisions table gained 4 new rows. |
 
 ---
 
@@ -179,6 +180,7 @@ When any artefact is created, modified, or status-changed:
 
 | Date | Time | Artefact | Action | Author | Note |
 |---|---|---|---|---|---|
+| 2026-05-03 | — | Round 18 audit — corrections + rule amendments + M01 v1.1 cascade backfill | Audit Pass | Monish (with Claude assist) | 3-axis audit (cross-refs / conformance / locked decisions) surfaced 11 issues. All addressed in one pass. Created `M01_ProjectRegistry_v1_1_CascadeNote.md` documenting `Project.min_wbs_depth` field add (closes M02→M01 architectural gap). Refreshed M03 Spec + Brief Reference Standards. Added retro stamps to 4 wireframes. Fixed cross-cutting-standards.md (ANALYST + external role names). Amended `.claude/rules/spec-protocol.md` (3 stamp formats + cascade-vs-re-issue rule) and `.claude/rules/naming-folders.md` (canonical placement, 13-folder downgraded). 4 new rows in CLAUDE.md locked-decisions table. |
 | 2026-05-03 | — | Round 18 — M03 Workflows v1.0 + M03 Spec v1.1 cascade | Locked | Monish (with Claude assist) | M03 module COMPLETE. Workflows v1.0 with 9 flows + 34/34 BR coverage matrix locked. Spec v1.0 → v1.1 cascade absorbed Appendix C (28 audit events), BR-03-033 (critical-path transactionality), BR-03-034 (reporting_period_type atomic rollback). File renamed via `git mv` preserving history. CLAUDE.md §3 row + re-entry-protocol.md canonical-source table updated. |
 | 2026-05-03 | — | Rounds 1–17 (reconciliation catch-up) | Reconciled | Monish (with Claude assist) | Activity log was last updated at Round 0; this consolidation entry covers the full Round 1–17 span. Module deliverables: M34 (R1–4 — foundation: Brief, Spec, Wireframes, Workflows v1.0), M01 (R5b–8 — Brief, Spec, Wireframes, Workflows v1.0; R16 cascade absorbing M02 OQ-1.1=B → Project.min_wbs_depth pending v1.1), M02 (R9–12 — Brief, Spec, Wireframes, Workflows v1.0). Cross-cutting: X8 v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03); X9 Brief v0.1 → Spec v0.1 → Spec v0.2. Per-artefact granularity in CLAUDE.md §3 status table. |
 | 2026-05-03 | — | Round 0 (5 files) | Created | PMO Dir | Foundation files. Round 0 fired per v2.7 plan. |

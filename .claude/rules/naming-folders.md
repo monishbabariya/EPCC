@@ -54,33 +54,47 @@ tenant_id, created_by, created_at, updated_by, updated_at, is_active
 
 ---
 
-## 13-Folder Hierarchy
+## Folder Placement — Canonical (locked Round 18 audit)
+
+**Active artefacts (Phase 1 build):**
 
 ```
-00_Governance/        → standards, naming, version log
-01_Strategic/         → L0 modules
-02_L1_Command/        → M34, M01, M23, M24, M28
-03_L2_Planning/       → M02, M03
-04_L2_Execution/      → M04, M14, M27, M12, M13
-05_L2_RiskCommercial/ → M05, M06, M22
-06_L2_Compliance/     → M09, M25, M30, M31
-07_L2_Performance/    → M07, M26, M32
-08_L3_Intelligence/   → M08, M10, M11, M15, M29, M33
-09_Platform_Features/ → PF01-PF06
-10_CrossCutting/      → X1-X8 living docs
-11_System_Utilities/  → HDI
-12_Audits/            → audit reports per round
+SystemAdmin/
+  M34_SystemAdminRBAC_Spec_v1_0.md          # M34 Spec sits one level up (legacy artefact placement)
+  M34_SystemAdminRBAC_Wireframes_v1_0.html
+  Modules/                                   # all module Briefs / Specs / Wireframes / Workflows for M01+
+    M0X_*.{md,html}
+    M0X_*_v1_X_CascadeNote.md                # cascade notes co-located with their source module
+  Cross-link files/                          # X-series living docs
+    X8_GlossaryENUMs_v0_X.md
+    X9_VisualisationStandards_*_v0_X.md
+System Specs/                                # governance, naming, version log, audits
+  EPCC_*.md
+  AUDIT_*.md
+ZEPCC_Legacy/                                # frozen prior-version artefacts (read-only reference)
+  M0X_*.md
 ```
 
----
+**Convention:**
+- Active modules (M01+) live in `SystemAdmin/Modules/`
+- M34 was authored before this convention; its Spec stays at `SystemAdmin/` (no rename — would break references)
+- Cascade notes (`_v1_X_CascadeNote.md`) sit beside their source module
+- Cross-cutting living docs go in `SystemAdmin/Cross-link files/`
+- Governance + audits go in `System Specs/`
+- Legacy is `ZEPCC_Legacy/` — frozen, read-only, naming-convention-exempt
+
+## 13-Folder Hierarchy — Aspirational (deferred)
+
+The original plan called for a layered 13-folder hierarchy:
+
+```
+00_Governance/, 01_Strategic/, 02_L1_Command/, 03_L2_Planning/, 04_L2_Execution/,
+05_L2_RiskCommercial/, 06_L2_Compliance/, 07_L2_Performance/, 08_L3_Intelligence/,
+09_Platform_Features/, 10_CrossCutting/, 11_System_Utilities/, 12_Audits/
+```
+
+**Status:** Aspirational. Not enforced. The Round 18 audit confirmed actual placement is `SystemAdmin/{Modules,Cross-link files}/` + `System Specs/` (above), not the 13-folder structure. The 13-folder hierarchy is retained here as a possible future migration target — not as a current rule. Migration would require renaming ~25 files + updating every internal reference; deferred indefinitely until a strong reason emerges.
 
 ## Round Folder Convention (Outputs)
 
-```
-Round{NN}/
-  {Module}_{ShortName}_{ArtefactType}_v{Major}_{Minor}.{ext}
-  [+ X8 / X9 version bump file if any]
-  [+ cascade notes if any]
-```
-
-Example: `Round17/M03_PlanningMilestones_Wireframes_v1_0.html`
+Round folders are **logical / metadata-only**, not physical. No `Round{NN}/` directories exist on disk; round membership is captured via the audit stamp's `round:` field, the EPCC_VersionLog, and CLAUDE.md §3 status table.
