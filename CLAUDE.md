@@ -2,9 +2,9 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-03 (Rounds 21 + 22 LOCKED — M04 Wireframes + Workflows; M04 ExecutionCapture module COMPLETE)
+**Last Updated:** 2026-05-03 (Round 23 — M06 FinancialControl Brief v1.0 LOCKED via /build-module pipeline)
 **Current Phase:** Phase 1 — Foundational Module Specifications
-**Active Round:** Round 22 LOCKED. M04 module COMPLETE (Brief, Spec, Wireframes, Workflows + X8 v0.5 + X9 v0.3 cascades). Awaiting Round 23.
+**Active Round:** Round 23 — M06 Brief LOCKED (iter 1, drafter+auditor pipeline). Spec gate firing next.
 
 ---
 
@@ -52,6 +52,7 @@
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
 | **M03 PlanningMilestones** | Done | Done (v1.1) | Done | Done | 15–18 |
 | **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0 (R20) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22 |
+| **M06 FinancialControl** | Done v1.0 (R23) | Pending R24 | Pending | Pending | 23– |
 
 ### Cross-cutting
 
@@ -71,7 +72,7 @@
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 26 · **Remaining:** 59 (M04 module COMPLETE through Round 22: Brief + Spec + Wireframes + Workflows + cascades)
+**Total deliverables:** ~85 · **Done:** 27 · **Remaining:** 58 (M06 Brief v1.0 locked Round 23 — first artefact authored via /build-module multi-agent pipeline)
 
 ---
 
