@@ -1,13 +1,13 @@
 ---
 artefact: M06_FinancialControl_Spec_v1_0
-round: 24
+round: 25
 date: 2026-05-03
 author: Monish (with Claude assist)
-x8_version: v0.5 (with v0.6 cascade pending — 11 new M06 ENUMs proposed)
-x9_version: v0.3
+x8_version: v0.5 (with v0.6 cascade pending — 11 new M06 ENUMs proposed; locked at R28 cascade pass)
+x9_version: v0.3 (with v0.4 cascade locked at R28)
 status: LOCKED
-locked_at: 2026-05-03 (Round 24 user confirmation; auditor ACCEPT 0/26 + 3 cosmetic fixes applied)
-brief_locked_in: Round 23 (SystemAdmin/Modules/M06_FinancialControl_Brief_v1_0.md)
+locked_at: 2026-05-03 (Round 25 user confirmation; auditor ACCEPT 0/26 + 3 cosmetic fixes applied; pre-merge round number was 24 — renumbered to 25 post-merge)
+brief_locked_in: Round 24 (SystemAdmin/Modules/M06_FinancialControl_Brief_v1_0.md)
 re_issue_of: ZEPCC_Legacy/M06_Financial_Control_v2_1.md (amendment-only — base v2.0 absent)
 reference_standards: X8_GlossaryENUMs_v0_5.md (+ v0.6 cascade pending), X9_VisualisationStandards_Spec_v0_3.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote + v1_3_CascadeNote pending), M02_StructureWBS_Spec_v1_0.md, M03_PlanningMilestones_Spec_v1_1.md, M04_ExecutionCapture_Spec_v1_0.md
 ---

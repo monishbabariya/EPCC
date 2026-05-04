@@ -1,14 +1,14 @@
 ---
 artefact: M06_FinancialControl_Workflows_v1_0
-round: 26
+round: 27
 date: 2026-05-03
 author: Monish (with Claude assist)
 x8_version: v0.5
 x9_version: v0.3
 status: LOCKED
-locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/20 + 2 audit-correction fixes applied — SG_9_PASSAGE rename + WF-06-013 M12 trace line)
-spec_locked_in: Round 24 (SystemAdmin/Modules/M06_FinancialControl_Spec_v1_0.md, with v1.0a in-place audit correction same round)
-wireframes_locked_in: Round 25 (SystemAdmin/Modules/M06_FinancialControl_Wireframes_v1_0.html)
+locked_at: 2026-05-03 (Round 27 user confirmation; auditor ACCEPT 0/20 + 2 audit-correction fixes applied — SG_9_PASSAGE rename + WF-06-013 M12 trace line; pre-merge round number was 26 — renumbered to 27 post-merge)
+spec_locked_in: Round 25 (SystemAdmin/Modules/M06_FinancialControl_Spec_v1_0.md, with v1.0a in-place audit correction at Round 27)
+wireframes_locked_in: Round 26 (SystemAdmin/Modules/M06_FinancialControl_Wireframes_v1_0.html)
 ---
 
 # M06 Financial Control — Workflows v1.0

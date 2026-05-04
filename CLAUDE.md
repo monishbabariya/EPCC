@@ -2,9 +2,12 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-04 (Round 27 — M06 cascade detection complete; X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 cascade notes locked; naming-folders.md exemption list refreshed)
-**Current Phase:** Phase 1 — Foundational Module Specifications
-**Active Round:** Round 27 — M06 cascade pass COMPLETE. All 6 cascades surfaced by Round 26 cascade-detector subagent locked: X8 v0.6 (13 ENUMs + 43-event AuditEventType ext + 12-trigger DQ ext + 4-ledger §6 ext + SG_9/SG_11 description refresh), X9 v0.4 (§13.3.6 5→8 roles + §9.5.1 flagship annotation), M01 v1.3 cascade note (Contract.dlp_retention_split_pct + BR-01-036), M03 v1.2 cascade note (MILESTONE_ACHIEVED_FINANCIAL emit hook + BR-03-035), naming-folders.md exemption-list refresh (7→15 entries — fixed M04 v0.5 backlog drift + added 4 M06 ledgers).
+**Last Updated:** 2026-05-04 (Round 28 — M06 cascade pass LOCKED, post-merge renumbering applied to avoid collision with parallel Round 23 = EPCC_BuildArchitecture Brief on `main`)
+**Current Phase:** Phase 1 — Foundational Module Specifications · **parallel: Phase 1B Build Architecture (Round 23 IN DRAFT on `main`)**
+**Active Rounds:**
+- **Round 23 IN DRAFT (on `main`):** `System Specs/EPCC_BuildArchitecture_Brief_v1_0.md` — surfaces 10 OQ-1 + ~30 OQ-2 decisions for the build (repo strategy, branch model, sequencing, OIDC, multi-tenancy, pilot seed, CI host, BR-tagged tests, ENUM codegen). Recommends monorepo on `main` + thin vertical slice (M34 → M01 demo) before module deepening. Awaiting Monish OQ-1 answers before Round 23 Spec drafts.
+- **Rounds 24–28 LOCKED (this branch — formerly numbered 23–27 in pre-merge drafts):** M06 FinancialControl module (Brief R24 → Spec R25 → Wireframes R26 → Workflows R27) + cascade pass R28 (X8 v0.6, X9 v0.4, M01 v1.3 cascade note, M03 v1.2 cascade note, naming-folders.md refresh).
+- **Round-renumbering note:** Pre-merge commit messages (`50cb092`, `eeead43`, `aa058a9`, `c3d20c4`, `276d3e0`) say "Round 23–27" — historical record only. File content + audit stamps are authoritative at Round 24–28.
 
 ---
 
@@ -48,18 +51,18 @@
 | Module | Brief | Spec | Wireframes | Workflows | Round |
 |---|---|---|---|---|---|
 | M34 SystemAdminRBAC | Done | Done | Done | Done | 1–4 |
-| M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 + v1.3 cascade notes) | Done | Done | 5b–8, 16, 18-audit, 27 |
+| M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 + v1.3 cascade notes) | Done | Done | 5b–8, 16, 18-audit, 28 |
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
-| M03 PlanningMilestones | Done | Done v1.1 (+ v1.2 cascade note) | Done | Done | 15–18, 27 |
+| M03 PlanningMilestones | Done | Done v1.1 (+ v1.2 cascade note) | Done | Done | 15–18, 28 |
 | **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0 (R20) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22 |
-| **M06 FinancialControl** | Done v1.0 (R23) | Done v1.0 (R24) + v1.0a audit-corr (R26) | Done v1.0 (R25) | Done v1.0 (R26) | 23–27 |
+| **M06 FinancialControl** | Done v1.0 (R24) | Done v1.0 (R25) + v1.0a audit-corr (R27) | Done v1.0 (R26) | Done v1.0 (R27) | 24–28 |
 
 ### Cross-cutting
 
 | Doc | Version | Status |
 |---|---|---|
-| X8 GlossaryENUMs | **v0.6** | Living (M06 ENUMs locked Round 27 — 13 new ENUMs + 43-event AuditEventType ext + 12-trigger DQ ext + 4-ledger §6 ext + SG_9/SG_11 description refresh) |
-| X9 VisualisationStandards | **v0.4** | Living (M06 §13.3.6 5→8 roles + §9.5.1 flagship annotation locked Round 27 — zero new chart types) |
+| X8 GlossaryENUMs | **v0.6** | Living (M06 ENUMs locked Round 28 — 13 new ENUMs + 43-event AuditEventType ext + 12-trigger DQ ext + 4-ledger §6 ext + SG_9/SG_11 description refresh) |
+| X9 VisualisationStandards | **v0.4** | Living (M06 §13.3.6 5→8 roles + §9.5.1 flagship annotation locked Round 28 — zero new chart types) |
 | EPCC_NamingConvention | v1.0 | Locked |
 | EPCC_FolderIndex | v1.0 | Locked |
 | EPCC_VersionLog | v1.1 | Living (reconciled Round 18) |
@@ -72,7 +75,7 @@
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 32 · **Remaining:** 53 (M06 module COMPLETE + cascade pass closed Round 27 — X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 + naming-folders.md refresh)
+**Total deliverables:** ~85 · **Done:** 32 · **Remaining:** 53 (M06 module COMPLETE + cascade pass closed Round 28 — X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 + naming-folders.md refresh)
 
 ---
 

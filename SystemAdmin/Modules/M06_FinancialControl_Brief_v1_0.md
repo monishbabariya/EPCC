@@ -1,13 +1,13 @@
 ---
 artefact: M06_FinancialControl_Brief_v1_0
-round: 23
+round: 24
 date: 2026-05-03
 author: Monish (with Claude assist)
 x8_version: v0.5
 x9_version: v0.3
 status: LOCKED
 prior_version: ZEPCC_Legacy/M06_Financial_Control_v2_1.md
-locked_at: 2026-05-03 (Round 23 user confirmation)
+locked_at: 2026-05-03 (Round 24 user confirmation; pre-merge round number was 23 — renumbered to 24 post-merge to avoid collision with main's Round 23 = EPCC_BuildArchitecture Brief)
 ---
 
 # M06 FinancialControl — Brief v1.0
