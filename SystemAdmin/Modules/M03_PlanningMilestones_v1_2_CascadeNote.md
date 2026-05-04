@@ -96,7 +96,7 @@ SENDS TO M06 (FinancialControl):
 
 ### M03 Spec References Updated
 
-The M03 spec v1.1 (locked Round 17) requires the following minor edits when next re-issued:
+The M03 spec v1.1 (locked Round 18 — Workflows-cascade lock; Wireframes were Round 17) requires the following minor edits when next re-issued:
 
 | Block | Change |
 |---|---|

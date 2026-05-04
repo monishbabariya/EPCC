@@ -2,12 +2,12 @@
 ## v1.2 Cascade Note
 **Status:** Cascade Patch
 **Type:** Minor version bump (field removal only)
-**Author:** PMO Director / System Architect
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
 **Created:** 2026-05-03
-**Last Audited:** v1.2 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
+**Last Audited:** v1.2 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill M29 + author canonicalisation M30 + Reference Standards refresh + Folder canonicalisation)
 **Trigger:** M03 spec lock OQ-1.8=A (reporting_period_type ownership shifts to M03)
-**Reference Standards:** X8_GlossaryENUMs_v0_4.md, M03_PlanningMilestones_Spec_v1_0.md
-**Folder:** /02_L1_Command/
+**Reference Standards:** X8_GlossaryENUMs_v0_4.md _(historical at lock; current X8 v0.6a)_, M03_PlanningMilestones_Spec_v1_0.md _(superseded by Spec v1.1b R29 + v1.2/v1.3 cascade notes)_
+**Folder:** SystemAdmin/Modules/ _(canonical placement per Round 18 audit; historical stamp said `/02_L1_Command/` aspirational)_
 
 ---
 
