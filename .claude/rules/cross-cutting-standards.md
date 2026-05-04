@@ -73,7 +73,7 @@
 
 ---
 
-## X9 — Visualisation (current v0.3)
+## X9 — Visualisation (current v0.4)
 
 **Decision-First Principle (FOUNDATIONAL):** every chart answers ONE decision in ONE sentence.
 
