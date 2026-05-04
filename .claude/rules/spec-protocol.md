@@ -125,6 +125,58 @@ When a locked module receives a downstream cascade:
 - **Substantive change (new appendix, multiple BRs, new entity, scope-shifting)** → full spec re-issue with `_v{Major}_{Minor+1}.md` rename via `git mv`.
 - **Examples:** M01 v1.1 (field add) + v1.2 (field remove) = cascade notes. M03 v1.1 (Appendix C + 2 BRs) = full re-issue.
 
+### In-Place Patch Convention (locked 2026-05-04)
+
+An **in-place patch** corrects factual errors, stale references, or internal contradictions in a LOCKED artefact **without extending scope**. It is distinct from a cascade note (which extends scope) and a re-issue (which changes substance).
+
+**When permitted:**
+
+- Correcting internal contradictions within a single LOCKED artefact (e.g., status field says LOCKED but footer says DRAFT)
+- Updating frontmatter version stamps after a cross-cutting doc (X8/X9) bumps post-lock
+- Correcting stale round/date references that don't change any decision
+- Correcting ENUM label drift where the intended value is unambiguous
+
+**When NOT permitted (use cascade note or re-issue instead):**
+
+- Adding a new field, entity, BR, or integration point
+- Changing a locked decision (any item in CLAUDE.md §4)
+- Resolving an OQ that was marked closed (re-open via new Brief round instead)
+- Any change affecting Block 2 (Scope Boundary) or Block 6 (Business Rules)
+
+**Versioning:**
+
+- First patch: `v{Major}.{Minor}a` (e.g., v1.0 → v1.0a)
+- Second patch: `v{Major}.{Minor}b`, and so on
+- File is edited in-place — no `git mv`, no new file created
+- Update only the version reference in the frontmatter `artefact:` field (or Format B H2 heading) and the `CHANGE LOG` entry; filename on disk remains `_v1_0.md`
+- **Letter suffix only** — numeric dot-suffixes (e.g. `v0.6.1`) are not used. Living cross-cutting docs (X8, X9) use the same convention as specs: `v0.6a`, `v0.6b`. This distinction applies regardless of document type.
+
+**Required documentation within the patched file:**
+
+Every in-place patch MUST add a `CHANGE LOG` entry at the top of the file (below the audit stamp) in this format:
+
+```markdown
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0b | YYYY-MM-DD | Monish (with Claude assist) | [1-line description per fix] |
+```
+
+**Audit stamp update on patch:**
+
+- `artefact:` field (Format A) / H2 heading (Format B): update version suffix (v1_0 → v1_0b for Format A; v0.6 → v0.6a for Format B)
+- `date:` field: update to patch date
+- `status:` must remain LOCKED (a patch does not re-open the artefact)
+- `x8_version:` / `x9_version:`: update if the patch corrects a stale stamp
+- All other fields: unchanged
+
+**Git commit message convention:**
+
+```
+patch({module}): {ArtefactType} v{X}.{Y}{letter} — {reason}
+```
+
+Example: `patch(M06): Spec v1.0b — fix DRAFT footer, resolve 43-vs-28 event count contradiction, refresh X8/X9 stamps`
+
 ---
 
 ## Anti-Drift Rules (X8 reference)

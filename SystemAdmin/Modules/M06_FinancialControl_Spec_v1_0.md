@@ -1,15 +1,16 @@
 ---
-artefact: M06_FinancialControl_Spec_v1_0
+artefact: M06_FinancialControl_Spec_v1_0b
 round: 25
-date: 2026-05-03
+date: 2026-05-04
 author: Monish (with Claude assist)
-x8_version: v0.5 (with v0.6 cascade pending — 11 new M06 ENUMs proposed; locked at R28 cascade pass)
-x9_version: v0.3 (with v0.4 cascade locked at R28)
+x8_version: v0.6a
+x9_version: v0.4
 status: LOCKED
 locked_at: 2026-05-03 (Round 25 user confirmation; auditor ACCEPT 0/26 + 3 cosmetic fixes applied; pre-merge round number was 24 — renumbered to 25 post-merge)
+patched_at: 2026-05-04 (v1.0b in-place patch — Round 29 audit remediation: C1/C2/H2/H5/H8/G; see CHANGE LOG)
 brief_locked_in: Round 24 (SystemAdmin/Modules/M06_FinancialControl_Brief_v1_0.md)
 re_issue_of: ZEPCC_Legacy/M06_Financial_Control_v2_1.md (amendment-only — base v2.0 absent)
-reference_standards: X8_GlossaryENUMs_v0_5.md (+ v0.6 cascade pending), X9_VisualisationStandards_Spec_v0_3.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote + v1_3_CascadeNote pending), M02_StructureWBS_Spec_v1_0.md, M03_PlanningMilestones_Spec_v1_1.md, M04_ExecutionCapture_Spec_v1_0.md
+reference_standards: X8_GlossaryENUMs_v0_6a.md, X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote + v1_3_CascadeNote), M02_StructureWBS_Spec_v1_0.md, M03_PlanningMilestones_Spec_v1_1.md (+ v1_2_CascadeNote), M04_ExecutionCapture_Spec_v1_0.md
 ---
 
 # M06 — Financial Control — Spec v1.0
@@ -20,6 +21,7 @@ reference_standards: X8_GlossaryENUMs_v0_5.md (+ v0.6 cascade pending), X9_Visua
 |---|---|---|
 | v1.0 | 2026-05-03 | Initial standalone consolidated spec (Round 24). All 11 OQ-1 + 6 OQ-2 items from Brief v1.0 (Round 23) carried as locked. 4-state CostLedgerEntry pipeline (Budgeted → Committed → Accrued → Paid) per OQ-1.1=A. Per (Package × Period) RABill grain per OQ-1.2=B. Dual trigger sources (Progress + Milestone) per OQ-1.3=B. Stale_Pending_VO flag-don't-block per OQ-1.4=B. Full-lifetime per-WBS-per-period CashflowForecast per OQ-1.5=A. Multi-currency (ForexRateMaster + ForexVariation) shipped from v1.0 per OQ-1.6=B. Split payment scope — 2/3-way match in EPCC, signature workflow external — per OQ-1.7=C. Tranched retention release with dual sign-off per OQ-1.8=C (triggers M01 v1.3 cascade). BGStub mirroring M04→M12 photo-stub pattern per OQ-1.9=B. M06FinancialConfig per-project tunables per OQ-1.10=A. Tax-record-only per OQ-1.11=C. 17 entities (4 append-only ledgers with DB-level UPDATE/DELETE forbidden). 47 BRs. Audit Events Catalogue locked from authoring (Appendix A — 43 events). |
 | v1.0a | 2026-05-03 | **Round 26 Workflows-audit correction (in-place patch, not a version bump):** Stage Gate naming disambiguation per Workflows audit — tranche-1 (Substantial Completion) trigger event renamed from `SG_11_PASSAGE` to `SG_9_PASSAGE` (correctly matches SG-9 = Substantial/Practical Completion in 5-layer architecture); tranche-2 (DLP End) retains `SG_11_PASSAGE`. Affects BR-06-027 trigger, Block 7 RECEIVES FROM M08, stub endpoint paths (now both `/sg9-passage` AND `/sg11-passage` exposed), Appendix A `DLP_RELEASE_PRECONDITION_MET` description, KDMC reference appendix tranche annotations, Block 2 EXCLUDES SG signal reference. M08 (when built) must implement BOTH endpoints. No BR additions/removals; no entity changes; no scope drift. Discovered during /build-module Workflows gate audit and patched pre-module-publish. |
+| v1.0b | 2026-05-04 | **Round 29 audit remediation (in-place patch per spec-protocol.md In-Place Patch Convention):** **C1** footer DRAFT→LOCKED (line 1071); **C2** event-count contradiction harmonised to 43 at 3 sites (lines 866, 934, 1071) — 2 additional sites (lines 819, 882) were already correct at 43; **H2** frontmatter `x8_version: v0.5 (with v0.6 cascade pending — 11 ENUMs proposed)` → `v0.6a`; `x9_version: v0.3 (with v0.4 cascade locked)` → `v0.4`; **G** `reference_standards:` X8 v0.5 → v0.6a, X9 v0.3 → v0.4, all "pending" qualifiers dropped (M01 v1.3 + M03 v1.2 cascades all LOCKED on disk); **H5** Block 10 line 803 "Brief v1.0 (Round 23)" → "(Round 24)" post-merge round-ref correction; **H8** footer "cascades pending" → "cascades applied" with X8 bumped to v0.6a + M03 cascade name "minor" → "v1.2 cascade note". No BR additions/removals; no entity changes; no scope drift. |
 
 ---
 
@@ -800,7 +802,7 @@ This module does NOT:
 
 ## BLOCK 10 — OPEN QUESTIONS
 
-**All questions resolved. Zero open questions.** All 11 OQ-1 + 6 OQ-2 items from Brief v1.0 (Round 23) closed at Brief lock 2026-05-03.
+**All questions resolved. Zero open questions.** All 11 OQ-1 + 6 OQ-2 items from Brief v1.0 (Round 24) closed at Brief lock 2026-05-03.
 
 | # | Source | Resolution |
 |---|---|---|
@@ -863,7 +865,7 @@ COMPLIANCE_HOLD_APPLIED        BR-06-038
 
 **X8 v0.6 — append-only entity exemption list extension:** add `CostLedgerEntry`, `RABillAuditLog`, `PaymentEvidenceLedger`, `ForexRateLog` to §6.
 
-**X8 v0.6 — AuditEventType extension:** 28 M06 event types per Appendix A.
+**X8 v0.6 — AuditEventType extension:** 43 M06 event types per Appendix A.
 
 **X9 v0.4 cascade:** §13.3.6 row already exists at v0.3; M06 wireframes (Round 25) will validate. May need refinement post-Wireframes.
 
@@ -931,7 +933,7 @@ COMPLIANCE_HOLD_APPLIED        BR-06-038
 
 `CAPITAL_HEADROOM_BREACH`, `COST_OVERRUN_ADVISORY`, `PAYMENT_SLA_BREACH`, `INVOICE_MATCH_FAILED`, `FOREX_DEVIATION_APPROVAL` (alias `FOREX_DEVIATION_REVIEW`), `FOREX_RATE_NOT_AVAILABLE`, `FOREX_RATE_NOT_LOCKED`, `BG_EXPIRING_SOON`, `RETENTION_RELEASE_BLOCKED_DLP`, `BAC_INTEGRITY_WARNING`, `CASHFLOW_REGEN_FAILED`, `COMPLIANCE_HOLD_APPLIED`.
 
-Spec count discipline: the 28-event registry above includes both audit-only events and the 12 events that ALSO act as Decision Queue triggers. Event count = 28 named entries; trigger count = 12 (subset of named entries plus alias).
+Spec count discipline: the 43-event registry above includes both audit-only events and the 12 events that ALSO act as Decision Queue triggers. Event count = 43 named entries; trigger count = 12 (subset of named entries plus alias).
 
 ### Notes
 
@@ -1068,4 +1070,4 @@ for table in ['purchase_order', 'ra_bill', 'vendor_invoice', 'payment_evidence',
 
 ---
 
-*v1.0 — Spec DRAFT. Zero open questions. M06 FinancialControl ready for Round 24 audit pass. Cascades pending: X8 v0.6 (13 new ENUMs + 12 trigger types + 28 audit events + 4 append-only ledger exemptions); X9 v0.4 (already prepared at v0.3 §13.3.6); M01 v1.3 cascade note (`Contract.dlp_retention_split_pct`); M03 minor cascade (MILESTONE_ACHIEVED_FINANCIAL emit hook).*
+*v1.0b — Spec LOCKED. Zero open questions. M06 FinancialControl audit complete (Round 25 lock; Round 27 v1.0a Workflows-audit correction; Round 29 v1.0b audit-remediation patch). Cascades applied: X8 v0.6a (13 new ENUMs + 12 trigger types + 43 audit events + 4 append-only ledger exemptions + MILESTONE_ACHIEVED_FINANCIAL §4.12 extension); X9 v0.4; M01 v1.3 cascade note (`Contract.dlp_retention_split_pct`); M03 v1.2 cascade note (MILESTONE_ACHIEVED_FINANCIAL emit hook).*
