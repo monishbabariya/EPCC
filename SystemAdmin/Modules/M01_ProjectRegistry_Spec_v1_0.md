@@ -1,24 +1,26 @@
 # M01 — Project Registry
-## Spec v1.0
-**Status:** Locked
+## Spec v1.0a
+**Status:** LOCKED
 **Locked:** Yes
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03 | **Last Updated:** 2026-05-03
-**Last Audited:** v1.0 on 2026-05-03
-**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_2.md, M34_SystemAdminRBAC_Spec_v1_0.md
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a in-place patch — Round 29 audit medium-cleanup, M16)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_2.md _(historical at lock; current X8 v0.6a)_, M34_SystemAdminRBAC_Spec_v1_0.md
+**Cascade Notes Issued:** v1_1_CascadeNote (`Project.min_wbs_depth` field add — R18 backfill), v1_2_CascadeNote (`Project.reporting_period_type` field removal — R28), v1_3_CascadeNote (`Contract.dlp_retention_split_pct` field add + BR-01-036 — R28), v1_4_CascadeNote (X8 ENUM refs + Block 4a permission matrix canonicalisation — R29)
 **Layer:** L1 Command
 **Phase:** 1 — Foundational
 **Build Priority:** 🔴 Critical (precedes all execution modules)
-**Folder:** /02_L1_Command/
+**Folder:** /02_L1_Command/ _(aspirational; canonical placement is `SystemAdmin/Modules/` per Round 18 audit)_
 **Re-Issue Of:** Legacy M01_Project_Registry_v2.1.md (consolidated standalone)
 
 ---
 
 ## CHANGE LOG
 
-| Version | Date | Change Summary |
-|---|---|---|
-| v1.0 | 2026-05-03 | Initial standalone spec. Re-issued from legacy v2.1 with audit fixes (F-001, F-003, F-004, F-005, F-007, F-013, F-014). All 10 OQ-1 decisions locked. Phase enum aligned with X8 v0.2. Sector split into SectorTopLevel enum + sub-type CodeMaster. DeliveryModel "Hybrid" dropped. ProjectStatus "Draft" added. |
+| Version | Date | Author | Change Summary |
+|---|---|---|---|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | M16 in-place patch (Round 29 audit medium-cleanup): author canonicalised to "Monish (with Claude assist) _(grandfathered: ...)_"; **Status** UPPERCASE; `Last Updated` + `Last Audited` refreshed; `Reference Standards` historical-at-lock annotation added (X8 v0.2 → current v0.6a context); new `Cascade Notes Issued` field enumerates v1.1/v1.2/v1.3/v1.4 cascade-note chain; `Folder` field annotated with canonical-placement note. CHANGE LOG column count standardised 3→4 (added Author column). No scope, BR, entity, or field change. |
+| v1.0 | 2026-05-03 | PMO Director / System Architect | Initial standalone spec. Re-issued from legacy v2.1 with audit fixes (F-001, F-003, F-004, F-005, F-007, F-013, F-014). All 10 OQ-1 decisions locked. Phase enum aligned with X8 v0.2. Sector split into SectorTopLevel enum + sub-type CodeMaster. DeliveryModel "Hybrid" dropped. ProjectStatus "Draft" added. |
 
 ---
 

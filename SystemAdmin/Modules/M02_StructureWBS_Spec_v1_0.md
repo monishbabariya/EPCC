@@ -1,24 +1,26 @@
 # M02 — Structure & WBS
-## Spec v1.0
-**Status:** Locked
+## Spec v1.0a
+**Status:** LOCKED
 **Locked:** Yes
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03 | **Last Updated:** 2026-05-03
-**Last Audited:** v1.0 on 2026-05-03
-**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_3.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a in-place patch — Round 29 audit medium-cleanup, M17)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_3.md _(historical at lock; current X8 v0.6a)_, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes)
+**Cascade Notes Issued:** v1_1_CascadeNote (X8 ENUM section refs on 11 ENUM fields + ANALYST row in Block 5 rate-display matrix + BR-02-008 — R29)
 **Layer:** L2 Control — Planning & Structure
 **Phase:** 1 — Foundational
 **Build Priority:** 🔴 Critical (precedes M03, M04, M06, M07)
-**Folder:** /03_L2_Planning/
+**Folder:** /03_L2_Planning/ _(aspirational; canonical placement is `SystemAdmin/Modules/` per Round 18 audit)_
 **Re-Issue Of:** Legacy M02_Structure_WBS_v2.0 (base) + v2.1 (amendment) — consolidated standalone
 
 ---
 
 ## CHANGE LOG
 
-| Version | Date | Change Summary |
-|---|---|---|
-| v1.0 | 2026-05-03 | Initial standalone consolidated spec. Re-issued from legacy v2.0 + v2.1 amendment. All 10 OQ-1 decisions locked. Three-tier template model (System_Default → Tenant_Standard → Project_Template). 5-ID chain validation per ES-DI-001. BAC integrity workflow (Confirmed / Stale_Pending_VO). Single-owner rule applied (BACIntegrityLedger owned by M02; M07 reads via API). |
+| Version | Date | Author | Change Summary |
+|---|---|---|---|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | M17 in-place patch (Round 29 audit medium-cleanup): author canonicalised; **Status** UPPERCASE; `Last Updated` + `Last Audited` refreshed; `Reference Standards` historical-at-lock annotation added (X8 v0.3 → current v0.6a context); M01 reference extended with v1_1/v1_2/v1_3/v1_4 cascade notes; new `Cascade Notes Issued` field enumerates self v1_1 cascade; `Folder` field annotated with canonical-placement note. CHANGE LOG column count standardised 3→4. No scope, BR, entity, or field change. |
+| v1.0 | 2026-05-03 | PMO Director / System Architect | Initial standalone consolidated spec. Re-issued from legacy v2.0 + v2.1 amendment. All 10 OQ-1 decisions locked. Three-tier template model (System_Default → Tenant_Standard → Project_Template). 5-ID chain validation per ES-DI-001. BAC integrity workflow (Confirmed / Stale_Pending_VO). Single-owner rule applied (BACIntegrityLedger owned by M02; M07 reads via API). |
 
 ---
 
