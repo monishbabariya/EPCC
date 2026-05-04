@@ -4,6 +4,7 @@
 **Type:** Minor version bump (field addition only)
 **Author:** Monish (with Claude assist)
 **Created:** 2026-05-03 (Round 18 audit-driven backfill)
+**Last Audited:** v1.1 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
 **Trigger:** M02 spec lock OQ-1.1=B — per-project, sector-driven minimum WBS depth
 **Reference Standards:** X8_GlossaryENUMs_v0_4.md, M02_StructureWBS_Spec_v1_0.md
 **Folder:** /02_L1_Command/

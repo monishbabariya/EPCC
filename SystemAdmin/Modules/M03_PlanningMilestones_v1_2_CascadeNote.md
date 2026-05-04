@@ -4,6 +4,7 @@
 **Type:** Minor version bump (audit-event addition + integration-point addition + 1 BR)
 **Author:** Monish (with Claude assist)
 **Created:** 2026-05-04
+**Last Audited:** v1.2 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29; round chronology fix M33)
 **Trigger:** M06 spec lock OQ-1.3=B (dual RA Bill trigger sources — Progress + Milestone). M06 BR-06-010 + WF-06-005 require an upstream signal when a milestone of `milestone_type=Financial` is achieved, so M06 can instantiate a milestone-driven RA Bill.
 **Reference Standards:** X8_GlossaryENUMs_v0_6.md, M06_FinancialControl_Spec_v1_0.md (v1.0a), M06_FinancialControl_Workflows_v1_0.md (WF-06-005)
 **Folder:** SystemAdmin/Modules/

@@ -4,6 +4,7 @@
 **Type:** Minor version bump (field removal only)
 **Author:** PMO Director / System Architect
 **Created:** 2026-05-03
+**Last Audited:** v1.2 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
 **Trigger:** M03 spec lock OQ-1.8=A (reporting_period_type ownership shifts to M03)
 **Reference Standards:** X8_GlossaryENUMs_v0_4.md, M03_PlanningMilestones_Spec_v1_0.md
 **Folder:** /02_L1_Command/

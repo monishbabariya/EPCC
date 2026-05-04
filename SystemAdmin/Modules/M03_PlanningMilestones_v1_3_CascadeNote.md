@@ -4,6 +4,7 @@
 **Type:** Role canonicalisation (column labels) + role row addition (ANALYST + EXTERNAL_AUDITOR) to Block 4a permission matrix
 **Author:** Monish (with Claude assist)
 **Created:** 2026-05-04
+**Last Audited:** v1.3 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
 **Trigger:** Round 29 audit findings M25 (RBAC matrix omits ANALYST + EXTERNAL_AUDITOR — same defect class as M01 H14/H16, re-tiered HIGH for symmetry) + D4b (11 existing column labels are truncated; symmetric treatment with M01 H16)
 **Parent Spec:** M03_PlanningMilestones_Spec_v1_1.md (in-place patched to v1.1a in Round 29 — see `M03_PlanningMilestones_v1_2_CascadeNote.md` for v1.2 cascade and the v1.1 → v1.1a patch context)
 **Reference Standards:** X8_GlossaryENUMs_v0_6.md (v0.6a), X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0.md (Block 3 — canonical 17-role taxonomy), .claude/rules/cross-cutting-standards.md (§17 Canonical Roles), M01_ProjectRegistry_v1_4_CascadeNote.md (parallel H16 fix on M01 Block 4a)

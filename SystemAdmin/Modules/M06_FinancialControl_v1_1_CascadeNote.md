@@ -4,6 +4,7 @@
 **Type:** Integration clarification — scope reduction (one stub endpoint removed; one trigger source narrowed)
 **Author:** Monish (with Claude assist)
 **Created:** 2026-05-04
+**Last Audited:** v1.1 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
 **Trigger:** Round 29 audit finding H6 — `SG_11_PASSAGE` listed as a co-trigger for BR-06-028 (DLP_End retention release) in Block 7 RECEIVES FROM M08, with corresponding stub endpoint `POST /api/m06/v1/events/sg11-passage`. WF-06-009 also reads "may also accompany SG_11_PASSAGE". Architectural review (H6 Option B, locked 2026-05-04) determined SG_11_PASSAGE is **not** a causal trigger — it co-occurs in practice but the financial signal that drives BR-06-028 is sourced solely from M15.
 **Parent Spec:** M06_FinancialControl_Spec_v1_0.md (in-place patched to v1.0b in Round 29; see `M06_FinancialControl_Spec_v1_0.md` CHANGE LOG)
 **Reference Standards:** X8_GlossaryENUMs_v0_6.md (v0.6a), M03_PlanningMilestones_Spec_v1_1.md (+ v1.2 cascade note for `MILESTONE_ACHIEVED_FINANCIAL`), M01_ProjectRegistry_Spec_v1_0.md (+ v1.3 cascade note for `Contract.dlp_retention_split_pct`), CLAUDE.md §4 Locked Decisions (H6 row)

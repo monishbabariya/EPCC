@@ -4,6 +4,7 @@
 **Type:** Reference propagation (H12) + role row addition to rate-display matrix (H14, also extends BR-02-008)
 **Author:** Monish (with Claude assist)
 **Created:** 2026-05-04
+**Last Audited:** v1.1 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
 **Trigger:** Round 29 audit findings H12 (X8 ENUM section refs missing on 11 fields) + H14 (ANALYST missing from rate-display matrix; canonical role since R18 audit)
 **Parent Spec:** M02_StructureWBS_Spec_v1_0.md
 **Reference Standards:** X8_GlossaryENUMs_v0_6.md (v0.6a), X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0.md (Block 3), .claude/rules/cross-cutting-standards.md (§Spike Formula Role Mapping)

@@ -4,6 +4,7 @@
 **Type:** Reference propagation + role canonicalisation (no field add/remove, no BR change)
 **Author:** Monish (with Claude assist)
 **Created:** 2026-05-04
+**Last Audited:** v1.4 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
 **Trigger:** Round 29 audit findings H13 (X8 ENUM section refs missing) + H16 (Block 4a permission matrix uses truncated role names + missing canonical roles)
 **Parent Spec:** M01_ProjectRegistry_Spec_v1_0.md
 **Reference Standards:** X8_GlossaryENUMs_v0_6.md (v0.6a), X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0.md (Block 3 — canonical 17-role taxonomy), .claude/rules/cross-cutting-standards.md
