@@ -1,10 +1,20 @@
 # M34 — System Administration & RBAC
-## Workflows v1.0
-**Status:** Locked
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03
-**Reference Spec:** M34_SystemAdminRBAC_Spec_v1_0.md
+## Workflows v1.0a
+**Artefact:** M34_SystemAdminRBAC_Workflows_v1_0a
+**Status:** LOCKED
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a stamp normalisation — Round 29 audit, H9)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** M34_SystemAdminRBAC_Spec_v1_0.md, X8_GlossaryENUMs_v0_1.md _(historical at lock; current X8 v0.6a)_
 **Folder:** /02_L1_Command/
+
+---
+
+## CHANGE LOG
+
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | H9 in-place patch (Round 29 audit): Format B stamp normalised — added **Artefact**, **Last Updated**, **Last Audited**, **Reference Standards**; **Status** UPPERCASE; author canonicalised (PMO Director / System Architect grandfathered). No content change. |
 
 ---
 
