@@ -15,14 +15,14 @@
 | X5 | Speed Tier Inventory | Roadmap | — |
 | X6 | Integration Point Map | Roadmap | Per-module §7 until built |
 | X7 | Standards Memory v1.0 | Roadmap | This rules folder until built |
-| **X8** | **Glossary ENUMs** | **LIVING (current v0.6)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_6.md` |
+| **X8** | **Glossary ENUMs** | **LIVING (current v0.6a — in-place patched R29)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_6.md` _(filename retained per in-place patch convention; content version v0.6a)_ |
 | **X9** | **Visualisation Standards** | **LIVING (current v0.4)** | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_4.md` |
 
 ---
 
 ## X8 — ENUM Discipline
 
-### Locked ENUMs by Module (current v0.6)
+### Locked ENUMs by Module (current v0.6a)
 
 | ENUM | Owner | Locked In |
 |---|---|---|
