@@ -51,6 +51,19 @@ tenant_id, created_by, created_at, updated_by, updated_at, is_active
 - `ProjectStatusHistory` (M01)
 - `LoginAttempt` (M34)
 - `SystemAuditLog` (M34)
+- `Baseline` (M03) — sealed at SG-6; immutable after lock
+- `BaselineExtension` (M03) — append-only after approval
+- `PVProfileSnapshot` (M03) — historical snapshots immutable
+- `ProgressEntryAudit` (M04) — every state transition; UPDATE/DELETE forbidden at DB level
+- `NCRStatusLog` (M04) — every NCR transition + severity change
+- `MaterialReceiptLedger` (M04) — every QC decision + receipt event
+- `ContractorPerformanceScoreLog` (M04) — every score recompute / override
+- `CostLedgerEntry` (M06) — 4-state transitions Budgeted→Committed→Accrued→Paid; reversals via compensating entries only
+- `RABillAuditLog` (M06) — every RA Bill state change
+- `PaymentEvidenceLedger` (M06) — every PaymentEvidence packet event
+- `ForexRateLog` (M06) — every rate entry + lock event; per-tier (RBI_Reference / Bank_Transaction)
+
+> **Source of truth:** X8 §6 (current v0.6). This list mirrors X8 — when X8 §6 grows, update here in the same cascade.
 
 ---
 

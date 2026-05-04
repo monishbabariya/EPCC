@@ -15,14 +15,14 @@
 | X5 | Speed Tier Inventory | Roadmap | — |
 | X6 | Integration Point Map | Roadmap | Per-module §7 until built |
 | X7 | Standards Memory v1.0 | Roadmap | This rules folder until built |
-| **X8** | **Glossary ENUMs** | **LIVING (current v0.5)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_5.md` |
-| **X9** | **Visualisation Standards** | **LIVING (current v0.3)** | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_3.md` |
+| **X8** | **Glossary ENUMs** | **LIVING (current v0.6)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_6.md` |
+| **X9** | **Visualisation Standards** | **LIVING (current v0.4)** | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_4.md` |
 
 ---
 
 ## X8 — ENUM Discipline
 
-### Locked ENUMs by Module (current v0.5)
+### Locked ENUMs by Module (current v0.6)
 
 | ENUM | Owner | Locked In |
 |---|---|---|
@@ -55,6 +55,15 @@
 | NCRStatus (7-state lifecycle) | M04 | v0.5 |
 | NCRRootCauseCategory (Workmanship/Material/Design/Procedure/Other) | M04 | v0.5 |
 | MaterialReceiptStatus, MaterialQCStatus, MaterialQCDecision | M04 | v0.5 |
+| CostLedgerEntryState (4-state Budgeted→Committed→Accrued→Paid) | M06 | v0.6 |
+| PurchaseOrderStatus, RABillStatus, RABillTriggerSource | M06 | v0.6 |
+| GRNMatchStatus | M06 | v0.6 |
+| VendorInvoiceStatus, InvoiceMatchMode, InvoiceMatchStatus | M06 | v0.6 |
+| PaymentEvidenceStatus | M06 | v0.6 |
+| RetentionReleaseType, RetentionReleaseStatus | M06 | v0.6 |
+| ExchangeRateTier (RBI_Reference / Bank_Transaction) | M06 | v0.6 |
+| BGType (BGStub-pattern; migrates to M23 in Phase 2) | M06 | v0.6 |
+| StageGate description refresh (SG_9 + SG_11; sequence unchanged) | System | v0.6 (refreshed) |
 
 ### Anti-Drift Rules (LOCKED)
 
@@ -86,7 +95,7 @@
 
 ### Pipeline Funnel as flagship pattern
 
-8 module implementations: M06 Capital Funnel, M04 NCR, M05 Risk, M05 VO, M09 Compliance, M11 Action, M15 Defect, HDI Import.
+8 module implementations: **M06 Capital Funnel (1st named flagship instance — X9 §9.5.1 v0.4 annotation)**, M04 NCR, M05 Risk, M05 VO, M09 Compliance, M11 Action, M15 Defect, HDI Import.
 
 ### Anti-Patterns Forbidden
 
