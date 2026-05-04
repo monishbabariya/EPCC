@@ -2,7 +2,7 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-04 (Round 28 — M06 cascade pass LOCKED, post-merge renumbering applied to avoid collision with parallel Round 23 = EPCC_BuildArchitecture Brief on `main`)
+**Last Updated:** 2026-05-04 (Round 29 audit closed — 4 PR series #4-#8 + governance commit locking OQ-1 R23→R30 + C1b cadence + ES-DB-001 multi-tenancy)
 **Current Phase:** Phase 1 — Foundational Module Specifications · **parallel: Phase 1B Build Architecture (Round 23 IN DRAFT on `main`)**
 **Active Rounds:**
 - **Round 23 IN DRAFT (on `main`):** `System Specs/EPCC_BuildArchitecture_Brief_v1_0.md` — surfaces 10 OQ-1 + ~30 OQ-2 decisions for the build (repo strategy, branch model, sequencing, OIDC, multi-tenancy, pilot seed, CI host, BR-tagged tests, ENUM codegen). Recommends monorepo on `main` + thin vertical slice (M34 → M01 demo) before module deepening. Awaiting Monish OQ-1 answers before Round 23 Spec drafts.
@@ -116,6 +116,8 @@ These have been resolved through deliberation. Do not re-open without explicit u
 | Stage Gate description (SG_9 / SG_11) | SG_9 = Substantial / Practical Completion (clinical commissioning ready); SG_11 = DLP End / Operations Handover. Sequence locked at v0.1; description text refreshed v0.6 to ratify M06 commitments before M08 brief opens (X8 v0.6 §3.10) |
 | Capital Funnel flagship | M06 Capital Funnel = 1st named flagship instance of §11 Pipeline Funnel pattern (X9 v0.4 §9.5.1 annotation; chronologically M04 NCR Funnel was 8th, but Capital Funnel is the formally-designated flagship) |
 | Round 29 audit closure | All CRITICAL + HIGH (3 + 22 = 25 findings) closed across PRs #4-#7. 17 MEDIUMs + ~28 LOWs closed in PR #8. ~12 LOW-tier findings formally accepted (see §4.1 Round 29 Accepted Findings) |
+| Multi-tenancy | Schema-per-tenant (ES-DB-001 LOCKED — `ZEPCC_Legacy/EPCC_Standards_Memory_v5_3.md` §7.137). PostgreSQL `search_path` per tenant. `tenant_id` retained on all entities for sub-tenant + JV support, NOT for row-level discrimination within a single tenant's schema. Re-open trigger: >50 active tenants OR >40% I/O concentration per tenant |
+| OQ-1 BuildArchitecture (R23→R30) | **1.1** Monorepo on `main` · **1.2** main + short-lived feature branches + cascade-note→BR-test branch protocol (no long-lived env branches) · **1.3** Thin vertical slice M34→M01 before module deepening · **1.4** Keycloak self-hosted (DPDP Act data sovereignty; swappable to Auth0/Okta in Phase 2) · **1.5** Schema-per-tenant (ES-DB-001) · **1.6** HDI v0.1 prototype seed (scripted fixture load from KDMC workbook export — frame as M-HDI module's first prototype, not a throwaway) · **1.7** GitHub Actions CI · **1.8** Docker Compose for dev + prod-pilot; K8s deferred to actual scale pressure (>1 tenant or scale constraint) · **1.9** BR-tagged tests (`test_BR_{module}_{seq}_*`) calibrated to active-branch-scope; Phase 2 module merge into thin slice requires that module's full BR coverage · **1.10** X8 → `scripts/codegen-enums.py` → Python + TypeScript types; CI fails on manual edit (anti-drift enforcement) |
 
 ---
 

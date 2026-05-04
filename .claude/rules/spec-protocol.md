@@ -10,6 +10,22 @@
 
 ---
 
+### Cadence C1b — 2-Spec Buffer (locked 2026-05-04)
+
+**Briefs may be drafted in batches of 2** (back-to-back rounds).
+
+**Wireframes and Workflows are produced in batches of 2**, after:
+- (a) Both module Specs in the batch are LOCKED, **and**
+- (b) X8 and X9 have been audited for ENUM additions, X-section refs, and §13.3.x role-default view rows introduced by both modules — with cascade notes drafted (not yet locked) before Wireframes start.
+
+**Specs remain one-at-a-time** (cadence C1 preserved for Spec depth).
+
+**Dependency constraint:** Module batches must NOT contain a hard upstream→downstream dependency. E.g., M03 + M07 cannot batch because M07 Spec lock requires M03 BAC/PV contracts locked. **Independent or peer modules only** (e.g., M05 RiskChange + M11 ActionRegister).
+
+**Rationale:** doubles throughput on the lower-density artefacts (Briefs, Wireframes, Workflows) without sacrificing Spec depth. C1 is preserved for the artefact where density choice A matters most.
+
+---
+
 ## 4 Artefacts per Module
 
 ```

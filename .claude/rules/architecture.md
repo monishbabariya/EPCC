@@ -77,7 +77,25 @@ Formula references live in M07 EVM Engine spec. Do not redefine inline.
 | Database | PostgreSQL |
 | Async tasks | Celery + Redis |
 | Object storage | MinIO |
-| Authentication | OIDC (with local password fallback) |
+| Authentication | OIDC — Keycloak self-hosted (OQ-1.4 LOCKED R29; DPDP Act data sovereignty; local password fallback retained) |
+
+---
+
+## Multi-Tenancy (ES-DB-001 — LOCKED)
+
+**Standard:** **Schema-per-tenant** (PostgreSQL `search_path` per tenant).
+
+`tenant_id` is present on all entities — retained for **sub-tenant + JV support**, NOT for row-level discrimination within a single tenant's schema. Within one tenant's schema, all rows belong to that tenant by definition; `tenant_id` is the key for cross-schema federation when sub-tenants/JVs need shared visibility.
+
+**Source of truth:** `ZEPCC_Legacy/EPCC_Standards_Memory_v5_3.md` §7.137 (ES-DB-001 — STATUS: CONFIRMED. LOCKED. CLOSED.).
+
+**Operational note:** Tenant entity (M34) carries `db_schema_name` field with auto-derivation `t_{tenant_code_lower}` mapping to PostgreSQL schema. See M34 Spec Block 3b.
+
+**Re-open triggers (must satisfy ≥1):**
+- \>50 active tenants (schema management overhead becomes prohibitive)
+- \>40% I/O concentration on a single tenant (cross-schema replica strategy may be required)
+
+Until either trigger fires, **do not revisit this decision.**
 
 ---
 

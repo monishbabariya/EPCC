@@ -54,3 +54,4 @@ Always cite the canonical reference rather than answering from memory:
 | Folder structure | `System Specs/EPCC_FolderIndex_v1_0.md` |
 | Audit findings | `System Specs/AUDIT_Round00_ExistingSpecs_v1_0.md` |
 | Pilot data | KDMC reference appendices in M01 + M02 specs |
+| Architectural standards (DB, deployment, DR, multi-tenancy) | `ZEPCC_Legacy/EPCC_Standards_Memory_v5_3.md` — **locked items only** (`ES-XX-XXX` codes with STATUS: CONFIRMED/LOCKED/CLOSED). Verify ES status before citing. **Note:** legacy SPECS in the same `ZEPCC_Legacy/` folder are deprecated; the Standards Memory entries are NOT — they govern architecture decisions not duplicated in `.claude/rules/`. Example: ES-DB-001 = schema-per-tenant (also referenced in `architecture.md` §Multi-Tenancy + CLAUDE.md §4) |
