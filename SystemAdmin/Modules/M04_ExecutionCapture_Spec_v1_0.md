@@ -1,13 +1,13 @@
 ---
-artefact: M04_ExecutionCapture_Spec_v1_0
-round: 20
-date: 2026-05-03
+artefact: M04_ExecutionCapture_Spec_v1_0a
+round: 20 (patched Round 29)
+date: 2026-05-04
 author: Monish (with Claude assist)
-x8_version: v0.4 (with v0.5 cascade pending — 6 new M04 ENUMs)
-x9_version: v0.2 (with v0.3 cascade pending — adds M04 row to §13.3.3 role-default views)
+x8_version: v0.6a
+x9_version: v0.4
 status: LOCKED
 prior_version: M04_ExecutionCapture_Brief_v1_0 (Round 19)
-reference_standards: EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_4.md (+ v0.5 cascade pending), X9_VisualisationStandards_Spec_v0_2.md (+ v0.3 cascade pending), M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote), M02_StructureWBS_Spec_v1_0.md, M03_PlanningMilestones_Spec_v1_1.md
+reference_standards: EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_6a.md, X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote + v1_3_CascadeNote), M02_StructureWBS_Spec_v1_0.md, M03_PlanningMilestones_Spec_v1_1.md (+ v1_2_CascadeNote)
 re_issue_of: ZEPCC_Legacy/M04_Execution_Capture_v2_2.md (amendment-only — base v2.0/v2.1 not in legacy)
 ---
 
@@ -15,9 +15,10 @@ re_issue_of: ZEPCC_Legacy/M04_Execution_Capture_v2_2.md (amendment-only — base
 
 ## CHANGE LOG
 
-| Version | Date | Change Summary |
-|---|---|---|
-| v1.0 | 2026-05-03 | Initial standalone consolidated spec (Round 20). All 13 OQ items from Brief v1.0 (Round 19) carried as locked. Slim-core scope — DLP→M15, HSE→M31, BOQ-grain→M14, docs→M12, daily diary→M16. Three-state ProgressEntry approval (Draft → Submitted → Approved/Rejected). 4-tier ConstructionNCR severity (reuse X8 Severity ENUM). Dual sign-off above ₹50L threshold (default; configurable via M04-owned `ProjectExecutionConfig` per OQ-2.6 resolution below). Photo storage stubbed (MinIO direct URLs) until M12 lands; migration path documented. 9 entities including 4 append-only ledgers with DB-level UPDATE/DELETE forbidden. 39 BRs. Audit Events Catalogue locked from authoring (Appendix A — 22 events) per Round 18 cascade-pattern discipline. |
+| Version | Date | Author | Change Summary |
+|---|---|---|---|
+| v1.0a  | 2026-05-04 | Monish (with Claude assist) | M19 in-place patch (Round 29 audit): X8 stamp v0.4→v0.6a, X9 stamp v0.2→v0.4, all "cascade pending" annotations cleared (X8 v0.5 M04 ENUMs + X9 v0.3 §13.3.3 row both LOCKED); reference_standards refreshed with M01 v1_3_CascadeNote + M03 v1_2_CascadeNote forward-pointers. No scope, BR, entity, or field change. |
+| v1.0 | 2026-05-03 | Monish (with Claude assist) | Initial standalone consolidated spec (Round 20). All 13 OQ items from Brief v1.0 (Round 19) carried as locked. Slim-core scope — DLP→M15, HSE→M31, BOQ-grain→M14, docs→M12, daily diary→M16. Three-state ProgressEntry approval (Draft → Submitted → Approved/Rejected). 4-tier ConstructionNCR severity (reuse X8 Severity ENUM). Dual sign-off above ₹50L threshold (default; configurable via M04-owned `ProjectExecutionConfig` per OQ-2.6 resolution below). Photo storage stubbed (MinIO direct URLs) until M12 lands; migration path documented. 9 entities including 4 append-only ledgers with DB-level UPDATE/DELETE forbidden. 39 BRs. Audit Events Catalogue locked from authoring (Appendix A — 22 events) per Round 18 cascade-pattern discipline. |
 
 ---
 
@@ -104,7 +105,7 @@ Append-only entities have NO `updated_at`, NO `updated_by`, NO `is_active` (no s
 | `contract_id` | UUID | Y | Responsible contractor | LINK → M01 Contract |
 | `period_start` | DATE | Y | Reporting period start; derived from M03 `reporting_period_type` | CALC |
 | `period_end` | DATE | Y | Period end | CALC |
-| `measurement_method` | ENUM | Y | `Units / Steps / Milestone / Subjective_Estimate` (X8 v0.5 cascade pending — `ProgressMeasurementMethod`). Read from ProgressMeasurementConfig at create. | LINK → ProgressMeasurementConfig |
+| `measurement_method` | ENUM | Y | `Units / Steps / Milestone / Subjective_Estimate` (X8 `ProgressMeasurementMethod`, locked v0.5). Read from ProgressMeasurementConfig at create. | LINK → ProgressMeasurementConfig |
 | `pct_complete_declared` | DECIMAL(5,4) | Y | Range [0.0000, 1.0000]. The contractor's declared %. | INPUT (SITE_MANAGER) |
 | `pct_complete_approved` | DECIMAL(5,4) | N | Set on Approved transition. May differ from declared (QS verification). Range [0.0000, 1.0000]. | INPUT (QS_MANAGER on approve) |
 | `units_completed` | INTEGER | N | Required if measurement_method=Units; else null | INPUT |
@@ -116,7 +117,7 @@ Append-only entities have NO `updated_at`, NO `updated_by`, NO `is_active` (no s
 | `notes` | TEXT | N | Max 2000 chars | INPUT |
 | `photo_document_ids` | JSONB | N | M12 references (target). Until M12 lands: empty array. | LINK → M12 (when built) |
 | `photo_urls` | JSONB | N | **STUB FIELD** — array of MinIO URLs. Deprecated when M12 v1.0 lands; migration script: `20260XXX_M12_absorb_M04_photo_urls.py` (drafted Appendix C) | INPUT (stub period) |
-| `status` | ENUM | Y | `Draft / Submitted / Approved / Rejected` (X8 v0.5 cascade pending — `ProgressApprovalStatus`) | SYSTEM |
+| `status` | ENUM | Y | `Draft / Submitted / Approved / Rejected` (X8 `ProgressApprovalStatus`, locked v0.5) | SYSTEM |
 | `approval_path` | ENUM | N | `Single_QS / Dual_QS_PD` — determined at Submit by BR-04-006 based on entry_value_inr × dual_signoff_threshold | CALC |
 | `entry_value_inr` | DECIMAL(15,2) | Y | CALC = pct_complete_declared × WBSNode.bac_per_node (read from M02). Used for dual-signoff routing. | CALC |
 | `declared_by` | UUID | Y | Site rep who declared. | LINK → M34 User |
@@ -131,7 +132,7 @@ Append-only entities have NO `updated_at`, NO `updated_by`, NO `is_active` (no s
 | `rejected_by` | UUID | N | QS_MANAGER or PROJECT_DIRECTOR | LINK → M34 User |
 | `rejected_at` | TIMESTAMP | N | Set on Rejected | SYSTEM |
 | `rejection_reason` | TEXT | N | Min 50 chars (BR-04-008). Required if status=Rejected | INPUT |
-| `ev_confidence` | ENUM | Y | `High / Low / Fallback / Derived` (X8 v0.5 cascade — `EVConfidence`). CALC from method + status. See BR-04-013. | CALC |
+| `ev_confidence` | ENUM | Y | `High / Low / Fallback / Derived` (X8 `EVConfidence`, locked v0.5). CALC from method + status. See BR-04-013. | CALC |
 | `recalc_job_id_emitted` | UUID | N | FK → M07 RecalcQueue (when M07 built). Tracks the EV recalc this approval triggered. | LINK → M07 (when built) |
 | `tenant_id, created_by, created_at, updated_by, updated_at, is_active` | reserved | Y | Standard reserved fields (X8 §6) | SYSTEM |
 
@@ -175,7 +176,7 @@ Append-only entities have NO `updated_at`, NO `updated_by`, NO `is_active` (no s
 | `tenant_id` | UUID | Y | — | SYSTEM |
 | `project_id` | UUID | Y | — | LINK → M01 |
 | `wbs_id` | UUID | Y | Unique per project (1:1 with WBS node) | LINK → M02 WBSNode |
-| `measurement_method` | ENUM | Y | ProgressMeasurementMethod (X8 v0.5 cascade) | INPUT (PLANNING_ENGINEER) |
+| `measurement_method` | ENUM | Y | ProgressMeasurementMethod (X8 v0.5) | INPUT (PLANNING_ENGINEER) |
 | `units_total` | INTEGER | N | Required if method=Units; > 0 | INPUT |
 | `unit_of_measure` | VARCHAR(20) | N | Required if method=Units (e.g., 'm³', 'tonnes', 'each') | INPUT |
 | `steps_total_count` | INTEGER | N | Required if method=Steps; > 0 | INPUT |
@@ -199,9 +200,9 @@ Append-only entities have NO `updated_at`, NO `updated_by`, NO `is_active` (no s
 | `wbs_id` | UUID | Y | Location of NCR | LINK → M02 WBSNode |
 | `package_id` | UUID | Y | Inherited from WBS | LINK → M02 Package |
 | `contract_id` | UUID | Y | Responsible contractor | LINK → M01 Contract |
-| `severity` | ENUM | Y | X8 `Severity` ENUM = `Critical / High / Medium / Low` (4-tier per OQ-1.5=A; X8 system ENUM, no v0.5 cascade needed) | INPUT |
+| `severity` | ENUM | Y | X8 `Severity` ENUM = `Critical / High / Medium / Low` (4-tier per OQ-1.5=A; X8 system ENUM, locked since v0.1) | INPUT |
 | `description` | TEXT | Y | Min 50 chars | INPUT |
-| `root_cause_category` | ENUM | Y | `Workmanship / Material / Design / Procedure / Other` (X8 v0.5 cascade — `NCRRootCauseCategory`) | INPUT |
+| `root_cause_category` | ENUM | Y | `Workmanship / Material / Design / Procedure / Other` (X8 `NCRRootCauseCategory`, locked v0.5) | INPUT |
 | `identified_by` | UUID | Y | FK → M34 User | LINK |
 | `identified_at` | DATE | Y | Cannot be < project planned_start (BR-04-015) | INPUT |
 | `response_due` | DATE | Y | CALC by BR-04-017 — Critical = +24hr; High = +48hr; Medium/Low = +72hr (configurable via ProjectExecutionConfig) | CALC |
@@ -409,7 +410,7 @@ Append-only entities have NO `updated_at`, NO `updated_by`, NO `is_active` (no s
 - `contract_id` (contractor filter)
 - `qc_decision` (MaterialReceipt only)
 
-### Role-default views (per OQ-1.8 — locked from Brief; X9 v0.3 cascade pending)
+### Role-default views (per OQ-1.8 — locked from Brief; X9 §13.3.3 row locked v0.3)
 
 | Role | Primary view | Secondary view |
 |---|---|---|
@@ -421,7 +422,7 @@ Append-only entities have NO `updated_at`, NO `updated_by`, NO `is_active` (no s
 | `ANALYST` | Progress trend curves (S-curve actual vs planned by package) | NCR rate trend |
 | `READ_ONLY` | Project progress card (status badges only; no approval actions) | — |
 
-⭐ = X9 v0.3 cascade adds this row to §13.3.3.
+⭐ = X9 v0.3 added this row to §13.3.3 (locked).
 
 ### Mandatory-input fields per entity (M03 pattern)
 
