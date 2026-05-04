@@ -2,9 +2,9 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-03 (Round 25 — M06 FinancialControl Wireframes v1.0 LOCKED via /build-module pipeline)
+**Last Updated:** 2026-05-03 (Round 26 — M06 FinancialControl Workflows v1.0 LOCKED; M06 module COMPLETE via /build-module pipeline)
 **Current Phase:** Phase 1 — Foundational Module Specifications
-**Active Round:** Round 25 — M06 Wireframes LOCKED (iter 1 + 3 cosmetic fixes). Workflows gate firing next.
+**Active Round:** Round 26 — M06 Workflows LOCKED. M06 module COMPLETE (Brief, Spec v1.0a, Wireframes, Workflows). Phase 5 cascade detection firing next.
 
 ---
 
@@ -52,7 +52,7 @@
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
 | **M03 PlanningMilestones** | Done | Done (v1.1) | Done | Done | 15–18 |
 | **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0 (R20) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22 |
-| **M06 FinancialControl** | Done v1.0 (R23) | Done v1.0 (R24) | Done v1.0 (R25) | Pending R26 | 23–25 |
+| **M06 FinancialControl** | Done v1.0 (R23) | Done v1.0 (R24) + v1.0a audit-corr (R26) | Done v1.0 (R25) | Done v1.0 (R26) | 23–26 |
 
 ### Cross-cutting
 
@@ -72,7 +72,7 @@
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 29 · **Remaining:** 56 (M06 Wireframes v1.0 locked Round 25)
+**Total deliverables:** ~85 · **Done:** 30 · **Remaining:** 55 (M06 module COMPLETE through Round 26 — first end-to-end /build-module pipeline run)
 
 ---
 

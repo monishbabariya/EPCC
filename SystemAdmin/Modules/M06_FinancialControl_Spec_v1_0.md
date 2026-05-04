@@ -19,6 +19,7 @@ reference_standards: X8_GlossaryENUMs_v0_5.md (+ v0.6 cascade pending), X9_Visua
 | Version | Date | Change Summary |
 |---|---|---|
 | v1.0 | 2026-05-03 | Initial standalone consolidated spec (Round 24). All 11 OQ-1 + 6 OQ-2 items from Brief v1.0 (Round 23) carried as locked. 4-state CostLedgerEntry pipeline (Budgeted → Committed → Accrued → Paid) per OQ-1.1=A. Per (Package × Period) RABill grain per OQ-1.2=B. Dual trigger sources (Progress + Milestone) per OQ-1.3=B. Stale_Pending_VO flag-don't-block per OQ-1.4=B. Full-lifetime per-WBS-per-period CashflowForecast per OQ-1.5=A. Multi-currency (ForexRateMaster + ForexVariation) shipped from v1.0 per OQ-1.6=B. Split payment scope — 2/3-way match in EPCC, signature workflow external — per OQ-1.7=C. Tranched retention release with dual sign-off per OQ-1.8=C (triggers M01 v1.3 cascade). BGStub mirroring M04→M12 photo-stub pattern per OQ-1.9=B. M06FinancialConfig per-project tunables per OQ-1.10=A. Tax-record-only per OQ-1.11=C. 17 entities (4 append-only ledgers with DB-level UPDATE/DELETE forbidden). 47 BRs. Audit Events Catalogue locked from authoring (Appendix A — 43 events). |
+| v1.0a | 2026-05-03 | **Round 26 Workflows-audit correction (in-place patch, not a version bump):** Stage Gate naming disambiguation per Workflows audit — tranche-1 (Substantial Completion) trigger event renamed from `SG_11_PASSAGE` to `SG_9_PASSAGE` (correctly matches SG-9 = Substantial/Practical Completion in 5-layer architecture); tranche-2 (DLP End) retains `SG_11_PASSAGE`. Affects BR-06-027 trigger, Block 7 RECEIVES FROM M08, stub endpoint paths (now both `/sg9-passage` AND `/sg11-passage` exposed), Appendix A `DLP_RELEASE_PRECONDITION_MET` description, KDMC reference appendix tranche annotations, Block 2 EXCLUDES SG signal reference. M08 (when built) must implement BOTH endpoints. No BR additions/removals; no entity changes; no scope drift. Discovered during /build-module Workflows gate audit and patched pre-module-publish. |
 
 ---
 
@@ -57,7 +58,7 @@ Re-Issue Of              : Legacy `M06_Financial_Control_v2_1.md` (amendment fil
 | `RABillLine` — per-WBS-per-period billing line within an RABill. | VO initiation, approval, monetary impact — **M05** (M06 receives `VO_APPROVED_COST_IMPACT` stub when M05 lands) |
 | `RABillAuditLog` — append-only, every state transition. | LD calculation, contingency draw, risk buffer — **M05** |
 | `GRN` — goods receipt note, populated by M04 `MATERIAL_GRN_EMITTED`. | EVM (CPI / SPI / EAC / ETC / VAC / TCPI) — **M07** (M06 supplies AC; M07 computes) |
-| `VendorInvoice` — invoice receipt with GST + TDS captured (record-only per OQ-1.11=C). | Stage-gate decisions and SG-11 passage signal — **M08** |
+| `VendorInvoice` — invoice receipt with GST + TDS captured (record-only per OQ-1.11=C). | Stage-gate decisions and SG-9 / SG-11 passage signals — **M08** |
 | `InvoiceMatchResult` — 2/3-way PO ↔ GRN ↔ Invoice match outcome (per OQ-1.7=C). | DLP defect register and resolution — **M15 HandoverManagement** (signal stub until M15 lands) |
 | `PaymentEvidence` — assembled evidence (PO, GRN, Invoice, Match) handed to external accounting system. | DLP compliance Non_Compliance observations — **M09 ComplianceTracker** (signal stub until M09 lands) |
 | `PaymentEvidenceLedger` — append-only, every payment evidence state transition. | Bank file generation, signature workflow, payment release approval — external accounting system |
@@ -664,7 +665,7 @@ The four enforced ledgers are: `CostLedgerEntry`, `RABillAuditLog`, `PaymentEvid
 | BR-06-024 | PaymentEvidence transition to Confirmed_Paid | Caller=FINANCE_LEAD; bank_debit_advice_doc_id (or _url stub) required; manual flip per OQ-1.7=C (no automation in v1.0) | Persist; write CostLedgerEntry(state=Paid, amount_inr=gross_payable_inr, source=PaymentEvidence) | T1 |
 | BR-06-025 | Payment SLA sweep (T3 daily) | For VendorInvoice WHERE status ∈ {Match_Passed, Evidence_Assembled, Handed_Over} AND (today − invoice.received_date) > M06FinancialConfig.payment_sla_warn_days: Decision Queue `PAYMENT_SLA_BREACH` severity=Medium (warn) or High (red beyond payment_sla_red_days) | Decision created | T3 |
 | BR-06-026 | Retention create | Auto on RABill Approved (BR-06-016). release_status=Withheld; eligibility computed lazily by BR-06-027/028 sweeps. | Persist | T1 |
-| BR-06-027 | Substantial completion eligibility sweep | On M08 SG_11_PASSAGE event (stub until M08 built): For each Retention WHERE release_status=Withheld AND release_type IS NULL: set release_type=Substantial_Completion; release_tranche_pct = M01.Contract.dlp_retention_split_pct (M01 v1.3 cascade — default 0.5); release_status=Eligible; eligible_at=now; populate eligibility_basis | Emit `DLP_RELEASE_PRECONDITION_MET` | T2 (event-driven) |
+| BR-06-027 | Substantial completion eligibility sweep | On M08 `SG_9_PASSAGE` event (stub until M08 built — SG-9 = Substantial / Practical Completion gate): For each Retention WHERE release_status=Withheld AND release_type IS NULL: set release_type=Substantial_Completion; release_tranche_pct = M01.Contract.dlp_retention_split_pct (M01 v1.3 cascade — default 0.5); release_status=Eligible; eligible_at=now; populate eligibility_basis | Emit `DLP_RELEASE_PRECONDITION_MET` | T2 (event-driven) |
 | BR-06-028 | DLP-end eligibility sweep | On `DLP_RETENTION_RELEASE_ELIGIBLE` event (stub from M15) AND M09 zero-count signal: For each Retention WHERE release_status ∈ {Withheld, Released-tranche1}: validate M15.open_defect_count=0 AND M09.open_noncompliance_count=0; if pass: set release_type=DLP_End, release_tranche_pct=(1.0 − previously_released_pct), release_status=Eligible, eligible_at=now. Else: release_status=Blocked, block_reason populated | Emit `DLP_RELEASE_PRECONDITION_MET` or `DLP_RELEASE_PRECONDITION_BLOCKED` | T2 |
 | BR-06-029 | Retention transition Eligible → Approved_Finance → Released | Approved_Finance requires FINANCE_LEAD signature. Released requires PMO_DIRECTOR signature (dual sign-off per OQ-1.8=C). On Released: write CostLedgerEntry(state=Paid, source=Retention, amount_inr=released_amount_inr, triggering_event=`RETENTION_TRANCHE_RELEASED`) | Persist; emit `RETENTION_TRANCHE_RELEASED` | T1 |
 | BR-06-030 | Retention.pmo_override_applied=true | Caller=PMO_DIRECTOR; pmo_override_justification ≥ 200 chars; allowed only when normal pre-conditions blocked. Bypasses M15 / M09 zero-count check. | Persist; emit `DLP_RELEASE_PMO_OVERRIDE` | T1 |
@@ -703,7 +704,7 @@ The four enforced ledgers are: `CostLedgerEntry`, `RABillAuditLog`, `PaymentEvid
 | SENDS TO | M10 EPCC Command (when built) | Capital Funnel data, cashflow time-series, vendor outstanding bar, payment aging | On any change | T2 |
 | SENDS TO | M11 ActionRegister (when built) | Decision Queue items: CAPITAL_HEADROOM_BREACH, COST_OVERRUN_ADVISORY, PAYMENT_SLA_BREACH, FOREX_DEVIATION_APPROVAL, BG_EXPIRING_SOON, RETENTION_RELEASE_BLOCKED_DLP, INVOICE_MATCH_FAILED, BAC_INTEGRITY_WARNING, CASHFLOW_REGEN_FAILED | On condition match | T1 / T2 / T3 per trigger |
 | RECEIVES FROM | M05 Risk & Change (stub until M05 built) | `VO_APPROVED_COST_IMPACT` event → BR-06-039 writes Committed CostLedgerEntry; `LD_ELIGIBLE_AMOUNT` event → CostLedgerEntry deduction tracker | Event (stub endpoint contract documented at v1.0) | T1 |
-| RECEIVES FROM | M08 GateControl (stub until M08 built) | `SG_11_PASSAGE` event → Retention.eligible_at population for Substantial_Completion tranche (BR-06-027) | Event (stub endpoint contract documented at v1.0) | T1 |
+| RECEIVES FROM | M08 GateControl (stub until M08 built) | `SG_9_PASSAGE` event (Substantial / Practical Completion) → Retention.eligible_at population for Substantial_Completion tranche (BR-06-027); `SG_11_PASSAGE` event (DLP End / Project Closure) consumed alongside M15/M09 zero-counts for DLP_End tranche (BR-06-028) | Event (stub endpoint contract documented at v1.0) | T1 |
 | RECEIVES FROM | M09 ComplianceTracker (stub until M09 built) | `COMPLIANCE_HOLD_BILLING` flag → block RABill / VendorInvoice transitions (BR-06-038); `COMPLIANCE_OPEN_NONCOMPLIANCE_COUNT_CHANGED` → Retention DLP-end eligibility recompute | Event (stub endpoint contract documented at v1.0) | T1 |
 | RECEIVES FROM | M15 HandoverManagement (stub until M15 built) | `DLP_RETENTION_RELEASE_ELIGIBLE` event (open_defect_count=0 signal) → Retention DLP-end eligibility recompute (BR-06-028) | Event (stub endpoint contract documented at v1.0) | T1 |
 | BIDIRECTIONAL | M23 BGInsuranceTracker (Phase 2) | One-time migration from BGStub to M23 BG records — Appendix C migration script. Until M23 lands: M06 owns BGStub. | Migration cascade event | T3 (one-time) |
@@ -713,7 +714,8 @@ The four enforced ledgers are: `CostLedgerEntry`, `RABillAuditLog`, `PaymentEvid
 
 ```
 POST /api/m06/v1/events/vo-approved-cost-impact     # M05 → M06 (BR-06-039)
-POST /api/m06/v1/events/sg11-passage                # M08 → M06 (BR-06-027)
+POST /api/m06/v1/events/sg9-passage                 # M08 → M06 (BR-06-027) — Substantial Completion
+POST /api/m06/v1/events/sg11-passage                # M08 → M06 (BR-06-028) — DLP End / Project Closure
 POST /api/m06/v1/events/compliance-hold-billing     # M09 → M06 (BR-06-038)
 POST /api/m06/v1/events/compliance-noncompliance-count-changed  # M09 → M06 (BR-06-028)
 POST /api/m06/v1/events/dlp-retention-release-eligible  # M15 → M06 (BR-06-028)
@@ -905,7 +907,7 @@ COMPLIANCE_HOLD_APPLIED        BR-06-038
 | `PAYMENT_CONFIRMED` | BR-06-024 | Info | FINANCE_LEAD flipped PaymentEvidence to Confirmed_Paid; Paid CostLedgerEntry written |
 | `RETENTION_WITHHELD` | BR-06-016 | Info | Retention row created at RABill Approved |
 | `RETENTION_TRANCHE_RELEASED` | BR-06-029 | Info | Tranche released (Substantial_Completion or DLP_End); Paid CostLedgerEntry written |
-| `DLP_RELEASE_PRECONDITION_MET` | BR-06-027, BR-06-028 | Info | Release pre-conditions met (SG-11 passage OR DLP-end zero counts) |
+| `DLP_RELEASE_PRECONDITION_MET` | BR-06-027, BR-06-028 | Info | Release pre-conditions met (SG-9 passage for Substantial_Completion tranche OR SG-11 passage + M15/M09 zero counts for DLP_End tranche) |
 | `DLP_RELEASE_PRECONDITION_BLOCKED` | BR-06-028 | Medium | DLP-end blocked due to M15 open defects OR M09 open non-compliance |
 | `DLP_RELEASE_PMO_OVERRIDE` | BR-06-030 | High | PMO override of DLP release pre-conditions; justification ≥ 200 chars |
 | `FOREX_RATE_ENTERED` | BR-06-033 (daily seed) | Info | New ForexRateMaster row inserted |
@@ -963,8 +965,8 @@ Pilot currency:               INR only (KDMC; system supports multi-currency for
 Retention pct:                5.00% (M01.Contract.retention_pct = 0.0500)
 Total retention withheld:     ₹3.42 Cr at full execution
 DLP retention split:          50/50 (Substantial Completion + DLP End)
-                              → ₹1.71 Cr release at SG-11 passage
-                              → ₹1.71 Cr release at DLP End (gated by M15 + M09 zero-counts)
+                              → ₹1.71 Cr release at SG-9 passage (Substantial / Practical Completion)
+                              → ₹1.71 Cr release at SG-11 passage (DLP End — gated by M15 + M09 zero-counts)
 DLP term:                     365 days post substantial completion
 Payment credit:               30 days (default M01.Contract.payment_credit_days)
 GST rate:                     18% (default; M01.Contract.gst_rate = 0.1800)
