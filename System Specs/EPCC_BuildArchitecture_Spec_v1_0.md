@@ -6,7 +6,7 @@ author: Monish (with Claude assist)
 parent_brief: EPCC_BuildArchitecture_Brief_v1_0.md (Round 23)
 x8_version: v0.6a
 x9_version: v0.4
-status: DRAFT
+status: LOCKED
 type: Build Governance Spec
 re_issue_of: n/a (first lock — no legacy build governance spec existed)
 locks_oq1: All 10 OQ-1 BuildArchitecture decisions (R23 → R30) per CLAUDE.md §4
@@ -27,9 +27,9 @@ references_locked: ES-DB-001 (schema-per-tenant), ES-DR-002 v1.2 (per-schema bac
 
 ## CHANGE LOG
 
-| Version | Date | Author | Change Summary |
-|---|---|---|---|
-| v1.0 | 2026-05-04 | Monish (with Claude assist) | Initial Spec lock (Round 30). Locks all 10 OQ-1 BuildArchitecture decisions surfaced in Brief Round 23. Locks 6 OQ-2 carry-forward questions (BA-OQ-1 through BA-OQ-6) as Block 10 OQ-2 with Claude-recommended defaults. References ES-DB-001 schema-per-tenant + ES-DR-002 v1.2 per-schema backup + ES-CICD-001/002 7-stage pipeline + ES-SEC-004 DPDPA 2023 + Cadence C1b 2-Spec Buffer. Defines monorepo structure, pinned tech stack versions, schema-per-tenant database routing, Keycloak auth implementation, 8-stage GitHub Actions CI/CD pipeline, X8 → Python+TypeScript ENUM codegen pipeline, BR-tagged test convention with active-branch-scope calibration, thin-vertical-slice acceptance criteria for M34+M01, and 10 Architecture Decision Records (ADRs) to be created in Round 31. |
+| Version | Date       | Author                      | Changes |
+|---------|------------|-----------------------------|---------|
+| v1.0    | 2026-05-04 | Monish (with Claude assist) | Initial lock. All 10 OQ-1 decisions embedded. 6 OQ-2 resolved. 0 open questions. |
 
 ---
 
