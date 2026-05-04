@@ -1,20 +1,29 @@
 <!--
-artefact: M06_FinancialControl_Wireframes_v1_0
-round: 26
-date: 2026-05-03
+artefact: M06_FinancialControl_Wireframes_v1_1
+round: 29
+date: 2026-05-04
 author: Monish (with Claude assist)
-x8_version: v0.5
-x9_version: v0.3
+x8_version: v0.6a
+x9_version: v0.4
 status: LOCKED
-spec_locked_in: Round 25 (SystemAdmin/Modules/M06_FinancialControl_Spec_v1_0.md)
-locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/17 + 3 cosmetic fixes applied; pre-merge round number was 25 — renumbered to 26 post-merge)
+spec_locked_in: Round 25 (SystemAdmin/Modules/M06_FinancialControl_Spec_v1_0.md, in-place patched to v1.0b at Round 29)
+locked_at: 2026-05-04 (Round 29 re-issue from v1.0; original v1.0 locked 2026-05-03 at Round 26)
+re-issue-reason: C3 SG_9/SG_11 ENUM correction + H17/H18 BGType ENUM canonicalisation (rendered-content errors not eligible for cascade-note overlay; full re-issue required)
+prior-version: M06_FinancialControl_Wireframes_v1_0.html (renamed via git mv — see git history)
 -->
-<!-- Note: First named instance of X9 §11 Pipeline Funnel flagship pattern (M06 Capital Funnel: Budgeted → Committed → Accrued → Paid). 8 role-default views per Spec Block 5 / X9 v0.3 §13.3.6. Tailwind CDN, no JS framework deps (D3 lock). KDMC-001-DBOT mock data throughout. -->
+<!--
+CHANGE LOG
+| Version | Date       | Author                      | Changes |
+|---------|------------|-----------------------------|---------|
+| v1.0    | 2026-05-03 | Monish (with Claude assist) | Initial wireframe lock at Round 26. 8 role-default views per X9 v0.3 §13.3.6. Capital Funnel = 1st named instance of X9 §11 flagship pipeline pattern. Tailwind CDN, no JS framework deps (D3 lock). KDMC-001-DBOT mock data throughout. (M36 footer drift patched in Round 29 PR #5 prior to this re-issue.) |
+| v1.1    | 2026-05-04 | Monish (with Claude assist) | C3: Retention tranche-1 trigger corrected SG_11_PASSAGE→SG_9_PASSAGE in 2 sites (lines 345-346 retention pending release table) and SG_11→SG_9 in 2 sites (lines 916-917 retention release log). Per BR-06-027 + X8 v0.6a §3.10 description-refresh. H17: BGType "Mobilisation"→Advance_Payment (line 902, BG-LNT-002). H18: BGType "Advance"→Advance_Payment (line 904, BG-SIE-001). Per X8 v0.6a §3.72 BGType ENUM canonical 5 values (Performance/Advance_Payment/Retention_Substitute/Bid/Other). No structural changes; no new views; role-switcher unchanged. |
+-->
+<!-- Note: First named instance of X9 §11 Pipeline Funnel flagship pattern (M06 Capital Funnel: Budgeted → Committed → Accrued → Paid). 8 role-default views per Spec Block 5 / X9 v0.4 §13.3.6. Tailwind CDN, no JS framework deps (D3 lock). KDMC-001-DBOT mock data throughout. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>M06 — Financial Control · Wireframes v1.0 · KDMC-001-DBOT</title>
+  <title>M06 — Financial Control · Wireframes v1.1 · KDMC-001-DBOT</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* ----- Severity / status palette (X9 v0.3 + dual-encode per OQ-1.6) ----- */
@@ -85,12 +94,12 @@ locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/17 + 3 cosme
 
 <!-- ============== AUDIT STAMP BANNER ============== -->
 <div class="bg-amber-100 border-b border-amber-300 text-amber-900 text-xs px-6 py-1.5 flex flex-wrap items-center gap-x-4 gap-y-0.5 justify-center">
-  <span><b>M06 FinancialControl Wireframes v1.0</b></span>
-  <span>Round <b>25</b></span>
-  <span>X8 <b>v0.5</b></span>
-  <span>X9 <b>v0.3</b></span>
-  <span>Spec locked Round 24</span>
-  <span class="font-bold tracking-wider px-2 py-0.5 bg-amber-700 text-white rounded">DRAFT</span>
+  <span><b>M06 FinancialControl Wireframes v1.1</b></span>
+  <span>Round <b>29</b></span>
+  <span>X8 <b>v0.6a</b></span>
+  <span>X9 <b>v0.4</b></span>
+  <span>Spec locked Round 25 (patched v1.0b R29)</span>
+  <span class="font-bold tracking-wider px-2 py-0.5 bg-emerald-700 text-white rounded">LOCKED</span>
   <span>Capital Funnel = 1st named instance of X9 §11 flagship</span>
 </div>
 
@@ -98,7 +107,7 @@ locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/17 + 3 cosme
 <header class="bg-slate-900 text-white">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
     <div>
-      <div class="text-xs uppercase tracking-widest text-slate-400">EPCC · M06 Financial Control · Wireframes v1.0</div>
+      <div class="text-xs uppercase tracking-widest text-slate-400">EPCC · M06 Financial Control · Wireframes v1.1</div>
       <div class="text-lg font-bold mt-1">KDMC-001-DBOT — 150-bed Maternity, Cancer &amp; Cardiology Hospital</div>
     </div>
     <div class="text-right text-xs">
@@ -342,8 +351,8 @@ locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/17 + 3 cosme
     <table class="w-full text-sm">
       <thead class="text-left text-xs uppercase text-slate-500 border-b border-slate-200"><tr><th class="py-2 pr-3">RA Bill</th><th class="py-2 pr-3">Withheld</th><th class="py-2 pr-3">Release type</th><th class="py-2 pr-3">Tranche %</th><th class="py-2 pr-3">Release amt</th><th class="py-2 pr-3">Eligibility basis</th><th class="py-2 pr-3">Status</th><th class="py-2 text-right">Action</th></tr></thead>
       <tbody class="divide-y divide-slate-100">
-        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00006</td><td class="py-2 pr-3 font-mono">₹14,80,000</td><td class="py-2 pr-3 text-xs">Substantial_Completion</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹7,40,000</td><td class="py-2 pr-3 text-xs">SG_11_PASSAGE on PKG-01 · 2026-04-22</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Eligible</span></td><td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">Approve_Finance</button></td></tr>
-        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00009</td><td class="py-2 pr-3 font-mono">₹22,30,000</td><td class="py-2 pr-3 text-xs">Substantial_Completion</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹11,15,000</td><td class="py-2 pr-3 text-xs">SG_11_PASSAGE on PKG-02 · 2026-04-28</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Eligible</span></td><td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">Approve_Finance</button></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00006</td><td class="py-2 pr-3 font-mono">₹14,80,000</td><td class="py-2 pr-3 text-xs">Substantial_Completion</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹7,40,000</td><td class="py-2 pr-3 text-xs">SG_9_PASSAGE on PKG-01 · 2026-04-22</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Eligible</span></td><td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">Approve_Finance</button></td></tr>
+        <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00009</td><td class="py-2 pr-3 font-mono">₹22,30,000</td><td class="py-2 pr-3 text-xs">Substantial_Completion</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹11,15,000</td><td class="py-2 pr-3 text-xs">SG_9_PASSAGE on PKG-02 · 2026-04-28</td><td class="py-2 pr-3"><span class="badge shape-square sev-info">Eligible</span></td><td class="py-2 text-right"><button class="text-emerald-700 font-semibold text-xs">Approve_Finance</button></td></tr>
         <tr><td class="py-2 pr-3 font-mono text-xs">RAB-KDMC-00012</td><td class="py-2 pr-3 font-mono">₹18,60,000</td><td class="py-2 pr-3 text-xs">DLP_End</td><td class="py-2 pr-3 font-mono">50.00%</td><td class="py-2 pr-3 font-mono">₹9,30,000</td><td class="py-2 pr-3 text-xs"><span class="badge shape-triangle sev-medium">Blocked</span> M15: 2 open defects</td><td class="py-2 pr-3"><span class="badge shape-square sev-medium">Blocked</span></td><td class="py-2 text-right text-slate-400 text-xs italic">PMO override only</td></tr>
       </tbody>
     </table>
@@ -899,9 +908,9 @@ locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/17 + 3 cosme
       <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-2">BG ref</th><th class="px-2">Type</th><th class="px-2">Issuer bank</th><th class="px-2">Coverage</th><th class="px-2">Expiry</th><th class="px-2">Days to expiry</th><th class="px-2">Status</th></tr></thead>
       <tbody class="divide-y divide-slate-100">
         <tr><td class="py-1 px-2 font-mono">BG-LNT-001</td><td class="px-2">Performance</td><td class="px-2">SBI</td><td class="px-2 font-mono">₹3.42 Cr (5%)</td><td class="px-2 font-mono">2026-12-31</td><td class="px-2 font-mono">+244</td><td class="px-2"><span class="badge shape-square rag-green">Active</span></td></tr>
-        <tr class="bg-amber-50"><td class="py-1 px-2 font-mono">BG-LNT-002</td><td class="px-2">Mobilisation</td><td class="px-2">HDFC</td><td class="px-2 font-mono">₹6.84 Cr (10%)</td><td class="px-2 font-mono">2026-08-15</td><td class="px-2 font-mono text-amber-700">+106</td><td class="px-2"><span class="badge shape-triangle sev-medium">Warn 90d</span> BG_EXPIRING_SOON</td></tr>
+        <tr class="bg-amber-50"><td class="py-1 px-2 font-mono">BG-LNT-002</td><td class="px-2">Advance_Payment</td><td class="px-2">HDFC</td><td class="px-2 font-mono">₹6.84 Cr (10%)</td><td class="px-2 font-mono">2026-08-15</td><td class="px-2 font-mono text-amber-700">+106</td><td class="px-2"><span class="badge shape-triangle sev-medium">Warn 90d</span> BG_EXPIRING_SOON</td></tr>
         <tr><td class="py-1 px-2 font-mono">BG-VAR-001</td><td class="px-2">Performance</td><td class="px-2">Citibank NA</td><td class="px-2 font-mono">USD 93,000</td><td class="px-2 font-mono">2027-03-30</td><td class="px-2 font-mono">+333</td><td class="px-2"><span class="badge shape-square rag-green">Active</span></td></tr>
-        <tr><td class="py-1 px-2 font-mono">BG-SIE-001</td><td class="px-2">Advance</td><td class="px-2">Deutsche Bank</td><td class="px-2 font-mono">EUR 55,000</td><td class="px-2 font-mono">2026-10-20</td><td class="px-2 font-mono">+172</td><td class="px-2"><span class="badge shape-square rag-green">Active</span></td></tr>
+        <tr><td class="py-1 px-2 font-mono">BG-SIE-001</td><td class="px-2">Advance_Payment</td><td class="px-2">Deutsche Bank</td><td class="px-2 font-mono">EUR 55,000</td><td class="px-2 font-mono">2026-10-20</td><td class="px-2 font-mono">+172</td><td class="px-2"><span class="badge shape-square rag-green">Active</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -913,8 +922,8 @@ locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/17 + 3 cosme
     <table class="w-full text-xs">
       <thead class="text-left text-slate-500 uppercase border-b"><tr><th class="py-1.5 px-2">RA Bill</th><th class="px-2">Type</th><th class="px-2">Tranche %</th><th class="px-2">Amount</th><th class="px-2">Eligibility basis</th><th class="px-2">Finance approver</th><th class="px-2">PMO approver</th><th class="px-2">Released_at</th></tr></thead>
       <tbody class="divide-y divide-slate-100">
-        <tr><td class="py-1 px-2 font-mono">RAB-KDMC-00006</td><td class="px-2">Substantial</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹7,40,000</td><td class="px-2 text-xs">SG_11 PKG-01 · 2026-04-22</td><td class="px-2 text-xs">A. Sharma</td><td class="px-2 text-xs">R. Krishnan</td><td class="px-2 text-xs">2026-05-02 16:18</td></tr>
-        <tr><td class="py-1 px-2 font-mono">RAB-KDMC-00009</td><td class="px-2">Substantial</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹11,15,000</td><td class="px-2 text-xs">SG_11 PKG-02 · 2026-04-28</td><td class="px-2 text-xs">A. Sharma</td><td class="px-2 text-xs">R. Krishnan</td><td class="px-2 text-xs">2026-05-03 09:42</td></tr>
+        <tr><td class="py-1 px-2 font-mono">RAB-KDMC-00006</td><td class="px-2">Substantial</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹7,40,000</td><td class="px-2 text-xs">SG_9 PKG-01 · 2026-04-22</td><td class="px-2 text-xs">A. Sharma</td><td class="px-2 text-xs">R. Krishnan</td><td class="px-2 text-xs">2026-05-02 16:18</td></tr>
+        <tr><td class="py-1 px-2 font-mono">RAB-KDMC-00009</td><td class="px-2">Substantial</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹11,15,000</td><td class="px-2 text-xs">SG_9 PKG-02 · 2026-04-28</td><td class="px-2 text-xs">A. Sharma</td><td class="px-2 text-xs">R. Krishnan</td><td class="px-2 text-xs">2026-05-03 09:42</td></tr>
         <tr class="bg-amber-50"><td class="py-1 px-2 font-mono">RAB-KDMC-00012</td><td class="px-2">DLP_End</td><td class="px-2 font-mono">50%</td><td class="px-2 font-mono">₹9,30,000</td><td class="px-2 text-xs">Blocked · M15 open_defect_count=2</td><td class="px-2 text-xs text-slate-400">—</td><td class="px-2 text-xs text-slate-400">—</td><td class="px-2 text-xs text-slate-400">—</td></tr>
       </tbody>
     </table>
@@ -1009,9 +1018,9 @@ locked_at: 2026-05-03 (Round 26 user confirmation; auditor ACCEPT 0/17 + 3 cosme
   });
 </script>
 
-<!-- M36 patch 2026-05-04: footer round/status corrected to R26/LOCKED, X9 v0.3->v0.4 -->
+<!-- v1.1 re-issue 2026-05-04 (Round 29): footer reflects re-issue version. M36 patch (R29 PR #5 on prior v1.0) superseded by this re-issue. -->
 <footer class="text-center text-xs text-slate-400 py-6 border-t border-slate-200 mt-8">
-  M06 Wireframes v1.0 · Round 26 · LOCKED · Tailwind CDN · No framework deps · 8 role-default views per Spec Block 5 / X9 v0.4 §13.3.6 · Capital Funnel = 1st named instance of X9 §11 / §9.5.1 flagship · KDMC-001-DBOT mock data
+  M06 Wireframes v1.1 · Round 29 · LOCKED · Tailwind CDN · No framework deps · 8 role-default views per Spec Block 5 / X9 v0.4 §13.3.6 · Capital Funnel = 1st named instance of X9 §11 / §9.5.1 flagship · KDMC-001-DBOT mock data
 </footer>
 </body>
 </html>
