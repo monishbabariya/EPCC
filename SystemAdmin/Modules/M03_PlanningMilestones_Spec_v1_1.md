@@ -1,11 +1,12 @@
 # M03 — Planning & Milestones
-## Spec v1.1
-**Status:** Locked
+## Spec v1.1a
+**Status:** LOCKED
 **Locked:** Yes
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03 | **Last Updated:** 2026-05-03 (v1.1 cascade from Round 18 Workflows lock)
-**Last Audited:** v1.1 on 2026-05-03
+**Author:** PMO Director / System Architect _(grandfathered)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.1a in-place patch — Round 29 audit, H7 forward-pointer)
+**Last Audited:** v1.1a on 2026-05-04
 **Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_4.md, X9_VisualisationStandards_Spec_v0_2.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote), M02_StructureWBS_Spec_v1_0.md
+**Cascade Notes Issued:** M03_PlanningMilestones_v1_2_CascadeNote.md — adds BR-03-035 + `MILESTONE_ACHIEVED_FINANCIAL` emit hook to M06 (X8 v0.6a §4.12). v1.1 stamp values above are historical (X8 v0.4 / X9 v0.2 at lock); current cross-cutting versions are X8 v0.6a / X9 v0.4.
 **Layer:** L2 Control — Planning
 **Phase:** 1 — Foundational
 **Build Priority:** 🔴 Critical (precedes M04, M05, M06, M07, M08)
@@ -16,10 +17,11 @@
 
 ## CHANGE LOG
 
-| Version | Date | Change Summary |
-|---|---|---|
-| v1.0 | 2026-05-03 | Initial standalone consolidated spec. Re-issued from legacy v2.3 amendment chain. All 11 OQ-1 decisions locked. 12 entities, ~32 BRs. ResourceType extended to 4 values (incl. Vendor_Resource). reporting_period_type ownership shifted to M03 (M01 v1.2 cascade). Procurement vendor identity owned by M06. Float visibility role-tiered. Role-default views per X9 v0.2 §13.3.3 (PROJECT_DIRECTOR + PV S-curve secondary; PLANNING_ENGINEER + PV roll-up shape). |
-| v1.1 | 2026-05-03 | Round 18 cascade from Workflows lock. (1) New **Appendix C — Audit Events Catalogue** locks 28 UPPER_SNAKE_CASE event names (2 pre-existing in v1.0 + 26 surfaced by Workflows v1.0). Source of truth for M03 audit events until X3 Audit Event Catalogue lands. (2) New **BR-03-033** — critical-path recomputation MUST execute within the same DB transaction as `ScheduleEntry` persist (anti-stale-read invariant for BR-03-018). (3) New **BR-03-034** — `reporting_period_type` change + full PV regeneration MUST execute as a single atomic transaction; PV regen failure rolls back the reporting_period_type itself; emit `REPORTING_PERIOD_CHANGE_FAILED` (data integrity rule strengthening BR-03-028). |
+| Version | Date | Author | Change Summary |
+|---|---|---|---|
+| v1.1a | 2026-05-04 | Monish (with Claude assist) | H7 in-place patch (Round 29 audit): added forward-pointer to M03_PlanningMilestones_v1_2_CascadeNote.md in audit stamp (BR-03-035 + `MILESTONE_ACHIEVED_FINANCIAL` emit hook). Reference Standards versions unchanged — v1.1 lock state preserved historically; current X8 v0.6a / X9 v0.4 noted as context. No scope, BR, entity, or field change. |
+| v1.0 | 2026-05-03 | PMO Director / System Architect | Initial standalone consolidated spec. Re-issued from legacy v2.3 amendment chain. All 11 OQ-1 decisions locked. 12 entities, ~32 BRs. ResourceType extended to 4 values (incl. Vendor_Resource). reporting_period_type ownership shifted to M03 (M01 v1.2 cascade). Procurement vendor identity owned by M06. Float visibility role-tiered. Role-default views per X9 v0.2 §13.3.3 (PROJECT_DIRECTOR + PV S-curve secondary; PLANNING_ENGINEER + PV roll-up shape). |
+| v1.1 | 2026-05-03 | PMO Director / System Architect | Round 18 cascade from Workflows lock. (1) New **Appendix C — Audit Events Catalogue** locks 28 UPPER_SNAKE_CASE event names (2 pre-existing in v1.0 + 26 surfaced by Workflows v1.0). Source of truth for M03 audit events until X3 Audit Event Catalogue lands. (2) New **BR-03-033** — critical-path recomputation MUST execute within the same DB transaction as `ScheduleEntry` persist (anti-stale-read invariant for BR-03-018). (3) New **BR-03-034** — `reporting_period_type` change + full PV regeneration MUST execute as a single atomic transaction; PV regen failure rolls back the reporting_period_type itself; emit `REPORTING_PERIOD_CHANGE_FAILED` (data integrity rule strengthening BR-03-028). |
 
 ---
 
