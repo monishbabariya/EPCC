@@ -1,7 +1,7 @@
 # EPCC — Master Version Log
 ## Version 1.1
 **Owner:** PMO Director
-**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-03 (Round 18 lock — Rounds 1–18 catch-up)
+**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (Round 29 audit — H19/H20/H21 sweep: M04 + M06 module status, X8/X9 current versions)
 **Status:** Living Document
 **Update Frequency:** On every artefact creation, modification, or status change.
 
@@ -25,7 +25,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 ---
 
-## 3. CURRENT REGISTRY STATE — 2026-05-03 (post Round 18)
+## 3. CURRENT REGISTRY STATE — 2026-05-04 (post Round 29 high-mechanical sweep)
 
 ### 3.1 Governance Files (00_Governance)
 
@@ -77,7 +77,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 | Module | Status | Notes |
 |---|---|---|
-| M04 ExecutionCapture | Pending | Re-issue of legacy v2.2 (currently amendment file) |
+| M04 ExecutionCapture | ✅ **Complete** — R19 Brief v1.0, R20 Spec v1.0 (+ v1.0a R29 patch), R21 Wireframes v1.0, R22 Workflows v1.0 | Re-issue of legacy v2.2 |
 | M15 HandoverManagement | Pending | Re-issue of legacy v1.0 |
 | M16 SiteDiary | Pending | New |
 | M20 LabourWorkforce | Pending | New |
@@ -87,7 +87,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | Module | Status | Notes |
 |---|---|---|
 | M05 RiskChange | Pending | Re-issue of legacy v2.3 (currently amendment file) |
-| M06 FinancialControl | Pending | Re-issue of legacy v2.1 |
+| M06 FinancialControl | ✅ **Complete** — R24 Brief v1.0, R25 Spec v1.0 (+ v1.0a R27 audit-correction + v1.0b R29 in-place patch), R26 Wireframes v1.0, R27 Workflows v1.0 (+ v1.0a R29 stamp refresh) | Re-issue of legacy v2.1 |
 | M13 CorrespondenceRegister | Pending | New |
 | M17 AssetEquipmentRegister | Pending | New |
 | M19 ClaimsManagement | Pending | New |
@@ -144,8 +144,8 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | X5 FormInventory | Roadmap (renamed → Speed Tier Inventory) | After all wireframes complete |
 | X6 WorkflowDiagrams | Roadmap (renamed → Integration Point Map) | After all Phase 1 specs lock |
 | X7 DecisionQueueSchema | Roadmap (renamed → Standards Memory) | After all Phase 1 specs lock |
-| X8 GlossaryENUMs | **Living — current v0.4** | Updated continuously per I3. Bumped v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03) |
-| X9 VisualisationStandards | **Living — current v0.2** | Decision-First Principle locked v0.1; library + role views locked v0.2 |
+| X8 GlossaryENUMs | **Living — current v0.6a** | Updated continuously per I3. Bumped v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03) → v0.5 (M04) → v0.6 (M06) → v0.6a (R29 in-place patch — H1: MILESTONE_ACHIEVED_FINANCIAL added to §4.12) |
+| X9 VisualisationStandards | **Living — current v0.4** | Decision-First Principle locked v0.1; library + role views locked v0.2; M04 §13.3.4 rewrite locked v0.3; M06 §13.3.6 5→8 roles + Capital Funnel flagship annotation locked v0.4 |
 
 ### 3.13 System Utilities (11_System_Utilities)
 
