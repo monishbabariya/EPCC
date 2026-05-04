@@ -50,7 +50,7 @@
 
 | Module | Brief | Spec | Wireframes | Workflows | Round |
 |---|---|---|---|---|---|
-| M34 SystemAdminRBAC | Done | Done | Done | Done | 1–4 |
+| M34 SystemAdminRBAC | N/A — foundation module, direct to Spec at R4 | Done | Done | Done | 1–4 |
 | M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 + v1.3 cascade notes) | Done | Done | 5b–8, 16, 18-audit, 28 |
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
 | M03 PlanningMilestones | Done | Done v1.1 (+ v1.2 cascade note) | Done | Done | 15–18, 28 |

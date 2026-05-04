@@ -1,10 +1,20 @@
 # M01 — Project Registry
-## Workflows v1.0
-**Status:** Locked
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03
-**Reference Spec:** M01_ProjectRegistry_Spec_v1_0.md
+## Workflows v1.0a
+**Artefact:** M01_ProjectRegistry_Workflows_v1_0a
+**Status:** LOCKED
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a stamp normalisation — Round 29 audit, H10)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote + v1_3_CascadeNote), X8_GlossaryENUMs_v0_2.md _(historical at lock; current X8 v0.6a)_
 **Folder:** /02_L1_Command/
+
+---
+
+## CHANGE LOG
+
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | H10 in-place patch (Round 29 audit): Format B stamp normalised — added **Artefact**, **Last Updated**, **Last Audited**, **Reference Standards** (with v1_1/v1_2/v1_3 cascade-note forward-pointers); **Status** UPPERCASE; author canonicalised. No content change. |
 
 ---
 

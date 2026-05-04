@@ -1,10 +1,20 @@
 # M02 — Structure & WBS
-## Workflows v1.0
-**Status:** Locked
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03
-**Reference Spec:** M02_StructureWBS_Spec_v1_0.md
+## Workflows v1.0a
+**Artefact:** M02_StructureWBS_Workflows_v1_0a
+**Status:** LOCKED
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a stamp normalisation — Round 29 audit, H11)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** M02_StructureWBS_Spec_v1_0.md, X8_GlossaryENUMs_v0_3.md _(historical at lock; current X8 v0.6a)_
 **Folder:** /03_L2_Planning/
+
+---
+
+## CHANGE LOG
+
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | H11 in-place patch (Round 29 audit): Format B stamp normalised — added **Artefact**, **Last Updated**, **Last Audited**, **Reference Standards**; **Status** UPPERCASE; author canonicalised. No content change. |
 
 ---
 
