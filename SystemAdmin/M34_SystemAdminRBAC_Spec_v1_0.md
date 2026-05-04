@@ -1,23 +1,25 @@
 # M34 — System Administration & RBAC
-## Spec v1.0
-**Status:** Locked
+## Spec v1.0a
+**Status:** LOCKED
 **Locked:** Yes
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03 | **Last Updated:** 2026-05-03
-**Last Audited:** v1.0 on 2026-05-03
-**Reference Standards:** EPCC_StandardsMemory_v1_0.md (pending), EPCC_NamingConvention_v1_0.md
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a in-place patch — Round 29 audit medium-cleanup, M18)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_1.md _(historical at lock; current X8 v0.6a)_
+**Deferred References:** EPCC_StandardsMemory_v1_0.md _(pending — never landed; per Round 18 audit, X-series rules folder serves as interim source of truth until X7 Standards Memory lands)_
 **Layer:** L1 Command
 **Phase:** 1 — Foundational
 **Build Priority:** 🔴 Critical (must precede every other module spec lock)
-**Folder:** /02_L1_Command/
+**Folder:** SystemAdmin/ _(grandfathered placement; M34 was authored before the canonical `SystemAdmin/Modules/` convention — see Round 18 audit naming-folders.md)_
 
 ---
 
 ## CHANGE LOG
 
-| Version | Date | Change Summary |
-|---|---|---|
-| v1.0 | 2026-05-03 | Initial spec. Locks canonical role taxonomy (13 internal + 4 external). Resolves all OQ-1.1 through OQ-1.10. Establishes hybrid AuditLog. Locks code-controlled role definition. |
+| Version | Date | Author | Change Summary |
+|---|---|---|---|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | M18 in-place patch (Round 29 audit medium-cleanup): author canonicalised; **Status** UPPERCASE; `Last Updated` + `Last Audited` refreshed; `Reference Standards` cleaned (removed `EPCC_StandardsMemory_v1_0.md (pending)` from primary refs — never landed; moved to new `Deferred References` field with note); `Reference Standards` extended with X8 v0.1 historical-at-lock annotation; `Folder` field clarified — grandfathered `SystemAdmin/` placement. CHANGE LOG column count standardised 3→4. No scope, BR, entity, or field change. |
+| v1.0 | 2026-05-03 | PMO Director / System Architect | Initial spec. Locks canonical role taxonomy (13 internal + 4 external). Resolves all OQ-1.1 through OQ-1.10. Establishes hybrid AuditLog. Locks code-controlled role definition. |
 
 ---
 

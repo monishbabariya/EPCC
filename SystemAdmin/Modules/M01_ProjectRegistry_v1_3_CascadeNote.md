@@ -4,8 +4,9 @@
 **Type:** Minor version bump (field addition + 1 BR)
 **Author:** Monish (with Claude assist)
 **Created:** 2026-05-04
+**Last Audited:** v1.3 on 2026-05-04 (Round 29 medium-cleanup — Format B field backfill, M29)
 **Trigger:** M06 spec lock OQ-1.8=C (tranched retention release at SG-9 + SG-11; per-contract split percentage required)
-**Reference Standards:** X8_GlossaryENUMs_v0_6.md, M06_FinancialControl_Spec_v1_0.md (v1.0a), M06_FinancialControl_Workflows_v1_0.md
+**Reference Standards:** X8_GlossaryENUMs_v0_6.md _(content version v0.6a — in-place patched R29; filename retained per in-place patch convention)_, M06_FinancialControl_Spec_v1_0.md _(in-place patched to v1.0b R29)_, M06_FinancialControl_Workflows_v1_0.md _(in-place patched to v1.0b R29)_
 **Folder:** SystemAdmin/Modules/
 
 ---

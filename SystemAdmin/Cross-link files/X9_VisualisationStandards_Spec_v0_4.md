@@ -1,11 +1,11 @@
 # X9 — Visualisation Standards
 ## Spec v0.4 (LIVING)
-**Status:** Locked v0.4
+**Status:** Locked v0.4 (Reference Standards refreshed 2026-05-04 — see CHANGE LOG bottom row; living-doc cross-ref hygiene only, no Spec content change)
 **Type:** Cross-Cutting LIVING Document
 **Author:** Monish (with Claude assist)
-**Created:** 2026-05-03 (v0.1) | **Updated:** 2026-05-04 (v0.4)
-**Last Audited:** v0.4 on 2026-05-04
-**Reference Standards:** X8_GlossaryENUMs_v0_6.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote + v1_3_CascadeNote), M02_StructureWBS_Spec_v1_0.md, M03_PlanningMilestones_Spec_v1_1.md (+ v1_2_CascadeNote), M04_ExecutionCapture_Spec_v1_0.md, M06_FinancialControl_Spec_v1_0.md (v1.0a), M06_FinancialControl_Wireframes_v1_0.html
+**Created:** 2026-05-03 (v0.1) | **Updated:** 2026-05-04 (v0.4 — Reference Standards refreshed Round 29 audit medium-cleanup, M28)
+**Last Audited:** v0.4 on 2026-05-04 (Reference Standards refresh)
+**Reference Standards:** X8_GlossaryENUMs_v0_6.md (current v0.6a — in-place patched R29), M34_SystemAdminRBAC_Spec_v1_0.md (v1.0a R29), M01_ProjectRegistry_Spec_v1_0.md (v1.0a R29) (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0.md (v1.0a R29) (+ v1_1 cascade note R29), M03_PlanningMilestones_Spec_v1_1.md (v1.1b R29) (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0.md (v1.0a R29), M06_FinancialControl_Spec_v1_0.md (v1.0b R29) (+ v1_1 cascade note R29), M06_FinancialControl_Wireframes_v1_1.html (re-issued R29 PR #7)
 **Folder:** SystemAdmin/Cross-link files/ (per Round 18 audit canonical placement)
 
 > **X9 governs how data becomes visual artefacts in EPCC** — chart types, libraries, design tokens, composition rules, role-tiered behaviour, role-based default views. Living document — versioned per cross-cutting changes.
@@ -20,6 +20,7 @@
 | v0.2 | 2026-05-03 | M03 lock cascade. §13.3.3 updated per OQ-1.11=B: PROJECT_DIRECTOR adds PV S-curve as secondary widget; PLANNING_ENGINEER adds PV roll-up shape (no values, just curve) as secondary widget. Audit log: ROLE_DEFAULT_VIEW_CHANGED for both roles. No other sections changed. Catalogue + composition rules + design tokens unchanged. |
 | v0.3 | 2026-05-03 | M04 lock cascade (Round 20). §13.3.4 rewritten per M04 Brief OQ-1.8 + Spec Block 5: scope-decomposition cleanup (HSE references removed — moved to M31 per OQ-1.1=B; measurement-entry references removed for QS_MANAGER — moved to M14 per OQ-1.2=C; COMPLIANCE_MANAGER row dropped from M04 since compliance lives in M09); rows added for PROCUREMENT_OFFICER (material receipts log), ANALYST (progress trend curves), READ_ONLY (status-badge card). QS_MANAGER primary becomes "Pending approvals queue" (M04's true QS-facing surface). NCR pipeline funnel confirmed as 8th instance of the §11 flagship pipeline pattern. Audit log: ROLE_DEFAULT_VIEW_CHANGED for all 7 M04 rows. No other sections changed. Catalogue + composition rules + design tokens unchanged. Reference Standards bumped to X8 v0.5 (with M04 ENUMs). |
 | **v0.4** | **2026-05-04** | **M06 lock cascade (Round 28; pre-merge round number was 27 — renumbered post-merge to avoid collision with main's Round 23 = EPCC_BuildArchitecture Brief). NO new chart types — M06 wireframes consume only existing v0.3 catalogue entries. Two minor refinements: (a) §13.3.6 row expanded from 5 roles to 8 roles (added QS_MANAGER, EXTERNAL_AUDITOR, READ_ONLY) for parity with M06 Spec Block 5 + Wireframes role-switcher; (b) §9.5.1 Capital Funnel annotated as the **1st named flagship instance** of the §11 Pipeline Funnel pattern (formal-naming reconciliation per Round 27 cascade detection — chronologically the M04 NCR Funnel was the 8th implementation, but Capital Funnel is the formally-designated flagship per M06 Brief §7 + Wireframes line 12). Audit log: ROLE_DEFAULT_VIEW_CHANGED for 3 added M06 rows. No other sections changed. Catalogue + composition rules + design tokens unchanged. Reference Standards bumped to X8 v0.6 (with M06 ENUMs).** |
+| **v0.4 (R29 ref refresh)** | **2026-05-04** | **M28 living-doc cross-ref hygiene (Round 29 audit medium-cleanup):** Reference Standards refreshed — X8 stamp annotated "(current v0.6a — in-place patched R29)"; M01 reference extended with v1.0a + v1_3/v1_4 cascade notes; M02 reference extended with v1.0a + v1_1 cascade note; M03 reference extended with v1.1b + v1_3 cascade note; M04 reference annotated with v1.0a; M06 Spec reference annotated with v1.0b + v1_1 cascade note; M06 Wireframes reference filename updated `_v1_0.html` → `_v1_1.html` (re-issue R29 PR #7). No catalogue, role-default view, composition rule, or design token change. |
 
 ---
 

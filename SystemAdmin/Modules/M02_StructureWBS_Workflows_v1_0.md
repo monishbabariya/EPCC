@@ -1,12 +1,12 @@
 # M02 — Structure & WBS
-## Workflows v1.0a
-**Artefact:** M02_StructureWBS_Workflows_v1_0a
+## Workflows v1.0b
+**Artefact:** M02_StructureWBS_Workflows_v1_0b
 **Status:** LOCKED
 **Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
-**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a stamp normalisation — Round 29 audit, H11)
-**Last Audited:** v1.0a on 2026-05-04
-**Reference Standards:** M02_StructureWBS_Spec_v1_0.md, X8_GlossaryENUMs_v0_3.md _(historical at lock; current X8 v0.6a)_
-**Folder:** /03_L2_Planning/
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0b in-place patch — Round 29 audit medium-cleanup, M24 second-order Reference Standards refresh)
+**Last Audited:** v1.0b on 2026-05-04
+**Reference Standards:** M02_StructureWBS_Spec_v1_0.md (in-place patched to v1.0a R29) (+ v1_1 cascade note R29), X8_GlossaryENUMs_v0_3.md _(historical at lock; current X8 v0.6a)_
+**Folder:** /03_L2_Planning/ _(aspirational; canonical placement is `SystemAdmin/Modules/` per Round 18 audit)_
 
 ---
 
@@ -14,6 +14,7 @@
 
 | Patch | Date       | Author                      | Changes |
 |-------|------------|-----------------------------|---------|
+| v1.0b | 2026-05-04 | Monish (with Claude assist) | M24 in-place patch (Round 29 audit medium-cleanup, second-order): `Reference Standards` extended with M02 Spec v1.0a in-place patch reference + M02 v1_1 cascade-note (PR #6 created post v1.0a stamp); `Folder` field annotated with canonical-placement note. No content change. |
 | v1.0a | 2026-05-04 | Monish (with Claude assist) | H11 in-place patch (Round 29 audit): Format B stamp normalised — added **Artefact**, **Last Updated**, **Last Audited**, **Reference Standards**; **Status** UPPERCASE; author canonicalised. No content change. |
 
 ---

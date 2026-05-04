@@ -1,13 +1,21 @@
 # M02 — Structure & WBS
-## Brief v1.0
-**Status:** Draft — Pending Review
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03
-**Last Audited:** v1.0 on 2026-05-03
-**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_2.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md
-**Folder:** /03_L2_Planning/
+## Brief v1.0a
+**Status:** LOCKED _(grandfathered: original was "Draft — Pending Review"; Brief approved at Round 9 → Spec/Wireframes/Workflows all locked; M02 module COMPLETE per CLAUDE.md §3)_
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a in-place patch — Round 29 audit medium-cleanup, M20)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_2.md _(historical at lock; current X8 v0.6a)_, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes)
+**Folder:** /03_L2_Planning/ _(aspirational; canonical placement is `SystemAdmin/Modules/` per Round 18 audit)_
 **Phase:** 1 (Foundational — third module after M34 + M01)
 **Re-Issue Of:** Legacy M02_Structure_WBS_v2.0 (base) + v2.1 (amendment) — consolidated standalone
+
+---
+
+## CHANGE LOG
+
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | M20 in-place patch (Round 29 audit medium-cleanup): **Status** corrected "Draft — Pending Review" → "LOCKED" (Brief approved Round 9, Spec Round 10, Wireframes Round 11, Workflows Round 12 — module COMPLETE); author canonicalised; `Last Updated` + `Last Audited` refreshed; `Reference Standards` historical-at-lock annotation added; M01 reference extended with v1_1/v1_2/v1_3/v1_4 cascade notes; `Folder` field annotated. No content/scope change. |
 
 ---
 

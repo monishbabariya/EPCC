@@ -115,6 +115,21 @@ These have been resolved through deliberation. Do not re-open without explicit u
 | BG tracking | BGStub pattern in Phase 1 (status + expiry only); full lifecycle migrates to M23 in Phase 2; BGType ENUM stays in X8 (M06 OQ-1.9=B, X8 v0.6 §3.72) |
 | Stage Gate description (SG_9 / SG_11) | SG_9 = Substantial / Practical Completion (clinical commissioning ready); SG_11 = DLP End / Operations Handover. Sequence locked at v0.1; description text refreshed v0.6 to ratify M06 commitments before M08 brief opens (X8 v0.6 §3.10) |
 | Capital Funnel flagship | M06 Capital Funnel = 1st named flagship instance of §11 Pipeline Funnel pattern (X9 v0.4 §9.5.1 annotation; chronologically M04 NCR Funnel was 8th, but Capital Funnel is the formally-designated flagship) |
+| Round 29 audit closure | All CRITICAL + HIGH (3 + 22 = 25 findings) closed across PRs #4-#7. 17 MEDIUMs + ~28 LOWs closed in PR #8. ~12 LOW-tier findings formally accepted (see §4.1 Round 29 Accepted Findings) |
+
+---
+
+## 4.1. Round 29 Audit — Accepted Findings (Won't Fix)
+
+These findings were surfaced by the Round 29 audit and reviewed in Phase A. They are NOT defects — they are intentional grandfathering, web-platform conventions, or governance-trail-preservation decisions. Documenting here so future audits don't re-flag them.
+
+| Pattern | Files Affected | Reason for Acceptance |
+|---|---|---|
+| Aspirational `/0X_/` folder hierarchy refs | `naming-folders.md` aspirational doc + scattered Folder fields | Deferred indefinitely per Round 18 audit (see `naming-folders.md` §13-Folder Hierarchy — Aspirational). Renaming would require updating ~25 files + every internal reference; cost > benefit until a strong reason emerges |
+| `data-role="lowercase_snake_case"` HTML attrs | `M06_FinancialControl_Wireframes_v1_1.html` (16 hits) | HTML data attributes follow lowercase-snake_case web convention; canonical UPPER_SNAKE_CASE lives in M34 backend ENUM. Visible UI text (badges, labels) uses canonical names. Data attrs are scripting hooks, not visible to users |
+| Tailwind `w-[arbitrary]` pixel widths | `M03_PlanningMilestones_Wireframes_v1_0.html` | Tailwind arbitrary values are a permitted convention — purpose-built for fine-grained layout control without breaking the design-token system |
+| `EPCC_VersionLog_v1_0.md` filename vs content version | `System Specs/EPCC_VersionLog_v1_0.md` | "v1.0" in filename = file structure version (the doc's *type* signature). Content version tracks Living-doc revisions. Renaming would break references in `re-entry-protocol.md`, `naming-folders.md`, `EPCC_FolderIndex_v1_0.md`, `EPCC_NamingConvention_v1_0.md` |
+| `PMO Director / System Architect` author in X8/X9 living docs + frozen historical files | `X8_GlossaryENUMs_v0_1` to `_v0_6.md`, `X9_VisualisationStandards_*_v0_1/v0_2`, `ZEPCC_Legacy/*`, `AUDIT_Round00_*` | X8/X9 already carry "Owner: PMO Director / System Architect" as a structural field (different from per-version author) — current versions (X8 v0.6a, X9 v0.4) have Monish as Author. Legacy + audit files are frozen historical records — author canonicalisation would corrupt the audit trail |
 
 ---
 

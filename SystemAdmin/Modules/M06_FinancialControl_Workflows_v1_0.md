@@ -1,5 +1,5 @@
 ---
-artefact: M06_FinancialControl_Workflows_v1_0a
+artefact: M06_FinancialControl_Workflows_v1_0b
 round: 27
 date: 2026-05-04
 author: Monish (with Claude assist)
@@ -7,9 +7,9 @@ x8_version: v0.6a
 x9_version: v0.4
 status: LOCKED
 locked_at: 2026-05-03 (Round 27 user confirmation; auditor ACCEPT 0/20 + 2 audit-correction fixes applied — SG_9_PASSAGE rename + WF-06-013 M12 trace line; pre-merge round number was 26 — renumbered to 27 post-merge)
-patched_at: 2026-05-04 (v1.0a in-place patch — Round 29 audit remediation: H3/H4; see CHANGE LOG)
+patched_at: 2026-05-04 (v1.0b in-place patch — Round 29 audit medium-cleanup: M34-finding wireframe filename refresh post-PR-7-rename; v1.0a was earlier R29 patch H3/H4; see CHANGE LOG)
 spec_locked_in: Round 25 (SystemAdmin/Modules/M06_FinancialControl_Spec_v1_0.md, with v1.0a Round 27 + v1.0b Round 29 in-place patches)
-wireframes_locked_in: Round 26 (SystemAdmin/Modules/M06_FinancialControl_Wireframes_v1_0.html)
+wireframes_locked_in: Round 29 (SystemAdmin/Modules/M06_FinancialControl_Wireframes_v1_1.html — re-issued R29 PR #7 from v1.0 R26; prior file `_v1_0.html` renamed via git mv)
 ---
 
 # M06 Financial Control — Workflows v1.0
@@ -18,6 +18,7 @@ wireframes_locked_in: Round 26 (SystemAdmin/Modules/M06_FinancialControl_Wirefra
 
 | Patch  | Date       | Author                      | Changes |
 |--------|------------|-----------------------------|---------|
+| v1.0b  | 2026-05-04 | Monish (with Claude assist) | **M34-finding in-place patch (Round 29 audit medium-cleanup):** `wireframes_locked_in:` frontmatter field updated to point to `M06_FinancialControl_Wireframes_v1_1.html` (Round 29 re-issue from R26 v1.0 — see PR #7) — prior reference to `_v1_0.html` was post-rename drift since the file was renamed via `git mv` in PR #7. No workflow logic changes; no BR coverage matrix changes. |
 | v1.0a  | 2026-05-04 | Monish (with Claude assist) | **Round 29 audit remediation (in-place patch per spec-protocol.md In-Place Patch Convention):** **H3** frontmatter `x8_version: v0.5` → `v0.6a` (X8 v0.6 + v0.6a §4.12 extension are LOCKED on disk; body line 18 already correctly references v0.6 cascade — frontmatter was the lone stale stamp); `x9_version: v0.3` → `v0.4`. **H4** body line 16 source-round refs corrected `Spec v1.0 (Round 24)` → `Spec v1.0 (Round 25)` and `Wireframes v1.0 (Round 25)` → `Wireframes v1.0 (Round 26)` to match post-merge renumbering already reflected in frontmatter `spec_locked_in:` + `wireframes_locked_in:` fields. No workflow logic changes; no BR coverage matrix changes; no audit-event registry changes. |
 
 ---

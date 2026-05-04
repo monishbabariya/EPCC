@@ -1,7 +1,7 @@
 # EPCC — Master Version Log
 ## Version 1.1
 **Owner:** PMO Director
-**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (Round 29 audit — H19/H20/H21 sweep: M04 + M06 module status, X8/X9 current versions)
+**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (Round 29 audit medium-cleanup — M35 §3 module-row sweep + M38 §7 NEXT ROUND PREVIEW cleanup)
 **Status:** Living Document
 **Update Frequency:** On every artefact creation, modification, or status change.
 
@@ -25,7 +25,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 ---
 
-## 3. CURRENT REGISTRY STATE — 2026-05-04 (post Round 29 high-mechanical sweep)
+## 3. CURRENT REGISTRY STATE — 2026-05-04 (post Round 29 medium-cleanup sweep)
 
 ### 3.1 Governance Files (00_Governance)
 
@@ -44,6 +44,8 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | File | Round | Version | Status | Author | Last Updated |
 |---|---|---|---|---|---|
 | AUDIT_Round00_ExistingSpecs_v1_0.md | 00 | v1.0 | Locked | PMO Dir | 2026-05-03 |
+| _(Round 18 audit — see CHANGE LOG row v1.2 below + per-artefact retro stamps; no separate audit file produced)_ | 18 | inline | Locked | Monish (with Claude assist) | 2026-05-03 |
+| _(Round 29 audit — see Round 29 PR series #4-#11 commit messages + this file's Living-doc CHANGE LOG; no separate audit file produced)_ | 29 | inline | Locked | Monish (with Claude assist) | 2026-05-04 |
 
 ### 3.3 Strategic Layer (01_Strategic)
 
@@ -59,15 +61,15 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | File | Type | Version | Status | Notes |
 |---|---|---|---|---|
 | M34_SystemAdminRBAC_*_v1_0.* | Brief/Spec/WF/WL | v1.0 | **Locked** | Rounds 1–4 (foundation) |
-| M01_ProjectRegistry_*_v1_0.* + v1.1 + v1.2 cascade notes | Brief/Spec/WF/WL + cascade notes | v1.0 (full) + v1.1 (cascade note) + v1.2 (cascade note) | **Locked** | Rounds 5b–8 + Round 16 + Round 18 audit (v1.1 cascade backfilled). v1.1 adds `Project.min_wbs_depth`; v1.2 removes `Project.reporting_period_type` (ownership → M03) |
+| M01_ProjectRegistry_*_v1_0.* + v1.0a/v1.1/v1.2/v1.3/v1.4 cascade notes | Brief/Spec/WF/WL + cascade notes | v1.0 + v1.0a in-place patch R29 + v1.1/v1.2/v1.3/v1.4 cascade notes | **Locked** | Rounds 5b–8 + R16 + R18 audit (v1.1 backfilled) + R28 (v1.3) + R29 (v1.4 + Brief v1.0a + Spec v1.0a + Workflows v1.0b). v1.1 = `Project.min_wbs_depth` add; v1.2 = `Project.reporting_period_type` remove (→ M03); v1.3 = `Contract.dlp_retention_split_pct` add + BR-01-036; v1.4 = X8 ENUM refs + Block 4a canonicalisation |
 | M23_BGInsuranceTracker_*_v1_0.* | Brief/Spec/WF/WL | — | Pending | New (was unspecced) |
 
 ### 3.5 L2 Planning (03_L2_Planning)
 
 | Module | Status | Notes |
 |---|---|---|
-| M02 StructureWBS | **Locked** v1.0 | Rounds 9–12 |
-| M03 PlanningMilestones | **Locked** Spec v1.1 / Brief v1.1 / Wireframes v1.0 / Workflows v1.0 | Rounds 15–18. Spec v1.1 cascade in Round 18 added Appendix C (28 audit events) + BR-03-033 (CP transactionality) + BR-03-034 (reporting_period_type atomic rollback) |
+| M02 StructureWBS | **Locked** Brief v1.0a + Spec v1.0a + Wireframes v1.0 + Workflows v1.0b + v1.1 cascade note | Rounds 9–12 + R29 medium-cleanup (Brief v1.0a, Spec v1.0a, Workflows v1.0b in-place patches; v1.1 cascade adds X8 ENUM refs + ANALYST rate-matrix row) |
+| M03 PlanningMilestones | **Locked** Brief v1.1a + Spec v1.1b + Wireframes v1.0 + Workflows v1.0 + v1.2/v1.3 cascade notes | Rounds 15–18 + R28 (v1.2 cascade — `MILESTONE_ACHIEVED_FINANCIAL`) + R29 (v1.1a Spec H7 forward-pointer + v1.1b Spec second-order ref refresh + Brief v1.1a + v1.3 cascade adds ANALYST + EXTERNAL_AUDITOR columns to Block 4a). Spec v1.1 R18 cascade added Appendix C (28 audit events) + BR-03-033 + BR-03-034 |
 | M12 DocumentControl | Pending | New (Phase 1 critical, was unspecced) |
 | M14 QSMeasurementBook | Pending | New (Phase 1 critical, was unspecced) |
 | M27 DesignControl | Pending | New (proposed v2.3) |
@@ -87,7 +89,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | Module | Status | Notes |
 |---|---|---|
 | M05 RiskChange | Pending | Re-issue of legacy v2.3 (currently amendment file) |
-| M06 FinancialControl | ✅ **Complete** — R24 Brief v1.0, R25 Spec v1.0 (+ v1.0a R27 audit-correction + v1.0b R29 in-place patch), R26 Wireframes v1.0, R27 Workflows v1.0 (+ v1.0a R29 stamp refresh) | Re-issue of legacy v2.1 |
+| M06 FinancialControl | ✅ **Complete** — R24 Brief v1.0, R25 Spec v1.0 (+ v1.0a R27 audit-correction + v1.0b R29 in-place patch), **R29 Wireframes v1.1** (re-issued from v1.0 R26 — C3 SG_9/SG_11 fix + H17/H18 BGType canonicalisation), R27 Workflows v1.0 (+ v1.0a R29 H3/H4 stamp refresh + v1.0b R29 medium-cleanup wireframe filename refresh) + v1.1 cascade note R29 (SG_11_PASSAGE stub removed per H6 Option B) | Re-issue of legacy v2.1 |
 | M13 CorrespondenceRegister | Pending | New |
 | M17 AssetEquipmentRegister | Pending | New |
 | M19 ClaimsManagement | Pending | New |
@@ -144,8 +146,8 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | X5 FormInventory | Roadmap (renamed → Speed Tier Inventory) | After all wireframes complete |
 | X6 WorkflowDiagrams | Roadmap (renamed → Integration Point Map) | After all Phase 1 specs lock |
 | X7 DecisionQueueSchema | Roadmap (renamed → Standards Memory) | After all Phase 1 specs lock |
-| X8 GlossaryENUMs | **Living — current v0.6a** | Updated continuously per I3. Bumped v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03) → v0.5 (M04) → v0.6 (M06) → v0.6a (R29 in-place patch — H1: MILESTONE_ACHIEVED_FINANCIAL added to §4.12) |
-| X9 VisualisationStandards | **Living — current v0.4** | Decision-First Principle locked v0.1; library + role views locked v0.2; M04 §13.3.4 rewrite locked v0.3; M06 §13.3.6 5→8 roles + Capital Funnel flagship annotation locked v0.4 |
+| X8 GlossaryENUMs | **Living — current v0.6a** | Updated continuously per I3. Bumped v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03) → v0.5 (M04) → v0.6 (M06) → v0.6a (R29 PR #4 in-place patch — H1: MILESTONE_ACHIEVED_FINANCIAL added to §4.12). Filename retained as `_v0_6.md` per in-place patch convention. |
+| X9 VisualisationStandards | **Living — current v0.4** | Decision-First Principle locked v0.1; library + role views locked v0.2; M04 §13.3.4 rewrite locked v0.3; M06 §13.3.6 5→8 roles + Capital Funnel flagship annotation locked v0.4. Reference Standards refreshed R29 medium-cleanup (M28 — cross-ref hygiene). |
 
 ### 3.13 System Utilities (11_System_Utilities)
 
@@ -200,20 +202,23 @@ When any artefact is created, modified, or status-changed:
 
 ## 7. NEXT ROUND PREVIEW
 
+> **Note:** Pre-merge "(was R2X in main's pre-merge plan)" annotations removed Round 29 medium-cleanup (M38) — historical noise no longer informative now that post-merge round numbers are authoritative. Pre-merge plan preserved in git history of this file.
+
 | Round | Artefact | Status |
 |---|---|---|
 | 23 | EPCC_BuildArchitecture_Brief_v1_0 | **In Draft** — awaiting OQ-1 answers from Monish |
-| 24 | M06 FinancialControl Brief v1.0 | **Locked** (post-merge renumber from R23) |
-| 25 | M06 FinancialControl Spec v1.0 (+v1.0a in-place audit correction at R27) | **Locked** (post-merge renumber from R24) |
-| 26 | M06 FinancialControl Wireframes v1.0 | **Locked** (post-merge renumber from R25) |
-| 27 | M06 FinancialControl Workflows v1.0 + Spec v1.0a audit correction | **Locked** (post-merge renumber from R26) |
-| 28 | M06 cascade pass — X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 + naming-folders refresh | **Locked** (post-merge renumber from R27) |
-| 29 | EPCC_BuildArchitecture_Spec_v1_0 | Pending Round 23 lock (was R24 in main's pre-merge plan; pushed +5 rounds post-M06-merge) |
-| 30 | Monorepo scaffold (apps/api, apps/web, packages/, infra/, CI) | Pending Round 29 lock (was R25 in main's pre-merge plan) |
-| 31 | X8 → ENUM codegen pipeline | Pending Round 30 (was R26 in main's pre-merge plan) |
-| 32 | M34 thin slice (auth + 17 roles + audit log) | Pending Round 31 (was R27 in main's pre-merge plan) |
-| 33 | M01 thin slice (project create + read for KDMC-001-DBOT) | Pending Round 32 (was R28 in main's pre-merge plan) |
-| 34 | First end-to-end demo | Pending Round 33 (was R29 in main's pre-merge plan) |
+| 24 | M06 FinancialControl Brief v1.0 | **Locked** |
+| 25 | M06 FinancialControl Spec v1.0 (+ v1.0a R27 audit-correction + v1.0b R29 in-place patch) | **Locked** |
+| 26 | M06 FinancialControl Wireframes v1.0 (re-issued to v1.1 R29 PR #7) | **Locked → Re-issued R29** |
+| 27 | M06 FinancialControl Workflows v1.0 (+ v1.0a R29 stamp refresh + v1.0b R29 medium-cleanup) + Spec v1.0a audit correction | **Locked** |
+| 28 | M06 cascade pass — X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 + naming-folders refresh | **Locked** |
+| 29 | **Audit pass** — 4 PR series (high-mechanical PR #5 + cascade-notes PR #6 + wireframe-reissue PR #7 + medium-cleanup PR #8 — this PR) closing all CRITICAL/HIGH and reconciling 17 MEDIUMs + ~28 LOWs | **Locked (this round)** |
+| 30 | EPCC_BuildArchitecture_Spec_v1_0 | Pending Round 23 OQ-1 lock |
+| 31 | Monorepo scaffold (apps/api, apps/web, packages/, infra/, CI) | Pending Round 30 lock |
+| 32 | X8 → ENUM codegen pipeline | Pending Round 31 |
+| 33 | M34 thin slice (auth + 17 roles + audit log) | Pending Round 32 |
+| 34 | M01 thin slice (project create + read for KDMC-001-DBOT) | Pending Round 33 |
+| 35 | First end-to-end demo | Pending Round 34 |
 | (carry-over) | TBD module Brief candidates: M05 RiskChange (next per dependency-first ordering), M07 EVMEngine, M27 DesignControl, M12 DocumentControl, M14 QSMeasurementBook | Deferred until thin slice ships |
 
 ---

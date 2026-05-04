@@ -1,12 +1,12 @@
 # M01 — Project Registry
-## Workflows v1.0a
-**Artefact:** M01_ProjectRegistry_Workflows_v1_0a
+## Workflows v1.0b
+**Artefact:** M01_ProjectRegistry_Workflows_v1_0b
 **Status:** LOCKED
 **Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
-**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a stamp normalisation — Round 29 audit, H10)
-**Last Audited:** v1.0a on 2026-05-04
-**Reference Standards:** M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote + v1_3_CascadeNote), X8_GlossaryENUMs_v0_2.md _(historical at lock; current X8 v0.6a)_
-**Folder:** /02_L1_Command/
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0b in-place patch — Round 29 audit medium-cleanup, M23 second-order Reference Standards refresh)
+**Last Audited:** v1.0b on 2026-05-04
+**Reference Standards:** M01_ProjectRegistry_Spec_v1_0.md (in-place patched to v1.0a R29) (+ v1_1/v1_2/v1_3/v1_4 cascade notes), X8_GlossaryENUMs_v0_2.md _(historical at lock; current X8 v0.6a)_
+**Folder:** /02_L1_Command/ _(aspirational; canonical placement is `SystemAdmin/Modules/` per Round 18 audit)_
 
 ---
 
@@ -14,6 +14,7 @@
 
 | Patch | Date       | Author                      | Changes |
 |-------|------------|-----------------------------|---------|
+| v1.0b | 2026-05-04 | Monish (with Claude assist) | M23 in-place patch (Round 29 audit medium-cleanup, second-order): `Reference Standards` extended with M01 Spec v1.0a in-place patch reference + M01 v1_4 cascade-note (PR #6 created post v1.0a stamp); `Folder` field annotated with canonical-placement note. No content change. |
 | v1.0a | 2026-05-04 | Monish (with Claude assist) | H10 in-place patch (Round 29 audit): Format B stamp normalised — added **Artefact**, **Last Updated**, **Last Audited**, **Reference Standards** (with v1_1/v1_2/v1_3 cascade-note forward-pointers); **Status** UPPERCASE; author canonicalised. No content change. |
 
 ---
