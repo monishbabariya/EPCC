@@ -1,10 +1,18 @@
 # X8 — Glossary & ENUMs
-## Cross-Cutting Document v0.6 (LIVING)
+## Cross-Cutting Document v0.6a (LIVING)
 **Owner:** PMO Director / System Architect
-**Created:** 2026-05-03 (v0.1) | **Updated:** 2026-05-04 (v0.6)
+**Created:** 2026-05-03 (v0.1) | **Updated:** 2026-05-04 (v0.6a)
 **Status:** Living — appended on every module spec lock
 **Source modules locked into this version:** M34, M01, M02, M03, M04, **M06**
 **Folder:** SystemAdmin/Cross-link files/ (per Round 18 audit canonical placement)
+
+---
+
+## IN-PLACE PATCH CHANGE LOG
+
+| Patch  | Date       | Author                      | Changes |
+|--------|------------|-----------------------------|---------|
+| v0.6a  | 2026-05-04 | Monish (with Claude assist) | §4.12: Added `MILESTONE_ACHIEVED_FINANCIAL` (M03-owned; propagation gap from audit H1 — event was approved as part of M03 v1.2 cascade scope but never extended to X8 §4.12 in the original v0.6 cascade) |
 
 ---
 
@@ -321,7 +329,18 @@ ENUM BGType {
 
 ### 4.12 `AuditEventType` (extended in v0.4 + v0.5 + **v0.6**)
 
-**M03-owned event types (locked v0.4):** *unchanged from v0.5* — see v0.5 §4.12.
+**M03-owned event types (locked v0.4):** *unchanged from v0.5 base* — see v0.5 §4.12.
+
+**M03-owned event types — extension v0.6a** (added per M03 v1.2 cascade note, propagated to X8 in patch v0.6a per audit finding H1):
+
+```
+MILESTONE_ACHIEVED_FINANCIAL    // Fired when a financial milestone (linked to a payment
+                                // tranche or drawdown gate) is marked achieved and approved.
+                                // Fires after MILESTONE_AUTO_ACHIEVED where milestone_type=Financial.
+                                // Approved scope: M03_PlanningMilestones_v1_2_CascadeNote.md
+                                // Consumed by M06 BR-06-010 + WF-06-005 milestone-RA Bill creation
+                                // (M06 Brief OQ-1.3=B dual trigger sources).
+```
 
 **M04-owned event types (locked v0.5):** *unchanged from v0.5* — see v0.5 §4.12.
 
