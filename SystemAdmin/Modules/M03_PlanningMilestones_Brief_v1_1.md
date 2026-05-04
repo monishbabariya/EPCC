@@ -1,14 +1,15 @@
 # M03 — Planning & Milestones
-## Brief v1.1
-**Status:** Locked (Round 15) — superseded by M03_PlanningMilestones_Spec_v1_1
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03 (v1.0) | **Updated:** 2026-05-03 (v1.1; Round 18 audit refreshed reference standards to current versions)
+## Brief v1.1a
+**Status:** LOCKED (Round 15) — superseded by M03_PlanningMilestones_Spec_v1_1 (in-place patched to v1.1a R29)
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 (v1.0) | **Updated:** 2026-05-04 (v1.1a in-place patch — Round 29 audit medium-cleanup, M22; v1.1 update was 2026-05-03 Round 18 audit reference-standards refresh)
+**Last Audited:** v1.1a on 2026-05-04
 **Re-Issue Of:** Legacy `M03_Planning_Milestones_v2.3.md` (consolidated from v1.0 → v2.3 chain)
-**Reference Standards:** X8_GlossaryENUMs_v0_4.md, X9_VisualisationStandards_Spec_v0_2.md, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1_CascadeNote + v1_2_CascadeNote), M02_StructureWBS_Spec_v1_0.md
+**Reference Standards:** X8_GlossaryENUMs_v0_4.md _(historical at v1.1 lock; current X8 v0.6a)_, X9_VisualisationStandards_Spec_v0_2.md _(historical at v1.1 lock; current X9 v0.4)_, M34_SystemAdminRBAC_Spec_v1_0.md, M01_ProjectRegistry_Spec_v1_0.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0.md (+ v1_1 cascade note)
 **Layer:** L2 Control — Planning & Structure
 **Phase:** 1 — Foundational
 **Build Priority:** 🔴 Critical (precedes M04, M05, M07, M08, M10)
-**Folder:** /03_L2_Planning/
+**Folder:** /03_L2_Planning/ _(aspirational; canonical placement is `SystemAdmin/Modules/` per Round 18 audit)_
 
 > **Why M03 matters architecturally:** M03 is the second of three foundational data structures (after M01 + M02). Without M03 locked, none of the downstream execution modules (M04, M05, M06, M07, M08) can be specified. PV is the foundation of EVM; baseline is the criterion for SG-6; schedule is the spine of everything time-bound.
 
@@ -16,10 +17,11 @@
 
 ## CHANGE LOG
 
-| Version | Date | Change Summary |
-|---|---|---|
-| v1.0 | 2026-05-03 | Initial standalone consolidated brief. Re-issue of legacy v2.3 amendment chain. Aligned with X8 v0.3 ENUMs + X9 v0.1 visualisation references. Audit fixes (F-001, F-003, F-004, F-005, F-007, F-013, F-014) applied. |
-| v1.1 | 2026-05-03 | **Added Section 8B — Role-Based Default Views for M03 (locked in X9 §13.3.3, surfaced here for validation). Added OQ-1.11 — role-default view adjustments. Updated approval gate to include OQ-1.11.** Brief reference reorganisation; no scope or content drift. |
+| Version | Date | Author | Change Summary |
+|---|---|---|---|
+| v1.1a | 2026-05-04 | Monish (with Claude assist) | M22 in-place patch (Round 29 audit medium-cleanup): **Status** UPPERCASE; author canonicalised; `Updated` field refreshed; `Last Audited` field added; `Reference Standards` historical-at-lock annotations added (X8 v0.4 → v0.6a, X9 v0.2 → v0.4); M01 reference extended with v1_3/v1_4 cascade notes; M02 reference extended with v1_1 cascade note; `Folder` field annotated. CHANGE LOG column count standardised 3→4. No scope/content change. |
+| v1.0 | 2026-05-03 | PMO Director / System Architect | Initial standalone consolidated brief. Re-issue of legacy v2.3 amendment chain. Aligned with X8 v0.3 ENUMs + X9 v0.1 visualisation references. Audit fixes (F-001, F-003, F-004, F-005, F-007, F-013, F-014) applied. |
+| v1.1 | 2026-05-03 | PMO Director / System Architect | **Added Section 8B — Role-Based Default Views for M03 (locked in X9 §13.3.3, surfaced here for validation). Added OQ-1.11 — role-default view adjustments. Updated approval gate to include OQ-1.11.** Brief reference reorganisation; no scope or content drift. |
 
 ---
 
