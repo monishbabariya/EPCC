@@ -2,9 +2,12 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-03 (Round 23 OPENED — EPCC_BuildArchitecture Brief v1.0 in DRAFT)
-**Current Phase:** Phase 1 — Foundational Module Specifications → **transitioning to Phase 1B: Build Architecture lock + scaffold**
-**Active Round:** Round 23 IN DRAFT. `System Specs/EPCC_BuildArchitecture_Brief_v1_0.md` surfaces 10 OQ-1 + ~30 OQ-2 decisions for the build (repo strategy, branch model, sequencing, OIDC, multi-tenancy, pilot seed, CI host, BR-tagged tests, ENUM codegen). Recommends monorepo on `main` + thin vertical slice (M34 → M01 demo) before module deepening. **Awaiting Monish OQ-1 answers** before Round 24 (Spec) drafts.
+**Last Updated:** 2026-05-04 (Round 28 — M06 cascade pass LOCKED, post-merge renumbering applied to avoid collision with parallel Round 23 = EPCC_BuildArchitecture Brief on `main`)
+**Current Phase:** Phase 1 — Foundational Module Specifications · **parallel: Phase 1B Build Architecture (Round 23 IN DRAFT on `main`)**
+**Active Rounds:**
+- **Round 23 IN DRAFT (on `main`):** `System Specs/EPCC_BuildArchitecture_Brief_v1_0.md` — surfaces 10 OQ-1 + ~30 OQ-2 decisions for the build (repo strategy, branch model, sequencing, OIDC, multi-tenancy, pilot seed, CI host, BR-tagged tests, ENUM codegen). Recommends monorepo on `main` + thin vertical slice (M34 → M01 demo) before module deepening. Awaiting Monish OQ-1 answers before Round 23 Spec drafts.
+- **Rounds 24–28 LOCKED (this branch — formerly numbered 23–27 in pre-merge drafts):** M06 FinancialControl module (Brief R24 → Spec R25 → Wireframes R26 → Workflows R27) + cascade pass R28 (X8 v0.6, X9 v0.4, M01 v1.3 cascade note, M03 v1.2 cascade note, naming-folders.md refresh).
+- **Round-renumbering note:** Pre-merge commit messages (`50cb092`, `eeead43`, `aa058a9`, `c3d20c4`, `276d3e0`) say "Round 23–27" — historical record only. File content + audit stamps are authoritative at Round 24–28.
 
 ---
 
@@ -48,17 +51,18 @@
 | Module | Brief | Spec | Wireframes | Workflows | Round |
 |---|---|---|---|---|---|
 | M34 SystemAdminRBAC | Done | Done | Done | Done | 1–4 |
-| M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 cascade notes) | Done | Done | 5b–8, 16, 18-audit |
+| M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 + v1.3 cascade notes) | Done | Done | 5b–8, 16, 18-audit, 28 |
 | M02 StructureWBS | Done | Done | Done | Done | 9–12 |
-| **M03 PlanningMilestones** | Done | Done (v1.1) | Done | Done | 15–18 |
+| M03 PlanningMilestones | Done | Done v1.1 (+ v1.2 cascade note) | Done | Done | 15–18, 28 |
 | **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0 (R20) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22 |
+| **M06 FinancialControl** | Done v1.0 (R24) | Done v1.0 (R25) + v1.0a audit-corr (R27) | Done v1.0 (R26) | Done v1.0 (R27) | 24–28 |
 
 ### Cross-cutting
 
 | Doc | Version | Status |
 |---|---|---|
-| X8 GlossaryENUMs | **v0.5** | Living (M04 ENUMs locked Round 20) |
-| X9 VisualisationStandards | **v0.3** | Living (M04 §13.3.4 row locked Round 20) |
+| X8 GlossaryENUMs | **v0.6** | Living (M06 ENUMs locked Round 28 — 13 new ENUMs + 43-event AuditEventType ext + 12-trigger DQ ext + 4-ledger §6 ext + SG_9/SG_11 description refresh) |
+| X9 VisualisationStandards | **v0.4** | Living (M06 §13.3.6 5→8 roles + §9.5.1 flagship annotation locked Round 28 — zero new chart types) |
 | EPCC_NamingConvention | v1.0 | Locked |
 | EPCC_FolderIndex | v1.0 | Locked |
 | EPCC_VersionLog | v1.1 | Living (reconciled Round 18) |
@@ -71,7 +75,7 @@
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 26 · **Remaining:** 59 (M04 module COMPLETE through Round 22: Brief + Spec + Wireframes + Workflows + cascades)
+**Total deliverables:** ~85 · **Done:** 32 · **Remaining:** 53 (M06 module COMPLETE + cascade pass closed Round 28 — X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 + naming-folders.md refresh)
 
 ---
 
@@ -104,6 +108,13 @@ These have been resolved through deliberation. Do not re-open without explicit u
 | Audit stamp formats | 3 accepted: YAML frontmatter (preferred new), markdown bold-header (grandfathered M34/M01/M02/M03), HTML comment (wireframes). See spec-protocol.md (Round 18 audit) |
 | Folder placement | Active modules: `SystemAdmin/Modules/`. X-series: `SystemAdmin/Cross-link files/`. Governance: `System Specs/`. 13-folder hierarchy aspirational only (Round 18 audit) |
 | Role taxonomy | 13 internal + 4 external = 17. Authoritative source: M34 Spec Block 3. Includes ANALYST (was missing from cross-cutting-standards.md until Round 18 audit) |
+| Financial Control state machine | 4-state CostLedgerEntry — Budgeted → Committed → Accrued → Paid. Forward-only; reversals via compensating entries only; UPDATE/DELETE forbidden at DB level (M06 BR-06-001..047, X8 v0.6 §3.60) |
+| RA Bill trigger sources | Dual: Progress (M04 BILLING_TRIGGER_READY) + Milestone (M03 MILESTONE_ACHIEVED_FINANCIAL). Both written via M06 RABillTriggerSource ENUM (X8 v0.6 §3.63, M06 OQ-1.3=B) |
+| Retention release | Tranche-1 at SG-9 passage; Tranche-2 at SG-11 passage. Per-contract split percentage on `M01.Contract.dlp_retention_split_pct` (default 0.5000); PMO override allowed with justification ≥100 chars + digital evidence (M06 OQ-1.8=C, M01 v1.3 cascade note) |
+| Multi-currency | Shipped in v1.0 with 2-tier exchange rate model (RBI_Reference + Bank_Transaction); Forecast/Budgeted/Committed valued at RBI_Reference; Paid reconciled at Bank_Transaction (M06 OQ-1.6=B, X8 v0.6 §3.71) |
+| BG tracking | BGStub pattern in Phase 1 (status + expiry only); full lifecycle migrates to M23 in Phase 2; BGType ENUM stays in X8 (M06 OQ-1.9=B, X8 v0.6 §3.72) |
+| Stage Gate description (SG_9 / SG_11) | SG_9 = Substantial / Practical Completion (clinical commissioning ready); SG_11 = DLP End / Operations Handover. Sequence locked at v0.1; description text refreshed v0.6 to ratify M06 commitments before M08 brief opens (X8 v0.6 §3.10) |
+| Capital Funnel flagship | M06 Capital Funnel = 1st named flagship instance of §11 Pipeline Funnel pattern (X9 v0.4 §9.5.1 annotation; chronologically M04 NCR Funnel was 8th, but Capital Funnel is the formally-designated flagship) |
 
 ---
 
