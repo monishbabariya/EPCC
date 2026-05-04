@@ -1,13 +1,22 @@
 # M01 — Project Registry
-## Brief v1.0
-**Status:** Draft — Pending Review
-**Author:** PMO Director / System Architect
-**Created:** 2026-05-03
-**Last Audited:** v1.0 on 2026-05-03
-**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_1.md, M34_SystemAdminRBAC_Spec_v1_0.md
+## Brief v1.0a
+**Artefact:** M01_ProjectRegistry_Brief_v1_0a
+**Status:** LOCKED _(grandfathered: original was "Draft — Pending Review"; Brief was approved at Round 5b → Spec Round 6, content unchanged)_
+**Author:** Monish (with Claude assist) _(grandfathered: PMO Director / System Architect)_
+**Created:** 2026-05-03 | **Last Updated:** 2026-05-04 (v1.0a in-place patch — Round 29 audit, H15)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** EPCC_NamingConvention_v1_0.md, X8_GlossaryENUMs_v0_1.md _(historical at lock; current X8 v0.6a)_, M34_SystemAdminRBAC_Spec_v1_0.md
 **Folder:** /02_L1_Command/
 **Phase:** 1 (Foundational — second module after M34)
 **Re-Issue Of:** Legacy M01_Project_Registry_v2.1.md (consolidated, not amendment-style)
+
+---
+
+## CHANGE LOG
+
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | H15 in-place patch (Round 29 audit): added ANALYST + EXTERNAL_AUDITOR rows to §6 ROLES THAT TOUCH THIS MODULE. Both roles canonical since R18 audit; this Brief was authored pre-R18 and never received the propagation cascade. Scope, identity, and decision history unchanged. |
 
 ---
 
@@ -106,6 +115,8 @@ References canonical taxonomy from M34 + X8 §4.1. **No new roles introduced.**
 | `SITE_MANAGER` | View own project (for execution context) |
 | `COMPLIANCE_MANAGER` | View own project (for compliance context) |
 | `READ_ONLY` | View only |
+| `ANALYST` | View project registry; run saved filter sets; export data (read + filter + export only) |
+| `EXTERNAL_AUDITOR` | Read-only access to project metadata + stage gate history for audit trail |
 
 ---
 
