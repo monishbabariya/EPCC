@@ -1,7 +1,7 @@
 # EPCC — Master Version Log
 ## Version 1.1
 **Owner:** PMO Director
-**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (R34 M05+M13 batch lock — §3.5 + §3.7 + §3.12 module rows updated; §7 NEXT ROUND PREVIEW R32-R34 marked Locked, R35 Wireframes batch ready)
+**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (R36 M05+M13 batch COMPLETE — both modules now BUILD-READY with full 4-artefact spec set; §7 NEXT ROUND PREVIEW R35-R36 marked Locked, R37 dispatch ready as either build-track scaffold or spec-track M07 Brief)
 **Status:** Living Document
 **Update Frequency:** On every artefact creation, modification, or status change.
 
@@ -221,6 +221,8 @@ When any artefact is created, modified, or status-changed:
 | 32 | M13_CorrespondenceMeetingRegister_Brief_v1_0 (C1b batch with M05) | **Locked** |
 | 33 | M05 Brief v1.0a (7-state VO patch) + M05 Spec v1.0 + X8 v0.7 cascade (16 ENUMs + 33 audit events + 10 DQ triggers) | **Locked** |
 | 34 | M13 Spec v1.0 + X8 v0.8 cascade (14 ENUMs + 30 audit events + 8 DQ triggers; M05+M13 audit pass 0 gaps) + X9 v0.5 (§13.3.5 M05 + §13.3.13 M13 + 4 flagship pipeline instances) | **Locked** |
+| 35 | M05 + M13 Wireframes v1.0 (C1b batch; 9 views total; 7+6 roles; KDMC-001-DBOT mock data) | **Locked** |
+| 36 | M05 + M13 Workflows v1.0 (C1b batch; 9 WFs total; 36/36 + 24/24 BR coverage; 0 gaps) — **M05+M13 BATCH COMPLETE → BUILD-READY** | **Locked** |
 
 ### Foundation Phase preview (R32-R51)
 
@@ -231,8 +233,9 @@ Per Build Execution Plan §3a. C1 cadence on Specs; C1b on Wireframes/Workflows 
 | 32 | Spec | M13 CorrespondenceMeetingRegister Brief v1.0 (C1b batch with M05) | Week 1 ✅ Locked |
 | 33 | Spec | M05 Brief v1.0a (7-state VO patch) + M05 Spec v1.0 + X8 v0.7 cascade scaffold | Week 2 ✅ Locked |
 | 34 | Spec | M13 Spec v1.0 + X8 v0.8 cascade + X9 v0.5 cascade (M05+M13 audit pass) | Week 2 ✅ Locked |
-| 35 | Spec | M05 + M13 Wireframes (C1b batch) | Week 3 — **NEXT** |
-| 36 | Spec | M05 + M13 Workflows (C1b batch) | Week 3 |
+| 35 | Spec | M05 + M13 Wireframes v1.0 (C1b batch; 5+4 views; 7+6 roles; 4 X9 flagship pipeline instances rendered) | Week 3 ✅ Locked |
+| 36 | Spec | M05 + M13 Workflows v1.0 (C1b batch; 5+4 WFs; M05 36/36 BR coverage + M13 24/24 BR coverage; 0 gaps) — **M05+M13 BATCH COMPLETE → BUILD-READY** | Week 3 ✅ Locked |
+| 37 | Build OR Spec | **NEXT — parallel-track choice:** Build-track Monorepo scaffold (apps/api, apps/web, packages/, infra/, scripts/, docs/adr/, .github/workflows/) OR Spec-track M07 EVMEngine Brief (M05 RISK_ADJUSTED_EAC_DELTA contract now locked → M07 unblocked) | Week 4 — **NEXT** |
 | 37 | Build | Monorepo scaffold + 10 ADRs + CI workflow + Docker Compose + Keycloak realm seed | Week 4 |
 | 38 | Build | ENUM codegen pipeline live | Week 4 |
 | 39 | Build | M34 thin slice scaffold | Week 5 |

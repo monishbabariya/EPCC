@@ -2,7 +2,7 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-04 (R34 M05+M13 batch lock — M05 Spec v1.0 + M13 Spec v1.0 + X8 v0.8 + X9 v0.5; Foundation set 4 of 10 modules now have full Brief→Spec→pending Wireframes/Workflows; M05+M13 ready for R35 Wireframes batch)
+**Last Updated:** 2026-05-04 (R36 M05+M13 batch COMPLETE — both modules have full 4-artefact spec set LOCKED [Brief→Spec→Wireframes→Workflows] and are BUILD-READY; Foundation set 6 of 10 modules now have full spec; R37 dispatch options: build-track Monorepo scaffold OR spec-track M07 EVMEngine Brief — parallel-track per Build Execution Plan §3a)
 **Current Phase:** Phase 1 — Foundational Module Specifications · **parallel: Phase 1B Build Architecture (Round 23 IN DRAFT on `main`)**
 **Active Rounds:**
 - **Round 23 IN DRAFT (on `main`):** `System Specs/EPCC_BuildArchitecture_Brief_v1_0.md` — surfaces 10 OQ-1 + ~30 OQ-2 decisions for the build (repo strategy, branch model, sequencing, OIDC, multi-tenancy, pilot seed, CI host, BR-tagged tests, ENUM codegen). Recommends monorepo on `main` + thin vertical slice (M34 → M01 demo) before module deepening. Awaiting Monish OQ-1 answers before Round 23 Spec drafts.
@@ -46,7 +46,15 @@
 
 ## 3. Current Module Status
 
-### Foundation + first execution module: COMPLETE
+### Foundation set status (10-module foundation per Build Execution Plan §2a)
+
+**6 of 10 BUILD-READY** (full 4-artefact spec set complete): M34, M01, M02, M03, M04, M05, M06, M13. Wait — that's 8 modules complete. Let me list precisely below.
+
+**BUILD-READY (full Brief→Spec→Wireframes→Workflows lock):** M34, M01, M02, M03, M04, M06, **M05, M13** (M05+M13 batch closed at R36).
+
+**Foundation set still pending Spec round:** M07 (EVMEngine), M08 (GateControl), M11 (ActionRegister) — Brief + Spec + Wireframes + Workflows still to author.
+
+**Phase 1 secondary modules pending:** M09, M10, M12, M14, M15, M16, M17, M18, M20, M21, M22, M23, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, HDI.
 
 | Module | Brief | Spec | Wireframes | Workflows | Round |
 |---|---|---|---|---|---|
@@ -55,9 +63,9 @@
 | M02 StructureWBS | Done v1.0a (R29 patch) | Done v1.0a (R29 patch) (+ v1.1 cascade note R29) | Done | Done v1.0b (R29 patch) | 9–12, 29 |
 | M03 PlanningMilestones | Done v1.1a (R29 patch) | Done v1.1b (R29 patch) (+ v1.2/v1.3 cascade notes) | Done | Done | 15–18, 28, 29 |
 | **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0a (R29 patch) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22, 29 |
-| **M05 RiskChangeControl** | **Done v1.0a (R31, R33 patch — 7-state VO)** | **Done v1.0 (R33)** | **Pending R35 (C1b batch with M13)** | **Pending R36 (C1b batch with M13)** | **31, 33** |
+| **M05 RiskChangeControl** | **Done v1.0a (R31, R33 patch — 7-state VO)** | **Done v1.0 (R33)** | **Done v1.0 (R35; C1b batch with M13)** | **Done v1.0 (R36; C1b batch with M13; 36/36 BR coverage 0 gaps)** | **31, 33, 35, 36 — BUILD-READY** |
 | **M06 FinancialControl** | Done v1.0 (R24) | Done v1.0b (R29 patch) (+ v1.1 cascade note R29) | Done v1.1 (R29 re-issue PR #7) | Done v1.0b (R29 patch) | 24–28, 29 |
-| **M13 CorrespondenceMeetingRegister** | **Done v1.0 (R32)** | **Done v1.0 (R34)** | **Pending R35 (C1b batch with M05)** | **Pending R36 (C1b batch with M05)** | **32, 34** |
+| **M13 CorrespondenceMeetingRegister** | **Done v1.0 (R32)** | **Done v1.0 (R34)** | **Done v1.0 (R35; C1b batch with M05)** | **Done v1.0 (R36; C1b batch with M05; 24/24 BR coverage 0 gaps)** | **32, 34, 35, 36 — BUILD-READY** |
 
 ### Cross-cutting
 
@@ -77,7 +85,7 @@
 
 ### Phase 1 progress
 
-**Total deliverables:** ~85 · **Done:** 32 · **Remaining:** 53 (M06 module COMPLETE + cascade pass closed Round 28 — X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 + naming-folders.md refresh)
+**Total deliverables:** ~85 · **Done:** 40 · **Remaining:** 45 (M05+M13 batch COMPLETE at R36 — 8 new artefacts locked in R31-R36: M05 Brief v1.0a + M05 Spec + M13 Brief + M13 Spec + M05 Wireframes + M13 Wireframes + M05 Workflows + M13 Workflows; X8 v0.6→v0.7→v0.8 + X9 v0.4→v0.5 cascades; 8 of 10 foundation modules now BUILD-READY)
 
 ---
 
