@@ -1,7 +1,7 @@
 # EPCC — Master Version Log
 ## Version 1.1
 **Owner:** PMO Director
-**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (R31 plan lock — §7 NEXT ROUND PREVIEW replaced with revised round sequence per `EPCC_BuildExecutionPlan_v1_0.md`)
+**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (R34 M05+M13 batch lock — §3.5 + §3.7 + §3.12 module rows updated; §7 NEXT ROUND PREVIEW R32-R34 marked Locked, R35 Wireframes batch ready)
 **Status:** Living Document
 **Update Frequency:** On every artefact creation, modification, or status change.
 
@@ -70,6 +70,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 |---|---|---|
 | M02 StructureWBS | **Locked** Brief v1.0a + Spec v1.0a + Wireframes v1.0 + Workflows v1.0b + v1.1 cascade note | Rounds 9–12 + R29 medium-cleanup (Brief v1.0a, Spec v1.0a, Workflows v1.0b in-place patches; v1.1 cascade adds X8 ENUM refs + ANALYST rate-matrix row) |
 | M03 PlanningMilestones | **Locked** Brief v1.1a + Spec v1.1b + Wireframes v1.0 + Workflows v1.0 + v1.2/v1.3 cascade notes | Rounds 15–18 + R28 (v1.2 cascade — `MILESTONE_ACHIEVED_FINANCIAL`) + R29 (v1.1a Spec H7 forward-pointer + v1.1b Spec second-order ref refresh + Brief v1.1a + v1.3 cascade adds ANALYST + EXTERNAL_AUDITOR columns to Block 4a). Spec v1.1 R18 cascade added Appendix C (28 audit events) + BR-03-033 + BR-03-034 |
+| M13 CorrespondenceMeetingRegister | **Locked** Brief v1.0 (R32) + Spec v1.0 (R34) — Wireframes pending R35 (C1b batch with M05); Workflows pending R36 | Rounds 32 + 34 — 13 entities + 24 BRs + 29 audit events + 8 DQ triggers; C1b batch partner with M05 |
 | M12 DocumentControl | Pending | New (Phase 1 critical, was unspecced) |
 | M14 QSMeasurementBook | Pending | New (Phase 1 critical, was unspecced) |
 | M27 DesignControl | Pending | New (proposed v2.3) |
@@ -88,7 +89,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 | Module | Status | Notes |
 |---|---|---|
-| M05 RiskChange | Pending | Re-issue of legacy v2.3 (currently amendment file) |
+| M05 RiskChangeControl | **Locked** Brief v1.0a (R31; v1.0a R33 patch — 7-state VO) + Spec v1.0 (R33) — Wireframes pending R35 (C1b batch with M13); Workflows pending R36 | Rounds 31, 33 — 14 entities + 35 BRs + 33 audit events + 10 DQ triggers; slim-core scope per OQ-1.1=B (Claims→M19/HSE→M31/Insurance→M23 Phase 2); 5 append-only ledgers; C1b batch partner with M13 |
 | M06 FinancialControl | ✅ **Complete** — R24 Brief v1.0, R25 Spec v1.0 (+ v1.0a R27 audit-correction + v1.0b R29 in-place patch), **R29 Wireframes v1.1** (re-issued from v1.0 R26 — C3 SG_9/SG_11 fix + H17/H18 BGType canonicalisation), R27 Workflows v1.0 (+ v1.0a R29 H3/H4 stamp refresh + v1.0b R29 medium-cleanup wireframe filename refresh) + v1.1 cascade note R29 (SG_11_PASSAGE stub removed per H6 Option B) | Re-issue of legacy v2.1 |
 | M13 CorrespondenceRegister | Pending | New |
 | M17 AssetEquipmentRegister | Pending | New |
@@ -146,8 +147,8 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 | X5 FormInventory | Roadmap (renamed → Speed Tier Inventory) | After all wireframes complete |
 | X6 WorkflowDiagrams | Roadmap (renamed → Integration Point Map) | After all Phase 1 specs lock |
 | X7 DecisionQueueSchema | Roadmap (renamed → Standards Memory) | After all Phase 1 specs lock |
-| X8 GlossaryENUMs | **Living — current v0.6a** | Updated continuously per I3. Bumped v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03) → v0.5 (M04) → v0.6 (M06) → v0.6a (R29 PR #4 in-place patch — H1: MILESTONE_ACHIEVED_FINANCIAL added to §4.12). Filename retained as `_v0_6.md` per in-place patch convention. |
-| X9 VisualisationStandards | **Living — current v0.4** | Decision-First Principle locked v0.1; library + role views locked v0.2; M04 §13.3.4 rewrite locked v0.3; M06 §13.3.6 5→8 roles + Capital Funnel flagship annotation locked v0.4. Reference Standards refreshed R29 medium-cleanup (M28 — cross-ref hygiene). |
+| X8 GlossaryENUMs | **Living — current v0.8** | Updated continuously per I3. Bumped v0.1 → v0.2 (M01) → v0.3 (M02) → v0.4 (M03) → v0.5 (M04) → v0.6 (M06) → v0.6a (R29 PR #4 in-place patch — H1) → **v0.7 (M05; R33; +16 ENUMs §3.73-§3.88, +33 audit events, +10 DQ triggers in §4.17 M05_DQ ENUM, +5 append-only ledgers)** → **v0.8 (M13; R34; +14 ENUMs §3.89-§3.102, +30 audit events, +8 DQ triggers in §4.18 M13_DQ ENUM, +5 append-only ledgers)**. Total: 102 ENUMs, 28 append-only entities, 130+ audit events. v0.7 + v0.8 are new files (minor-version bump convention); v0.6 + v0.6a preserved historically. |
+| X9 VisualisationStandards | **Living — current v0.5** | Decision-First Principle locked v0.1; library + role views locked v0.2; M04 §13.3.4 rewrite locked v0.3; M06 §13.3.6 5→8 roles + Capital Funnel flagship annotation locked v0.4. R29 medium-cleanup (M28 — cross-ref hygiene). **v0.5 (R34 M05+M13 batch lock; in-place patch on v0.4 file): §13.3.5 M05 RiskChangeControl 12-role mapping locked + §13.3.13 M13 CorrespondenceMeetingRegister 12-role mapping added (numbered §13.3.13 to avoid renumbering existing §13.3.6-§13.3.12 sections per cascade-discipline). 4 new flagship pipeline pattern instances added to §9.5: §9.5.4 VO Funnel #3 (updated for 7-state machine), §9.5.5 LD Funnel #4, §9.5.6 EOT Pipeline #5, §9.5.7 Notice SLA Breach Funnel #6.** Zero new chart types. |
 
 ### 3.13 System Utilities (11_System_Utilities)
 
@@ -217,6 +218,9 @@ When any artefact is created, modified, or status-changed:
 | 29 | **Audit pass** — 4 PR series (PR #4 remediation + PR #5 high-mechanical + PR #6 cascade-notes + PR #7 wireframe-reissue + PR #8 medium-cleanup) closing all CRITICAL/HIGH/MEDIUM and reconciling LOWs | **Locked** |
 | 30 | EPCC_BuildArchitecture_Spec_v1_0 | **Locked** |
 | 31 | M05_RiskChangeControl_Brief_v1_0 + EPCC_BuildExecutionPlan_v1_0 (governance lock) | **Locked** |
+| 32 | M13_CorrespondenceMeetingRegister_Brief_v1_0 (C1b batch with M05) | **Locked** |
+| 33 | M05 Brief v1.0a (7-state VO patch) + M05 Spec v1.0 + X8 v0.7 cascade (16 ENUMs + 33 audit events + 10 DQ triggers) | **Locked** |
+| 34 | M13 Spec v1.0 + X8 v0.8 cascade (14 ENUMs + 30 audit events + 8 DQ triggers; M05+M13 audit pass 0 gaps) + X9 v0.5 (§13.3.5 M05 + §13.3.13 M13 + 4 flagship pipeline instances) | **Locked** |
 
 ### Foundation Phase preview (R32-R51)
 
@@ -224,10 +228,10 @@ Per Build Execution Plan §3a. C1 cadence on Specs; C1b on Wireframes/Workflows 
 
 | Round | Track | Artefact | Calendar |
 |---|---|---|---|
-| 32 | Spec | M13 CorrespondenceMeetingRegister Brief v1.0 (C1b batch with M05) | Week 1 |
-| 33 | Spec | M05 Spec v1.0 + X8 v0.7 cascade scaffold | Week 2 |
-| 34 | Spec | M13 Spec v1.0 + X8/X9 audit pass for M05+M13 batch | Week 2 |
-| 35 | Spec | M05 + M13 Wireframes (C1b batch) | Week 3 |
+| 32 | Spec | M13 CorrespondenceMeetingRegister Brief v1.0 (C1b batch with M05) | Week 1 ✅ Locked |
+| 33 | Spec | M05 Brief v1.0a (7-state VO patch) + M05 Spec v1.0 + X8 v0.7 cascade scaffold | Week 2 ✅ Locked |
+| 34 | Spec | M13 Spec v1.0 + X8 v0.8 cascade + X9 v0.5 cascade (M05+M13 audit pass) | Week 2 ✅ Locked |
+| 35 | Spec | M05 + M13 Wireframes (C1b batch) | Week 3 — **NEXT** |
 | 36 | Spec | M05 + M13 Workflows (C1b batch) | Week 3 |
 | 37 | Build | Monorepo scaffold + 10 ADRs + CI workflow + Docker Compose + Keycloak realm seed | Week 4 |
 | 38 | Build | ENUM codegen pipeline live | Week 4 |

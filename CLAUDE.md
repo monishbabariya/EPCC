@@ -2,7 +2,7 @@
 
 > **Master context for the EPCC build.** Loaded at the start of every Claude Code session. Keep this file SHORT — detailed rules live in `.claude/rules/`.
 
-**Last Updated:** 2026-05-04 (R31 M05 Brief locked + EPCC_BuildExecutionPlan_v1_0 locked — dual-track architecture, foundation set 10 modules, Phase 1 = 33 modules, Phase 2 = 8 modules, audit cadence locked)
+**Last Updated:** 2026-05-04 (R34 M05+M13 batch lock — M05 Spec v1.0 + M13 Spec v1.0 + X8 v0.8 + X9 v0.5; Foundation set 4 of 10 modules now have full Brief→Spec→pending Wireframes/Workflows; M05+M13 ready for R35 Wireframes batch)
 **Current Phase:** Phase 1 — Foundational Module Specifications · **parallel: Phase 1B Build Architecture (Round 23 IN DRAFT on `main`)**
 **Active Rounds:**
 - **Round 23 IN DRAFT (on `main`):** `System Specs/EPCC_BuildArchitecture_Brief_v1_0.md` — surfaces 10 OQ-1 + ~30 OQ-2 decisions for the build (repo strategy, branch model, sequencing, OIDC, multi-tenancy, pilot seed, CI host, BR-tagged tests, ENUM codegen). Recommends monorepo on `main` + thin vertical slice (M34 → M01 demo) before module deepening. Awaiting Monish OQ-1 answers before Round 23 Spec drafts.
@@ -50,19 +50,21 @@
 
 | Module | Brief | Spec | Wireframes | Workflows | Round |
 |---|---|---|---|---|---|
-| M34 SystemAdminRBAC | N/A — foundation module, direct to Spec at R4 | Done | Done | Done | 1–4 |
-| M01 ProjectRegistry | Done | Done v1.0 (+ v1.1 + v1.2 + v1.3 cascade notes) | Done | Done | 5b–8, 16, 18-audit, 28 |
-| M02 StructureWBS | Done | Done | Done | Done | 9–12 |
-| M03 PlanningMilestones | Done | Done v1.1 (+ v1.2 cascade note) | Done | Done | 15–18, 28 |
-| **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0 (R20) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22 |
-| **M06 FinancialControl** | Done v1.0 (R24) | Done v1.0 (R25) + v1.0a audit-corr (R27) | Done v1.0 (R26) | Done v1.0 (R27) | 24–28 |
+| M34 SystemAdminRBAC | N/A — foundation module, direct to Spec at R4 | Done v1.0a (R29 patch) | Done | Done v1.0a (R29 patch) | 1–4, 29 |
+| M01 ProjectRegistry | Done v1.0a (R29 patch) | Done v1.0a (R29 patch) (+ v1.1/v1.2/v1.3/v1.4 cascade notes) | Done | Done v1.0b (R29 patch) | 5b–8, 16, 18-audit, 28, 29 |
+| M02 StructureWBS | Done v1.0a (R29 patch) | Done v1.0a (R29 patch) (+ v1.1 cascade note R29) | Done | Done v1.0b (R29 patch) | 9–12, 29 |
+| M03 PlanningMilestones | Done v1.1a (R29 patch) | Done v1.1b (R29 patch) (+ v1.2/v1.3 cascade notes) | Done | Done | 15–18, 28, 29 |
+| **M04 ExecutionCapture** | Done v1.0 (R19) | Done v1.0a (R29 patch) | Done v1.0 (R21) | Done v1.0 (R22) | 19–22, 29 |
+| **M05 RiskChangeControl** | **Done v1.0a (R31, R33 patch — 7-state VO)** | **Done v1.0 (R33)** | **Pending R35 (C1b batch with M13)** | **Pending R36 (C1b batch with M13)** | **31, 33** |
+| **M06 FinancialControl** | Done v1.0 (R24) | Done v1.0b (R29 patch) (+ v1.1 cascade note R29) | Done v1.1 (R29 re-issue PR #7) | Done v1.0b (R29 patch) | 24–28, 29 |
+| **M13 CorrespondenceMeetingRegister** | **Done v1.0 (R32)** | **Done v1.0 (R34)** | **Pending R35 (C1b batch with M05)** | **Pending R36 (C1b batch with M05)** | **32, 34** |
 
 ### Cross-cutting
 
 | Doc | Version | Status |
 |---|---|---|
-| X8 GlossaryENUMs | **v0.6** | Living (M06 ENUMs locked Round 28 — 13 new ENUMs + 43-event AuditEventType ext + 12-trigger DQ ext + 4-ledger §6 ext + SG_9/SG_11 description refresh) |
-| X9 VisualisationStandards | **v0.4** | Living (M06 §13.3.6 5→8 roles + §9.5.1 flagship annotation locked Round 28 — zero new chart types) |
+| X8 GlossaryENUMs | **v0.8** | Living. v0.6 (M06; R28) → v0.6a (R29 H1 patch) → v0.7 (M05; R33; +16 ENUMs §3.73-§3.88, +33 audit events, +10 DQ triggers in M05_DQ ENUM, +5 append-only ledgers) → v0.8 (M13; R34; +14 ENUMs §3.89-§3.102, +30 audit events, +8 DQ triggers in M13_DQ ENUM, +5 append-only ledgers). Total: 102 ENUMs, 28 append-only entities, 130+ audit events. |
+| X9 VisualisationStandards | **v0.5** | Living. v0.4 (M06 §13.3.6 + §9.5.1 flagship; R28) → v0.4 R29 ref refresh → v0.5 (M05+M13 batch; R34; §13.3.5 M05 + §13.3.13 M13 role-default views + 4 new flagship pipeline instances §9.5.4 VO Funnel #3 / §9.5.5 LD Funnel #4 / §9.5.6 EOT Pipeline #5 / §9.5.7 Notice SLA Breach Funnel #6). Zero new chart types — uses existing v0.4 Tier 1 catalogue. |
 | EPCC_NamingConvention | v1.0 | Locked |
 | EPCC_FolderIndex | v1.0 | Locked |
 | EPCC_VersionLog | v1.1 | Living (reconciled Round 18) |
