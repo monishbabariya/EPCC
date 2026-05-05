@@ -1,17 +1,17 @@
 ---
-artefact: EPCC_BuildExecutionPlan_v1_0
-round: 31 (governance lock; round-numbering note: this plan locks alongside R31 M05 Brief but is not itself a numbered round — it is a governance Living Document)
+artefact: EPCC_BuildExecutionPlan_v1_0a
+round: 31 (in-place patched R37 — stamp refresh only; no plan content change)
 date: 2026-05-04
 author: Monish (with Claude assist)
-parent_specs: EPCC_BuildArchitecture_Spec_v1_0.md (Round 30), EPCC_BuildArchitecture_Brief_v1_0.md (Round 23)
-x8_version: v0.6a
-x9_version: v0.4
+parent_specs: EPCC_BuildArchitecture_Spec_v1_0.md (Round 30; v1.0a R37 patch), EPCC_BuildArchitecture_Brief_v1_0.md (Round 23)
+x8_version: v0.8
+x9_version: v0.5
 status: LOCKED
 type: Build Execution Living Document
 references_locked: All OQ-1 BuildArchitecture decisions (1.1-1.10) per CLAUDE.md §4; Cadence C1 + C1b per spec-protocol.md; ES-DB-001 schema-per-tenant per architecture.md §Multi-Tenancy
 ---
 
-# EPCC Build Execution Plan — v1.0
+# EPCC Build Execution Plan — v1.0a
 
 > **Type.** Build Execution Living Document. Governs the round-by-round sequence from Round 32 to Phase 1 + Platform completion. Living: updated as rounds execute, milestones gate, and audit findings emerge.
 >
@@ -25,6 +25,7 @@ references_locked: All OQ-1 BuildArchitecture decisions (1.1-1.10) per CLAUDE.md
 
 | Version | Date | Author | Changes |
 |---|---|---|---|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | **R37 in-place patch (stamp refresh).** M6: x8_version v0.6a → v0.8; x9_version v0.4 → v0.5 (post-cascade per spec-protocol §In-Place Patch Convention). All §8 decisions and plan content unchanged. parent_specs reference updated to BuildArch Spec v1.0a (R37 stamp refresh). |
 | v1.0 | 2026-05-04 | Monish (with Claude assist) | Initial lock. Locks dual-track architecture (spec-track + build-track in parallel), foundation set (10 modules: M34, M01, M02, M03, M04, M05, M06, M07, M08, M11), Phase 1 cutoff (33 modules), Phase 2 deferred (8 modules), revised round sequence R32-R51 for foundation + R52-R85 for Phase 1 secondary modules + R86+ for Platform features, audit cadence (after R45/R51/R65/R73), demo audience escalation (internal R38 → KDMC stakeholders R45 → external review R51), hire timeline (after G-2 Week 6). All §8 decisions confirmed. |
 
 ---
