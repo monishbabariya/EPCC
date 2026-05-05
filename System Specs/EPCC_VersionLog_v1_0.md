@@ -25,7 +25,7 @@ Single source of truth for the version, status, and ownership of every EPCC arte
 
 ---
 
-## 3. CURRENT REGISTRY STATE — 2026-05-04 (post Round 29 medium-cleanup sweep)
+## 3. CURRENT REGISTRY STATE — 2026-05-04 (post Round 36 — M05+M13 batch COMPLETE; R37 pre-build audit refresh)
 
 ### 3.1 Governance Files (00_Governance)
 
