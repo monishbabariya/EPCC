@@ -1,11 +1,11 @@
 # X9 — Visualisation Standards
-## Spec v0.4 (LIVING)
-**Status:** Locked v0.4 (Reference Standards refreshed 2026-05-04 — see CHANGE LOG bottom row; living-doc cross-ref hygiene only, no Spec content change)
+## Spec v0.5 (LIVING)
+**Status:** Locked v0.5 (in-place patch from v0.4 — adds §13.3.5 M05 + §13.3.13 M13 role-default views per Round 34 M05+M13 batch lock; X9 §11 flagship Pipeline Funnel pattern catalogue updated with VO Funnel #3, LD Funnel #4, EOT Funnel #5, Notice SLA Breach Funnel #6 instances)
 **Type:** Cross-Cutting LIVING Document
 **Author:** Monish (with Claude assist)
-**Created:** 2026-05-03 (v0.1) | **Updated:** 2026-05-04 (v0.4 — Reference Standards refreshed Round 29 audit medium-cleanup, M28)
-**Last Audited:** v0.4 on 2026-05-04 (Reference Standards refresh)
-**Reference Standards:** X8_GlossaryENUMs_v0_6.md (current v0.6a — in-place patched R29), M34_SystemAdminRBAC_Spec_v1_0.md (v1.0a R29), M01_ProjectRegistry_Spec_v1_0.md (v1.0a R29) (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0.md (v1.0a R29) (+ v1_1 cascade note R29), M03_PlanningMilestones_Spec_v1_1.md (v1.1b R29) (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0.md (v1.0a R29), M06_FinancialControl_Spec_v1_0.md (v1.0b R29) (+ v1_1 cascade note R29), M06_FinancialControl_Wireframes_v1_1.html (re-issued R29 PR #7)
+**Created:** 2026-05-03 (v0.1) | **Updated:** 2026-05-04 (v0.5 — Round 34 M05+M13 batch lock; in-place patch on file `X9_VisualisationStandards_Spec_v0_4.md` per spec-protocol minor-version-bump-via-in-place-patch convention for X9 living doc)
+**Last Audited:** v0.5 on 2026-05-04 (Round 34 M05+M13 batch lock)
+**Reference Standards:** X8_GlossaryENUMs_v0_8.md (R34; M05 v0.7 + M13 v0.8 cascades), M34_SystemAdminRBAC_Spec_v1_0.md (v1.0a R29), M01_ProjectRegistry_Spec_v1_0.md (v1.0a R29) (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0.md (v1.0a R29) (+ v1_1 cascade note R29), M03_PlanningMilestones_Spec_v1_1.md (v1.1b R29) (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0.md (v1.0a R29), **M05_RiskChangeControl_Spec_v1_0.md (R33) + M05_RiskChangeControl_Brief_v1_0a.md (R31, v1.0a 7-state VO patch)**, M06_FinancialControl_Spec_v1_0.md (v1.0b R29) (+ v1_1 cascade note R29), M06_FinancialControl_Wireframes_v1_1.html (re-issued R29 PR #7), **M13_CorrespondenceMeetingRegister_Spec_v1_0.md (R34)**
 **Folder:** SystemAdmin/Cross-link files/ (per Round 18 audit canonical placement)
 
 > **X9 governs how data becomes visual artefacts in EPCC** — chart types, libraries, design tokens, composition rules, role-tiered behaviour, role-based default views. Living document — versioned per cross-cutting changes.
@@ -21,6 +21,7 @@
 | v0.3 | 2026-05-03 | M04 lock cascade (Round 20). §13.3.4 rewritten per M04 Brief OQ-1.8 + Spec Block 5: scope-decomposition cleanup (HSE references removed — moved to M31 per OQ-1.1=B; measurement-entry references removed for QS_MANAGER — moved to M14 per OQ-1.2=C; COMPLIANCE_MANAGER row dropped from M04 since compliance lives in M09); rows added for PROCUREMENT_OFFICER (material receipts log), ANALYST (progress trend curves), READ_ONLY (status-badge card). QS_MANAGER primary becomes "Pending approvals queue" (M04's true QS-facing surface). NCR pipeline funnel confirmed as 8th instance of the §11 flagship pipeline pattern. Audit log: ROLE_DEFAULT_VIEW_CHANGED for all 7 M04 rows. No other sections changed. Catalogue + composition rules + design tokens unchanged. Reference Standards bumped to X8 v0.5 (with M04 ENUMs). |
 | **v0.4** | **2026-05-04** | **M06 lock cascade (Round 28; pre-merge round number was 27 — renumbered post-merge to avoid collision with main's Round 23 = EPCC_BuildArchitecture Brief). NO new chart types — M06 wireframes consume only existing v0.3 catalogue entries. Two minor refinements: (a) §13.3.6 row expanded from 5 roles to 8 roles (added QS_MANAGER, EXTERNAL_AUDITOR, READ_ONLY) for parity with M06 Spec Block 5 + Wireframes role-switcher; (b) §9.5.1 Capital Funnel annotated as the **1st named flagship instance** of the §11 Pipeline Funnel pattern (formal-naming reconciliation per Round 27 cascade detection — chronologically the M04 NCR Funnel was the 8th implementation, but Capital Funnel is the formally-designated flagship per M06 Brief §7 + Wireframes line 12). Audit log: ROLE_DEFAULT_VIEW_CHANGED for 3 added M06 rows. No other sections changed. Catalogue + composition rules + design tokens unchanged. Reference Standards bumped to X8 v0.6 (with M06 ENUMs).** |
 | **v0.4 (R29 ref refresh)** | **2026-05-04** | **M28 living-doc cross-ref hygiene (Round 29 audit medium-cleanup):** Reference Standards refreshed — X8 stamp annotated "(current v0.6a — in-place patched R29)"; M01 reference extended with v1.0a + v1_3/v1_4 cascade notes; M02 reference extended with v1.0a + v1_1 cascade note; M03 reference extended with v1.1b + v1_3 cascade note; M04 reference annotated with v1.0a; M06 Spec reference annotated with v1.0b + v1_1 cascade note; M06 Wireframes reference filename updated `_v1_0.html` → `_v1_1.html` (re-issue R29 PR #7). No catalogue, role-default view, composition rule, or design token change. |
+| **v0.5** | **2026-05-04** | **M05 + M13 batch lock cascade (Round 34; M05+M13 C1b batch per Build Execution Plan §3a).** Two new module sections added to §13.3 role-default views: **§13.3.5 M05 RiskChangeControl** (12-role mapping; Risk Heatmap 5×5 dual-encoded for PMO_DIRECTOR + PROJECT_DIRECTOR; LD Exposure dashboard for FINANCE_LEAD; VO assessment queue for QS_MANAGER) — replaces v0.4 placeholder skeleton with full M05 Spec v1.0 (R33) Block 5 mapping. **§13.3.13 M05 — placement note:** §13.3.6-§13.3.12 already populated by M06+M07-M11+M15 in v0.4; M13 placed at §13.3.13 (next sequential) to avoid renumbering existing 7 sections. **§13.3.13 M13 CorrespondenceMeetingRegister** (12-role mapping; Notice tracker primary for PROJECT_DIRECTOR; Notice SLA breach dashboard for PMO_DIRECTOR; Open RFIs for PLANNING_ENGINEER; Daily inbound + RFI raise for SITE_MANAGER; Acknowledgement audit trail for EXTERNAL_AUDITOR). **§9.5 Pipeline Funnel pattern catalogue updated** with 4 new flagship instances: §9.5.2 VO Funnel (#3 — Draft → Assessed → Submitted → Approved → Materialised → Closed; per M05 OQ-1.5 7-state machine), §9.5.3 LD Exposure Funnel (#4 — NCR_Raised → NCR_Aging → LD_Eligible → LD_Applied per M05 BR-05-031..035), §9.5.4 EOT Pipeline (#5 — Claim_Raised → Under_Assessment → Granted/Rejected per M05 BR-05-018..022), §9.5.5 Notice SLA Breach Funnel (#6 — Within → Warning (≥80%) → Breach (≥100%) per M13 BR-13-006/007). Audit log: ROLE_DEFAULT_VIEW_CHANGED for 12 M05 rows + 12 M13 rows + 4 new flagship-pattern annotations. **No new chart types** — M05 + M13 wireframes consume only existing v0.4 Tier 1 catalogue entries (Recharts FunnelChart for funnels; matrix variant for 5×5 heatmap). **Forbidden chart audit pass:** 0 forbidden references in M05 Spec or M13 Spec. **Reference Standards refreshed** with M05 + M13 lock + X8 v0.8. M05+M13 batch ready for R35 Wireframes (C1b batch) + R36 Workflows (C1b batch). |
 
 ---
 
@@ -1097,18 +1098,71 @@ layers:
   - { label: Closed, color: emerald }
 ```
 
-### 9.5.4 M05 VO Funnel
+### 9.5.4 M05 VO Funnel (updated v0.5 per M05 Spec v1.0 R33; 7-state machine per Brief v1.0a OQ-1.5 patch)
 
 ```yaml
 module: M05
-container_label: Submitted
+flagship_instance: 3   # 3rd named flagship instance (after M06 Capital Funnel #1, M04 NCR Funnel #2)
+container_label: Draft
 layers:
-  - { label: Reviewed, color: amber }
-  - { label: Approved, color: cyan }
-  - { label: Materialised, color: emerald }
+  - { label: Assessed, color: gray }       # QS_MANAGER assessed cost impact
+  - { label: Submitted, color: amber }     # QS_MANAGER submitted for approval (VO_PENDING_APPROVAL DQ trigger anchor)
+  - { label: Approved, color: cyan }       # Single sign-off ≤ ₹50L OR Dual sign-off > ₹50L (PMO + FINANCE)
+  - { label: Materialised, color: emerald }  # M02 confirmed BOQ update complete (system action)
+  - { label: Closed, color: slate }        # Final state
+terminal_branch:
+  - { label: Rejected, color: rose, position: aside }  # Terminal-from-{Draft, Assessed, Submitted}
+metric_per_layer: { count: int, cumulative_cost_impact_inr: decimal }
+decision_anchor: "VO_PENDING_APPROVAL DQ trigger fires on Submitted state entry per BR-05-011"
 ```
 
-### 9.5.5 M09 Compliance Funnel
+### 9.5.5 M05 LD Exposure Funnel (NEW v0.5; flagship instance #4)
+
+```yaml
+module: M05
+flagship_instance: 4   # 4th named flagship instance
+container_label: NCR_Raised   # M04 ConstructionNCR rows incoming
+layers:
+  - { label: NCR_Aging, color: gray }      # NCR open but not yet at ld_aging_threshold
+  - { label: LD_Eligible, color: amber }   # Past ncr_aging_to_ld_days + severity ∈ {Critical, High} (BR-05-032)
+  - { label: LD_Applied, color: cyan }     # LD_ELIGIBLE_AMOUNT emitted to M06; CostLedgerEntry deduction tracker updated
+terminal_branch:
+  - { label: Cap_Reached, color: rose, position: aside }  # Cumulative LD ≥ ld_cap_pct × contract_value (BR-05-035 blocks further accrual)
+metric_per_layer: { count: int, cumulative_ld_amount_inr: decimal }
+decision_anchor: "LD_CAP_APPROACHING + LD_CAP_REACHED DQ triggers per BR-05-034/035"
+```
+
+### 9.5.6 M05 EOT Pipeline (NEW v0.5; flagship instance #5)
+
+```yaml
+module: M05
+flagship_instance: 5   # 5th named flagship instance
+container_label: Claim_Raised   # EOT claim filed (early_warning_notice_id NOT NULL per BR-05-018)
+layers:
+  - { label: Under_Assessment, color: amber }  # PLANNING_ENGINEER assessing (EOT_CLAIM_PENDING_ASSESSMENT DQ trigger 14-day SLA)
+  - { label: Granted, color: emerald }         # Full or partial grant (granted_days ≤ claim_days; partial_grant_reason ≥100 chars if partial per BR-05-019)
+  - { label: M03_Cascade_Complete, color: cyan }  # M03 BaselineExtension created with granted_days
+terminal_branches:
+  - { label: Rejected, color: rose, position: aside }
+  - { label: Withdrawn, color: slate, position: aside }
+metric_per_layer: { count: int, cumulative_claim_days: int, cumulative_granted_days: int }
+decision_anchor: "EOT_BASELINE_CASCADE_FAILED DQ trigger Critical per BR-05-022 if M03 cascade fails"
+```
+
+### 9.5.7 M13 Notice SLA Breach Funnel (NEW v0.5; flagship instance #6)
+
+```yaml
+module: M13
+flagship_instance: 6   # 6th named flagship instance (per M13 Spec v1.0 R34)
+container_label: Within   # Notice within SLA window (sla_remaining_pct > 0.20)
+layers:
+  - { label: Warning, color: amber }   # 80% of SLA window elapsed (sla_remaining_pct ≤ 0.20); NOTICE_SLA_WARNING DQ trigger Medium per BR-13-006
+  - { label: Breach, color: rose }     # 100% breached (response_due_date < today); NOTICE_SLA_BREACH DQ trigger High per BR-13-007
+metric_per_layer: { count: int, cumulative_overdue_days: int }
+decision_anchor: "NOTICE_SLA_WARNING + NOTICE_SLA_BREACH DQ triggers per BR-13-006/007"
+```
+
+### 9.5.8 M09 Compliance Funnel
 
 ```yaml
 module: M09
@@ -1119,7 +1173,7 @@ layers:
   - { label: Active, color: emerald }
 ```
 
-### 9.5.6 M11 Action Funnel
+### 9.5.9 M11 Action Funnel (renumbered from 9.5.6 in v0.5 — 4 new instances inserted at 9.5.5/6/7 for M05 LD/EOT + M13 Notice)
 
 ```yaml
 module: M11
@@ -1130,7 +1184,7 @@ layers:
   - { label: Closed, color: emerald }
 ```
 
-### 9.5.7 M15 Defect Funnel
+### 9.5.10 M15 Defect Funnel (renumbered from 9.5.7 in v0.5)
 
 ```yaml
 module: M15
@@ -1141,7 +1195,7 @@ layers:
   - { label: Verified, color: emerald }
 ```
 
-### 9.5.8 HDI Import Funnel
+### 9.5.11 HDI Import Funnel (renumbered from 9.5.8 in v0.5)
 
 ```yaml
 module: HDI
@@ -1313,15 +1367,28 @@ Tenant-level customisation is FORBIDDEN in v1.0. Reasons:
 - Audit log: `ROLE_DEFAULT_VIEW_CHANGED` for all 7 M04 rows
 - NCR pipeline funnel confirmed as **8th instance** of §11 flagship pipeline pattern (full list: M06 Capital Funnel, M04 NCR, M05 Risk, M05 VO, M09 Compliance, M11 Action, M15 Defect, HDI Import — order updated)
 
-### 13.3.5 M05 — Risk & Change
+### 13.3.5 M05 — Risk & Change Control (locked v0.5 per M05 Spec v1.0 R33)
 
-| Role | Primary View | Secondary Widgets | Hidden |
+Full 12-role mapping per M05 Spec v1.0 (R33) Block 5 + M05 Brief v1.0a OQ-1.10 lock. Replaces v0.4 placeholder skeleton.
+
+| Role | Primary View | Secondary Widget | Hidden |
 |---|---|---|---|
-| PMO_DIRECTOR | Risk Heatmap + Risk Score Trend | VO pipeline funnel, EAC histogram | — |
-| PROJECT_DIRECTOR | Risk Heatmap (own project) | VO list, recent VO impact | — |
-| FINANCE_LEAD | Cumulative VO Bar + EAC histogram | VO list with cost impact | — |
-| QS_MANAGER | VO list + materialisation queue | Open VOs needing BOQ updates | — |
-| COMPLIANCE_MANAGER | Regulatory risks heatmap (filtered) | Compliance-related VOs | Financial-only risks |
+| PMO_DIRECTOR | **Risk Heatmap (5×5 dual-encoded probability × impact)** | LD exposure trend (cumulative vs cap) | — |
+| PORTFOLIO_MANAGER | **Portfolio Risk Heatmap** (aggregated across projects) | Contingency depletion across projects (table) | — |
+| PROJECT_DIRECTOR | Project Risk Register (filtered to own project; sortable by risk_score) | Pending VOs / EOTs queue | — |
+| FINANCE_LEAD | LD Exposure Dashboard (per project + cumulative; horizontal bar with cap-marker — NOT a gauge per X9 forbidden-chart rule) | **VO Cost-Impact Pipeline Funnel** (X9 §11 flagship pattern instance #3 — VO Funnel; see §9.5.2) | — |
+| PLANNING_ENGINEER | EOT claim queue (own project; pending assessment) | Early Warning Notice log | — |
+| QS_MANAGER | VO Assessment Queue (cost-impact reviews; status=Assessed → Submitted) | Change register (own packages) | — |
+| SITE_MANAGER | Early Warning Notice raise / view (own project) | Active risks affecting current site work | — |
+| COMPLIANCE_MANAGER | (no primary M05 view — M09 owns) | Risk register read-only filter for compliance-classified risks | Financial-only risks |
+| PROCUREMENT_OFFICER | (no primary M05 view — M06/M03 own) | VO impact on procurement schedule (link → M03) | — |
+| ANALYST | Risk Score Trend Curves | **NCR-to-LD Aging Funnel** (X9 §11 flagship pattern instance #4 — LD Funnel; see §9.5.3) | — |
+| READ_ONLY | Risk register card (RAG-only; numeric scores hidden per BR-05-005) | — | All numeric scores |
+| EXTERNAL_AUDITOR | Risk register full read-only | LD exposure history (audit trail) | — |
+
+**Anti-pattern check:** No 3D, no radar, no dual-axis, no gauge (LD dashboard uses horizontal bar + cap-marker, NOT gauge), no pie >6 segments. ✅ Clean.
+
+### 13.3.6 M06 — Financial Control (rewritten v0.4 per M06 Spec Block 5 + Wireframes role-switcher — 8 roles)
 
 ### 13.3.6 M06 — Financial Control (rewritten v0.4 per M06 Spec Block 5 + Wireframes role-switcher — 8 roles)
 
@@ -1380,6 +1447,27 @@ Tenant-level customisation is FORBIDDEN in v1.0. Reasons:
 |---|---|---|---|
 | PROJECT_DIRECTOR | Defect Burn-down Line + open defects list | Defect aging heatmap, warranty calendar | — |
 | FACILITIES (future role) | Warranty Calendar | Defect trend | — |
+
+### 13.3.13 M13 — Correspondence & Meeting Register (locked v0.5 per M13 Spec v1.0 R34)
+
+Full 12-role mapping per M13 Spec v1.0 (R34) Block 5 + M13 Brief v1.0 OQ-1.8 lock. Numbering note: §13.3.6-§13.3.12 already populated by M06+M07-M11+M15 in v0.4; M13 placed at §13.3.13 (next sequential) per Round 29 cascade-discipline pattern (avoid renumbering existing 7 sections).
+
+| Role | Primary View | Secondary Widget | Hidden |
+|---|---|---|---|
+| PMO_DIRECTOR | **Notice SLA breach dashboard** (across all projects; **Notice SLA Breach Funnel** — X9 §11 flagship pattern instance #6; see §9.5.5) | Open RFI count by project + average response time | — |
+| PORTFOLIO_MANAGER | Portfolio correspondence volume + breach rate (table) | — | — |
+| PROJECT_DIRECTOR | **Notice tracker** — pending notices sorted by SLA-time-remaining (warning + breach highlighted RAG) | Meeting calendar (this-week + next-week) | — |
+| PLANNING_ENGINEER | Open RFIs (own project; affected_milestones impact view) | Pending action items (own assigned) | — |
+| QS_MANAGER | Pending action items (own assigned) + meeting prep queue | Notices linking to VOs (M05 cross-link) | — |
+| SITE_MANAGER | **Daily inbound correspondence + RFI raise UI** (own project) | Today's meeting agenda | — |
+| FINANCE_LEAD | Notices linking to commercial impact (M05 + M06 cross-link) | — | — |
+| PROCUREMENT_OFFICER | Vendor correspondence + transmittals | Pending vendor RFIs | — |
+| COMPLIANCE_MANAGER | Regulatory notices + responses | Notices linking to compliance items (M09 cross-link) | — |
+| ANALYST | Correspondence trend (volume by type per month) | RFI response-time trend | — |
+| READ_ONLY | Correspondence card (status badges + counts; no detail body) | — | Detail body, recipient PII |
+| EXTERNAL_AUDITOR | Full correspondence read + meeting minutes + RFI history | **Distribution + acknowledgement audit trail** (legal-evidence reconstruction view) | — |
+
+**Anti-pattern check:** No 3D, no radar, no dual-axis, no gauge, no pie >6 segments. Notice SLA Breach Funnel uses Recharts FunnelChart (Tier 1 catalogue). ✅ Clean.
 
 ## 13.4 Site Manager Subtraction Principle
 
