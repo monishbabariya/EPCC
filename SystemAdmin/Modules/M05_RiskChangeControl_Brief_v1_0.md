@@ -1,17 +1,25 @@
-# M05 — Risk & Change Control — Brief v1.0
+# M05 — Risk & Change Control — Brief v1.0a
 
-**Artefact:** M05_RiskChangeControl_Brief_v1_0
-**Round:** 31
+**Artefact:** M05_RiskChangeControl_Brief_v1_0a
+**Round:** 31 (in-place patch applied at start of R33 pre-Spec authoring)
 **Date:** 2026-05-04
 **Author:** Monish (with Claude assist)
 **Status:** LOCKED
-**Last Updated:** 2026-05-04
-**Last Audited:** v1.0 on 2026-05-04
+**Last Updated:** 2026-05-04 (v1.0a in-place patch — OQ-1.5 VO state machine extended from 6 to 7 states; pre-Spec correction caught during R33 verification)
+**Last Audited:** v1.0a on 2026-05-04
 **Reference Standards:** X8_GlossaryENUMs_v0_6a.md, X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0a.md, M01_ProjectRegistry_Spec_v1_0a.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0a.md (+ v1_1 cascade note), M03_PlanningMilestones_Spec_v1_1b.md (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0a.md, M06_FinancialControl_Spec_v1_0b.md (+ v1_1 cascade note)
 **Layer:** L2 Control — Risk & Commercial
 **Phase:** 1 — Foundational (gates M07 EVM, M08 GateControl, M19 Claims Phase 2)
 **Build Priority:** 🔴 Critical (precedes M07, M08; consumes M04 NCR + M03 BaselineExtension + M01 Contract + M02 BOQ)
 **Folder:** SystemAdmin/Modules/
+
+---
+
+## CHANGE LOG
+
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | OQ-1.5 cascade impact updated: VO state machine extended from 6 to 7 states with explicit `Submitted` handoff between QS_MANAGER assessor and PMO/FINANCE approver. Reason: `VO_PENDING_APPROVAL` Decision Queue trigger (OQ-2.3) needs an in-flight state to anchor on; without `Submitted`, the trigger has nothing to reference. Submitted state cleanly separates "QS_MANAGER has assessed and submitted for approval" from "approver has approved" — required for dual-sign-off discipline above the ₹50L threshold (OQ-1.5). OQ-2.2 append-only ledger transition path also extended to include Submitted. No scope, entity, or BR change beyond state-list extension. |
 
 ---
 
@@ -182,9 +190,11 @@ The legacy v2.3 amendment file in `ZEPCC_Legacy/` was an in-place patch on a bun
 
 **Resolution:** **B (LOCKED) with default threshold ₹50 lakh.** Mirrors M04 dual sign-off threshold (M04 OQ-1.4 = C, ₹50 lakh of WBS-node BAC slice). Single sign-off (Option A) under-governs commercial impact; client sign-off (Option C) is a Phase 2 concern when PF03 ExternalPartyPortal lands. Threshold is configurable per project via M05-owned `ProjectRiskConfig` entity (resolves where the threshold lives — see OQ-2.5).
 
-**Cascade impact:**
-- New X8 ENUMs (v0.7): `VOStatus` (state machine — Draft / Assessed / Approved / Materialised / Closed / Rejected), `VOApprovalLevel` (Single / Dual)
-- M05 BR-05-XXX: `VO.cost_impact_inr <= ₹50 lakh` allows single-sign-off path; above requires both `approved_by_pmo_at` AND `approved_by_finance_at` populated
+**Cascade impact (v1.0a — patched 2026-05-04):**
+- New X8 ENUMs (v0.7): `VOStatus` (state machine — **Draft / Assessed / Submitted / Approved / Materialised / Closed / Rejected; 7 states with explicit `Submitted` handoff between QS_MANAGER assessor and PMO/FINANCE approver**), `VOApprovalLevel` (Single / Dual)
+- VO state transitions: `Draft → Assessed` (QS_MANAGER assesses cost impact) → `Submitted` (QS_MANAGER submits for approval) → `Approved` (single sign-off ≤ threshold; dual sign-off > threshold) → `Materialised` (system action on Approved event; M02 BOQ update completes) → `Closed`. `Rejected` is terminal-from-{Draft, Assessed, Submitted}; cannot reject after Approved (use compensating VO instead).
+- M05 BR-05-XXX: `VO.cost_impact_inr <= ProjectRiskConfig.dual_signoff_threshold_inr` (default ₹50 lakh) allows single-sign-off path (PMO_DIRECTOR OR FINANCE_LEAD); above threshold requires both `approved_by_pmo_at` AND `approved_by_finance_at` populated
+- Decision Queue trigger `VO_PENDING_APPROVAL` (per OQ-2.3) anchors on `Submitted` state — escalates to PMO_DIRECTOR/FINANCE_LEAD on entry to Submitted (7-day SLA per OQ-2.3)
 - Default threshold stored on `ProjectRiskConfig.dual_signoff_threshold_inr` (configurable; M05-owned, mirrors M04 `ProjectExecutionConfig` pattern)
 
 **Status:** CLOSED
@@ -326,7 +336,7 @@ The legacy v2.3 amendment file in `ZEPCC_Legacy/` was an in-place patch on a bun
 **Default:** Following entities are append-only (DB-level UPDATE/DELETE forbidden — same pattern as M02 BACIntegrityLedger, M04 NCRStatusLog, M06 CostLedgerEntry):
 
 - `RiskStatusLog` — every Risk state transition + score change
-- `VOStatusLog` — every VO state transition (Draft → Assessed → Approved → Materialised → Closed)
+- `VOStatusLog` — every VO state transition (Draft → Assessed → Submitted → Approved → Materialised → Closed; 7-state per v1.0a OQ-1.5 cascade)
 - `EOTStatusLog` — every EOT state transition
 - `ContingencyDrawdownLog` — every drawdown event (forward-only; reversals via compensating entries per M06 precedent)
 - `LDExposureLog` — every LD eligibility flip + amount change
