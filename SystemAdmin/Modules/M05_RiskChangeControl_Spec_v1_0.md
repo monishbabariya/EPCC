@@ -1,23 +1,24 @@
 ---
-artefact: M05_RiskChangeControl_Spec_v1_0
-round: 33
+artefact: M05_RiskChangeControl_Spec_v1_0a
+round: 33 (in-place patched R37 — stamp refresh only; no spec content change)
 date: 2026-05-04
 author: Monish (with Claude assist)
 parent_brief: M05_RiskChangeControl_Brief_v1_0a (Round 31, in-place patched 2026-05-04 to 7-state VO)
-x8_version: v0.7
-x9_version: v0.4
+x8_version: v0.8
+x9_version: v0.5
 status: LOCKED
 type: Module Spec (10-block)
 re_issue_of: ZEPCC_Legacy/M05_Risk_Change_v2_3.md (slim-core re-issue per OQ-1.1=B)
 references_locked: All M05 Brief OQ-1.1-1.10 + OQ-2.1-2.6; M04 BR-04-021/022 contracts; M02 VO materialisation contract; M03 BaselineExtension cascade contract; M06 BR-06-039 + LD_ELIGIBLE_AMOUNT contract; M01 Contract financial parameters (ld_rate_per_week, ld_cap_pct, risk_buffer_pct)
 ---
 
-# M05 — Risk & Change Control — Spec v1.0
+# M05 — Risk & Change Control — Spec v1.0a
 
 ## CHANGE LOG
 
 | Version | Date | Author | Change Summary |
 |---|---|---|---|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | **R37 in-place patch (stamp refresh).** M2: x8_version v0.7 → v0.8; x9_version v0.4 → v0.5 (post-cascade stamp refresh per spec-protocol §In-Place Patch Convention). No spec content changed. All 16 M05 ENUMs (§3.73-§3.88) carried forward intact in X8 v0.8; 33 audit events + 10 DQ triggers carried forward intact; X9 §13.3.5 M05 role-default views + §9.5.2/§9.5.3/§9.5.4 flagship pipeline funnels added in v0.5 (referenced by M05 Wireframes R35). |
 | v1.0 | 2026-05-04 | Monish (with Claude assist) | Initial standalone consolidated spec (Round 33). All 16 M05 Brief v1.0a OQ items embedded as locked. Slim-core scope per OQ-1.1=B (Risk + Change + VO + EOT + LD + Contingency + EWN; Claims→M19/HSE→M31/Insurance→M23 Phase 2 deferred). 14 entities including 5 append-only ledgers (RiskStatusLog, VOStatusLog, EOTStatusLog, ContingencyDrawdownLog, LDExposureLog) with DB-level UPDATE/DELETE forbidden. 32 BRs (BR-05-001..032). 30 audit events (Appendix A locked from authoring per OQ-2.1). 10 Decision Queue triggers (Block 8c). All 4 parent contracts honoured: M04 BR-04-021/022 (NCR signal IN + ld_eligibility_flag write-back system-to-system), M02 VO materialisation (VO_APPROVED → M02 BOQ update), M03 EOT cascade (EOT_GRANTED → M03 BaselineExtension), M06 financial signals (VO_APPROVED_COST_IMPACT + LD_ELIGIBLE_AMOUNT). M01 Contract parameters (ld_rate_per_week, ld_cap_pct, risk_buffer_pct) read at project activation + Contract edit. 0 open questions in Block 10. |
 
 ---
