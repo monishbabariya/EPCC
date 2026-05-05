@@ -1,7 +1,7 @@
 # EPCC — Master Version Log
 ## Version 1.1
 **Owner:** PMO Director
-**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (Round 29 audit medium-cleanup — M35 §3 module-row sweep + M38 §7 NEXT ROUND PREVIEW cleanup)
+**Created:** 2026-05-03 | **Last Reconciled:** 2026-05-04 (R31 plan lock — §7 NEXT ROUND PREVIEW replaced with revised round sequence per `EPCC_BuildExecutionPlan_v1_0.md`)
 **Status:** Living Document
 **Update Frequency:** On every artefact creation, modification, or status change.
 
@@ -202,24 +202,91 @@ When any artefact is created, modified, or status-changed:
 
 ## 7. NEXT ROUND PREVIEW
 
-> **Note:** Pre-merge "(was R2X in main's pre-merge plan)" annotations removed Round 29 medium-cleanup (M38) — historical noise no longer informative now that post-merge round numbers are authoritative. Pre-merge plan preserved in git history of this file.
+> **Note:** Round sequence revised at R31 plan-lock (`EPCC_BuildExecutionPlan_v1_0.md`). Spec-track and build-track run in parallel from R37 onward. Per-module gate: full Brief→Spec→Wireframes→Workflows LOCKED before that module's build slice. Single round-numbering sequence (monotonic); track identified by commit-message convention. Source of truth for live round sequence: `System Specs/EPCC_BuildExecutionPlan_v1_0.md` §3 — this preview is a snapshot.
+
+### Past rounds (R23-R31)
 
 | Round | Artefact | Status |
 |---|---|---|
-| 23 | EPCC_BuildArchitecture_Brief_v1_0 | **In Draft** — awaiting OQ-1 answers from Monish |
+| 23 | EPCC_BuildArchitecture_Brief_v1_0 | **Locked** (R30 Spec follow-up) |
 | 24 | M06 FinancialControl Brief v1.0 | **Locked** |
 | 25 | M06 FinancialControl Spec v1.0 (+ v1.0a R27 audit-correction + v1.0b R29 in-place patch) | **Locked** |
 | 26 | M06 FinancialControl Wireframes v1.0 (re-issued to v1.1 R29 PR #7) | **Locked → Re-issued R29** |
 | 27 | M06 FinancialControl Workflows v1.0 (+ v1.0a R29 stamp refresh + v1.0b R29 medium-cleanup) + Spec v1.0a audit correction | **Locked** |
 | 28 | M06 cascade pass — X8 v0.6 + X9 v0.4 + M01 v1.3 + M03 v1.2 + naming-folders refresh | **Locked** |
-| 29 | **Audit pass** — 4 PR series (high-mechanical PR #5 + cascade-notes PR #6 + wireframe-reissue PR #7 + medium-cleanup PR #8 — this PR) closing all CRITICAL/HIGH and reconciling 17 MEDIUMs + ~28 LOWs | **Locked (this round)** |
-| 30 | EPCC_BuildArchitecture_Spec_v1_0 | Pending Round 23 OQ-1 lock |
-| 31 | Monorepo scaffold (apps/api, apps/web, packages/, infra/, CI) | Pending Round 30 lock |
-| 32 | X8 → ENUM codegen pipeline | Pending Round 31 |
-| 33 | M34 thin slice (auth + 17 roles + audit log) | Pending Round 32 |
-| 34 | M01 thin slice (project create + read for KDMC-001-DBOT) | Pending Round 33 |
-| 35 | First end-to-end demo | Pending Round 34 |
-| (carry-over) | TBD module Brief candidates: M05 RiskChange (next per dependency-first ordering), M07 EVMEngine, M27 DesignControl, M12 DocumentControl, M14 QSMeasurementBook | Deferred until thin slice ships |
+| 29 | **Audit pass** — 4 PR series (PR #4 remediation + PR #5 high-mechanical + PR #6 cascade-notes + PR #7 wireframe-reissue + PR #8 medium-cleanup) closing all CRITICAL/HIGH/MEDIUM and reconciling LOWs | **Locked** |
+| 30 | EPCC_BuildArchitecture_Spec_v1_0 | **Locked** |
+| 31 | M05_RiskChangeControl_Brief_v1_0 + EPCC_BuildExecutionPlan_v1_0 (governance lock) | **Locked** |
+
+### Foundation Phase preview (R32-R51)
+
+Per Build Execution Plan §3a. C1 cadence on Specs; C1b on Wireframes/Workflows where peer modules permit.
+
+| Round | Track | Artefact | Calendar |
+|---|---|---|---|
+| 32 | Spec | M13 CorrespondenceMeetingRegister Brief v1.0 (C1b batch with M05) | Week 1 |
+| 33 | Spec | M05 Spec v1.0 + X8 v0.7 cascade scaffold | Week 2 |
+| 34 | Spec | M13 Spec v1.0 + X8/X9 audit pass for M05+M13 batch | Week 2 |
+| 35 | Spec | M05 + M13 Wireframes (C1b batch) | Week 3 |
+| 36 | Spec | M05 + M13 Workflows (C1b batch) | Week 3 |
+| 37 | Build | Monorepo scaffold + 10 ADRs + CI workflow + Docker Compose + Keycloak realm seed | Week 4 |
+| 38 | Build | ENUM codegen pipeline live | Week 4 |
+| 39 | Build | M34 thin slice scaffold | Week 5 |
+| 40 | Build | M34 thin slice complete (AC-1/2/3/7) | Week 5 |
+| 41 | Build | M01 thin slice scaffold | Week 6 |
+| **42** ⭐ | Build | **M01 thin slice complete + First End-to-End Demo (G-2, internal)** | Week 6 |
+| 43 | Spec | M07 EVMEngine Brief v1.0 | Week 7 |
+| 44 | Build | M02 deepening start | Week 7 |
+| 45 | Spec | M07 Spec v1.0 + X8 v0.8 cascade scaffold | Week 8 |
+| 46 | Build | M02 deepening complete + M03 deepening start | Week 8-9 |
+| 47-48 | Spec | M07 Wireframes + Workflows | Week 9-10 |
+| 49 | Build | M03 deepening complete | Week 10 |
+| 50 | Spec | M08 GateControl Brief v1.0 | Week 11 |
+| 51 | Build | M04 deepening start | Week 11 |
+| 52-55 | Spec + Build | M08 Spec + Wireframes + Workflows + M04 deepening complete | Week 12-13 |
+| 56 | Build | M06 deepening start | Week 14 |
+| **57** ⭐ | Build | **M06 deepening complete + Cost Ledger Live Demo (G-3, KDMC stakeholders)** | Week 14 |
+
+### Phase 1 Foundation cap (R58-R68)
+
+| Round | Track | Artefact | Calendar |
+|---|---|---|---|
+| 58-62 | Spec + Build | M11 Brief + Spec + Wireframes + Workflows + M05 deepening complete | Week 15-17 |
+| 63 | Build | M07 deepening start | Week 17 |
+| **64** ⭐ | Build | **M07 deepening complete + EVM Engine Live Demo (G-4, KDMC stakeholders)** | Week 18 |
+| 65 | Build | M08 deepening start | Week 18-19 |
+| **66** ⭐ | Build | **M08 deepening complete + Stage Gates Live Demo (G-5, KDMC stakeholders)** | Week 19-20 |
+| 67 | Build | M11 ActionRegister deepening | Week 20 |
+| **68** ⭐ | Build | **M11 deepening complete + Foundation 10 Modules Complete (G-6, lender + external review)** | Week 21 |
+
+### Phase 1 Secondary preview (R69-R85+)
+
+| Round | Track | Artefact | Calendar |
+|---|---|---|---|
+| 69-72 | Spec + Build | M14 QSMeasurementBook full cycle | Week 22-23 |
+| 73 | Build | M12 DocumentControl deepening + M04 photo migration | Week 24 |
+| 74-75 | Spec + Build | HDI v1.0 (full KDMC migration) | Week 25-26 |
+| **76** ⭐ | Build | **Phase 1 MVP Demo (G-7, lender + KDMC + external review)** | Week 27 |
+| 77-85 | Spec + Build | Phase 1 secondary modules (M09, M22, M27, M28, M30, M31, M32, M33, M16, M20, M21, M23, M24, M25, M26, M10, M29, M17, M18) — 19 modules | Week 28-34 |
+| **86+** ⭐ | — | **Phase 1 Functional System (G-8, 33 modules)** | Week 35 |
+
+### Phase 2 preview (R87+)
+
+Phase 2 deferred 8 modules (M19, M15, PF01-PF06) + production hardening. Calendar Week 36-50.
+
+| **95+** ⭐ | — | **Phase 1 + Platform Complete (G-9; Phase 2 entry gate)** | Week 50 |
+
+### Audit rounds (inserted per cadence)
+
+Per Build Execution Plan §7. Branches `audit/round-{N}-{theme}`, ~1-2 weeks each, calendar-absorbed.
+
+| Audit | Trigger | Scope |
+|---|---|---|
+| Audit/R45+ | After Cost Ledger Demo (G-3) | M02 + M03 + M06 contract integrity |
+| Audit/R51+ | After Foundation 10 Complete (G-6) | M07 ↔ M08 ↔ M06 commercial-loop audit |
+| Audit/R65+ | After M14 + M12 + HDI v1.0 | KDMC migration verification |
+| Audit/R73+ | After Phase 1 MVP (G-7) | Full system audit pre-secondary-modules |
+| Audit/R85+ | After Phase 1 Functional (G-8) | Pre-Phase-2 audit |
 
 ---
 
