@@ -1,9 +1,9 @@
 ---
-artefact: M05_RiskChangeControl_Spec_v1_0a
-round: 33 (in-place patched R37 — stamp refresh only; no spec content change)
+artefact: M05_RiskChangeControl_Spec_v1_0b
+round: 33 (in-place patches: R37 v1.0a stamp refresh; R37 v1.0b Block 1 user list correction)
 date: 2026-05-04
 author: Monish (with Claude assist)
-parent_brief: M05_RiskChangeControl_Brief_v1_0a (Round 31, in-place patched 2026-05-04 to 7-state VO)
+parent_brief: M05_RiskChangeControl_Brief_v1_0b (Round 31; v1.0a R33 7-state VO; v1.0b R37 stamp refresh)
 x8_version: v0.8
 x9_version: v0.5
 status: LOCKED
@@ -12,12 +12,13 @@ re_issue_of: ZEPCC_Legacy/M05_Risk_Change_v2_3.md (slim-core re-issue per OQ-1.1
 references_locked: All M05 Brief OQ-1.1-1.10 + OQ-2.1-2.6; M04 BR-04-021/022 contracts; M02 VO materialisation contract; M03 BaselineExtension cascade contract; M06 BR-06-039 + LD_ELIGIBLE_AMOUNT contract; M01 Contract financial parameters (ld_rate_per_week, ld_cap_pct, risk_buffer_pct)
 ---
 
-# M05 — Risk & Change Control — Spec v1.0a
+# M05 — Risk & Change Control — Spec v1.0b
 
 ## CHANGE LOG
 
 | Version | Date | Author | Change Summary |
 |---|---|---|---|
+| v1.0b | 2026-05-04 | Monish (with Claude assist) | **R37 in-place patch (Block 1 user list correction).** M7: Block 1 Secondary Users reconciled to match Wireframes R35 role-switcher + X9 v0.5 §13.3.5 role-default views. COMPLIANCE_MANAGER added (regulatory-category risks: AERB, NABH, PCB — clear M05 use case present in Block 4a permission matrix and X9 §13.3.5). PORTFOLIO_MANAGER + SITE_MANAGER removed from Secondary Users line — both retain READ_ONLY access in Block 4a permission matrix (PORTFOLIO_MANAGER reads risk-aggregation; SITE_MANAGER read-only on EWN/active risks; neither has substantive M05 actions). No entity, BR, ENUM, or integration-point change. |
 | v1.0a | 2026-05-04 | Monish (with Claude assist) | **R37 in-place patch (stamp refresh).** M2: x8_version v0.7 → v0.8; x9_version v0.4 → v0.5 (post-cascade stamp refresh per spec-protocol §In-Place Patch Convention). No spec content changed. All 16 M05 ENUMs (§3.73-§3.88) carried forward intact in X8 v0.8; 33 audit events + 10 DQ triggers carried forward intact; X9 §13.3.5 M05 role-default views + §9.5.2/§9.5.3/§9.5.4 flagship pipeline funnels added in v0.5 (referenced by M05 Wireframes R35). |
 | v1.0 | 2026-05-04 | Monish (with Claude assist) | Initial standalone consolidated spec (Round 33). All 16 M05 Brief v1.0a OQ items embedded as locked. Slim-core scope per OQ-1.1=B (Risk + Change + VO + EOT + LD + Contingency + EWN; Claims→M19/HSE→M31/Insurance→M23 Phase 2 deferred). 14 entities including 5 append-only ledgers (RiskStatusLog, VOStatusLog, EOTStatusLog, ContingencyDrawdownLog, LDExposureLog) with DB-level UPDATE/DELETE forbidden. 32 BRs (BR-05-001..032). 30 audit events (Appendix A locked from authoring per OQ-2.1). 10 Decision Queue triggers (Block 8c). All 4 parent contracts honoured: M04 BR-04-021/022 (NCR signal IN + ld_eligibility_flag write-back system-to-system), M02 VO materialisation (VO_APPROVED → M02 BOQ update), M03 EOT cascade (EOT_GRANTED → M03 BaselineExtension), M06 financial signals (VO_APPROVED_COST_IMPACT + LD_ELIGIBLE_AMOUNT). M01 Contract parameters (ld_rate_per_week, ld_cap_pct, risk_buffer_pct) read at project activation + Contract edit. 0 open questions in Block 10. |
 
@@ -37,12 +38,14 @@ Decision It Enables      : "Given everything that has happened on site (NCRs, de
                             absorb it within contingency, or are we exceeding tolerance?"
 Primary User             : PMO_DIRECTOR (risk heatmap + contingency approval + dual sign-off)
 Secondary Users          : PROJECT_DIRECTOR (own-project risk register, EOT/VO assessment, EWN review),
-                            PORTFOLIO_MANAGER (portfolio risk + contingency depletion),
                             FINANCE_LEAD (LD exposure + VO cost pipeline + dual sign-off),
                             PLANNING_ENGINEER (EOT claim assessment, EWN raise),
                             QS_MANAGER (VO assessment, change register, LD calc review),
-                            SITE_MANAGER (EWN raise + view, active risks),
+                            COMPLIANCE_MANAGER (regulatory-category risks: AERB, NABH, PCB — read + own-category response strategy contribution),
                             ANALYST (risk score trends, LD funnel, portfolio rollup)
+Read-Only Users          : PORTFOLIO_MANAGER (portfolio risk aggregation + contingency depletion view),
+                            SITE_MANAGER (EWN view + active risks view; site-originated risks raised through M04, not M05)
+                            [Both retain read access via Block 4a permission matrix; no substantive M05 write actions per R37 Block 1 reconciliation]
 Folder                   : SystemAdmin/Modules/
 Re-Issue Of              : ZEPCC_Legacy/M05_Risk_Change_v2_3.md (slim-core per OQ-1.1=B)
 Source Brief             : M05_RiskChangeControl_Brief_v1_0a (Round 31)
