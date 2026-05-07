@@ -1,18 +1,26 @@
-# M13 — Correspondence & Meeting Register — Brief v1.0
+# M13 — Correspondence & Meeting Register — Brief v1.0a
 
-**Artefact:** M13_CorrespondenceMeetingRegister_Brief_v1_0
-**Round:** 32
+**Artefact:** M13_CorrespondenceMeetingRegister_Brief_v1_0a
+**Round:** 32 (in-place patched R37 — stamp refresh only; no content change)
 **Date:** 2026-05-04
 **Author:** Monish (with Claude assist)
 **Status:** LOCKED
-**Last Updated:** 2026-05-04
-**Last Audited:** v1.0 on 2026-05-04
-**Reference Standards:** X8_GlossaryENUMs_v0_6a.md, X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0a.md, M01_ProjectRegistry_Spec_v1_0a.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0a.md (+ v1_1 cascade note), M03_PlanningMilestones_Spec_v1_1b.md (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0a.md, M05_RiskChangeControl_Brief_v1_0.md (C1b batch partner), M06_FinancialControl_Spec_v1_0b.md (+ v1_1 cascade note)
+**Last Updated:** 2026-05-04 (v1.0a R37 stamp refresh — Reference Standards bumped to X8 v0.8 + X9 v0.5)
+**Last Audited:** v1.0a on 2026-05-04
+**Reference Standards:** X8_GlossaryENUMs_v0_8.md, X9_VisualisationStandards_Spec_v0_4.md (content version v0.5; filename retained per in-place patch convention), M34_SystemAdminRBAC_Spec_v1_0a.md, M01_ProjectRegistry_Spec_v1_0a.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0a.md (+ v1_1 cascade note), M03_PlanningMilestones_Spec_v1_1b.md (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0a.md, M05_RiskChangeControl_Brief_v1_0b.md (C1b batch partner; R37 stamp refresh), M06_FinancialControl_Spec_v1_0b.md (+ v1_1 cascade note)
 **Layer:** L2 Execution — Document & Communication Control
 **Phase:** 1 — Foundational (gates M11 ActionRegister; consumed by M05/M19)
 **Build Priority:** 🟠 High (precedes M11 deepening; peer of M05; consumed by M19 Phase 2)
 **Folder:** SystemAdmin/Modules/
 **C1b Batch Partner:** M05 RiskChangeControl (peer module, same layer, no upstream→downstream dependency)
+
+---
+
+## CHANGE LOG
+
+| Patch | Date       | Author                      | Changes |
+|-------|------------|-----------------------------|---------|
+| v1.0a | 2026-05-04 | Monish (with Claude assist) | **R37 in-place patch (stamp refresh).** M4: Reference Standards refreshed to X8 v0.8 + X9 v0.5 (post-cascade per spec-protocol §In-Place Patch Convention). M05 batch-partner reference updated to v1.0b (R37 stamp refresh). No content/scope change. All 13 OQ items locked at R32 preserved intact. |
 
 ---
 

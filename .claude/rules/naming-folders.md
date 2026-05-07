@@ -62,8 +62,18 @@ tenant_id, created_by, created_at, updated_by, updated_at, is_active
 - `RABillAuditLog` (M06) — every RA Bill state change
 - `PaymentEvidenceLedger` (M06) — every PaymentEvidence packet event
 - `ForexRateLog` (M06) — every rate entry + lock event; per-tier (RBI_Reference / Bank_Transaction)
+- `RiskStatusLog` (M05) — every Risk state transition + score change
+- `VOStatusLog` (M05) — every VariationOrder state transition (7-state machine)
+- `EOTStatusLog` (M05) — every ExtensionOfTime state transition + grant decision
+- `ContingencyDrawdownLog` (M05) — every contingency drawdown request / approval / reversal
+- `LDExposureLog` (M05) — every LD accrual + cap event
+- `CorrespondenceStatusLog` (M13) — every Correspondence state + classification change
+- `NoticeSLAEvent` (M13) — every NoticeTracker SLA threshold event (warning / breach / resolved)
+- `MeetingMinutesAuditLog` (M13) — every MinutesEntry + minutes status transition + dispute
+- `RFIStatusLog` (M13) — every RFI lifecycle event
+- `DistributionList` (M13) — partial append-only: row immutable post-acknowledgement (legal-evidence integrity)
 
-> **Source of truth:** X8 §6 (current v0.6). This list mirrors X8 — when X8 §6 grows, update here in the same cascade.
+> **Source of truth:** X8 §6 (current v0.8). This list mirrors X8 — when X8 §6 grows, update here in the same cascade.
 
 ---
 
@@ -107,6 +117,13 @@ The original plan called for a layered 13-folder hierarchy:
 ```
 
 **Status:** Aspirational. Not enforced. The Round 18 audit confirmed actual placement is `SystemAdmin/{Modules,Cross-link files}/` + `System Specs/` (above), not the 13-folder structure. The 13-folder hierarchy is retained here as a possible future migration target — not as a current rule. Migration would require renaming ~25 files + updating every internal reference; deferred indefinitely until a strong reason emerges.
+
+---
+
+## Patch Notes — 2026-05-04 (Round 37 Pre-Build Audit)
+
+- **H13** — X8 §6 source-of-truth bumped to v0.8
+- **H14** — M05 (5 ledgers: RiskStatusLog, VOStatusLog, EOTStatusLog, ContingencyDrawdownLog, LDExposureLog) + M13 (5 ledgers: CorrespondenceStatusLog, NoticeSLAEvent, MeetingMinutesAuditLog, RFIStatusLog, DistributionList) append-only entries added
 
 ## Round Folder Convention (Outputs)
 

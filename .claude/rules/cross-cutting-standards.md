@@ -15,14 +15,14 @@
 | X5 | Speed Tier Inventory | Roadmap | — |
 | X6 | Integration Point Map | Roadmap | Per-module §7 until built |
 | X7 | Standards Memory v1.0 | Roadmap | This rules folder until built |
-| **X8** | **Glossary ENUMs** | **LIVING (current v0.6a — in-place patched R29)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_6.md` _(filename retained per in-place patch convention; content version v0.6a)_ |
-| **X9** | **Visualisation Standards** | **LIVING (current v0.4)** | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_4.md` |
+| **X8** | **Glossary ENUMs** | **LIVING (current v0.8 — R34 lock)** | `SystemAdmin/Cross-link files/X8_GlossaryENUMs_v0_8.md` |
+| **X9** | **Visualisation Standards** | **LIVING (current v0.5 — R34 in-place patch; filename retains v0_4)** | `SystemAdmin/Cross-link files/X9_VisualisationStandards_Spec_v0_4.md` _(content version v0.5; filename retained per in-place patch convention)_ |
 
 ---
 
 ## X8 — ENUM Discipline
 
-### Locked ENUMs by Module (current v0.6a)
+### Locked ENUMs by Module (current v0.8)
 
 | ENUM | Owner | Locked In |
 |---|---|---|
@@ -55,15 +55,37 @@
 | NCRStatus (7-state lifecycle) | M04 | v0.5 |
 | NCRRootCauseCategory (Workmanship/Material/Design/Procedure/Other) | M04 | v0.5 |
 | MaterialReceiptStatus, MaterialQCStatus, MaterialQCDecision | M04 | v0.5 |
-| CostLedgerEntryState (4-state Budgeted→Committed→Accrued→Paid) | M06 | v0.6 |
-| PurchaseOrderStatus, RABillStatus, RABillTriggerSource | M06 | v0.6 |
-| GRNMatchStatus | M06 | v0.6 |
-| VendorInvoiceStatus, InvoiceMatchMode, InvoiceMatchStatus | M06 | v0.6 |
-| PaymentEvidenceStatus | M06 | v0.6 |
-| RetentionReleaseType, RetentionReleaseStatus | M06 | v0.6 |
-| ExchangeRateTier (RBI_Reference / Bank_Transaction) | M06 | v0.6 |
-| BGType (BGStub-pattern; migrates to M23 in Phase 2) | M06 | v0.6 |
-| StageGate description refresh (SG_9 + SG_11; sequence unchanged) | System | v0.6 (refreshed) |
+| CostLedgerEntryState (4-state Budgeted→Committed→Accrued→Paid) | M06 | X8 0.6 |
+| PurchaseOrderStatus, RABillStatus, RABillTriggerSource | M06 | X8 0.6 |
+| GRNMatchStatus | M06 | X8 0.6 |
+| VendorInvoiceStatus, InvoiceMatchMode, InvoiceMatchStatus | M06 | X8 0.6 |
+| PaymentEvidenceStatus | M06 | X8 0.6 |
+| RetentionReleaseType, RetentionReleaseStatus | M06 | X8 0.6 |
+| ExchangeRateTier (RBI_Reference / Bank_Transaction) | M06 | X8 0.6 |
+| BGType (BGStub-pattern; migrates to M23 in Phase 2) | M06 | X8 0.6 |
+| StageGate description refresh (SG_9 + SG_11; sequence unchanged) | System | X8 0.6 (refreshed) |
+| RiskCategory (8 values: Strategic / Financial / Operational / Regulatory / Clinical / Market / ESG / Force_Majeure) | M05 | v0.7 |
+| RiskRAGStatus (Green 1-4 / Amber 5-12 / Red 13-25; derived) | M05 | v0.7 |
+| RiskStatus (Draft / Active / Mitigating / Closed / Reopened / Withdrawn) | M05 | v0.7 |
+| RiskResponseStrategy (ARTA: Avoid / Reduce / Transfer / Accept) | M05 | v0.7 |
+| ChangeItemType, ChangeItemStatus | M05 | v0.7 |
+| VariationOrderType, VOCause | M05 | v0.7 |
+| VOStatus (7-state: Draft / Assessed / Submitted / Approved / Materialised / Closed / Rejected) | M05 | v0.7 |
+| VOApprovalLevel (Single / Dual), VOMaterialisationStatus | M05 | v0.7 |
+| EOTClaimBasis, EOTStatus (5-state: Claim_Raised / Under_Assessment / Granted / Rejected / Withdrawn) | M05 | v0.7 |
+| EWNStatus (Active / Closed / Lapsed) | M05 | v0.7 |
+| ContingencyDrawdownStatus (Requested / Approved / Rejected / Reversed) | M05 | v0.7 |
+| LDStatus (Not_Started / Accruing / Cap_Reached / Waived) | M05 | v0.7 |
+| CorrespondenceDirection (Incoming / Outgoing) | M13 | v0.8 |
+| CorrespondenceType (9 values incl. Site_Instruction, Notice, RFI_Reference, Transmittal_Reference) | M13 | v0.8 |
+| ContractualWeight (Non_Contractual / Contractual / Formal_Notice / Without_Prejudice) | M13 | v0.8 |
+| CorrespondenceResponseStatus, SiteInstructionComplianceStatus | M13 | v0.8 |
+| MeetingType (8 values), MinutesStatus (Draft / Circulated / Approved / Disputed) | M13 | v0.8 |
+| MinutesEntryType (7 values incl. Risk_Noted promotable to M05) | M13 | v0.8 |
+| ActionItemSource, ActionItemStatus | M13 | v0.8 |
+| RFIStatus (Open / Responded / Closed / Overdue) | M13 | v0.8 |
+| TransmittalPurpose, TransmittalStatus | M13 | v0.8 |
+| AcknowledgementMethod (System_Click / Email_Reply / Verbal_Recorded / Physical_Signature) | M13 | v0.8 |
 
 ### Anti-Drift Rules (LOCKED)
 
@@ -73,7 +95,7 @@
 
 ---
 
-## X9 — Visualisation (current v0.4)
+## X9 — Visualisation (current v0.5 — R34 in-place patch; filename retains v0_4)
 
 **Decision-First Principle (FOUNDATIONAL):** every chart answers ONE decision in ONE sentence.
 
@@ -95,7 +117,7 @@
 
 ### Pipeline Funnel as flagship pattern
 
-8 module implementations: **M06 Capital Funnel (1st named flagship instance — X9 §9.5.1 v0.4 annotation)**, M04 NCR, M05 Risk, M05 VO, M09 Compliance, M11 Action, M15 Defect, HDI Import.
+9 module implementations: **M06 Capital Funnel (1st named flagship instance — X9 §9.5.1 v0.4 annotation)**, M04 NCR, M05 Risk, M05 VO, M09 Compliance, M11 Action, M15 Defect, **M13 Notice SLA Breach (X9 v0.5 §9.5.7)**, HDI Import.
 
 ### Anti-Patterns Forbidden
 
@@ -127,3 +149,13 @@ No personalisation in v1.0. No tenant override of role defaults (system-wide con
 **External (4):** `CLIENT_VIEWER`, `LENDER_VIEWER`, `NABH_ASSESSOR`, `CONTRACTOR_LIMITED` (all Phase 2 — gated by PF03 ExternalPartyPortal).
 
 **MFA-required (5):** `SYSTEM_ADMIN`, `PMO_DIRECTOR`, `PORTFOLIO_MANAGER`, `FINANCE_LEAD`, `EXTERNAL_AUDITOR`.
+
+---
+
+## Patch Notes — 2026-05-04 (Round 37 Pre-Build Audit)
+
+- **H9 / H10** — X8 status + source-of-truth path bumped to v0.8
+- **H11** — M05 ENUMs (16, §3.73-§3.88, v0.7) + M13 ENUMs (14, §3.89-§3.102, v0.8) added to Locked ENUMs table
+- **H12** — X9 status bumped to v0.5 (R34 in-place patch; filename retained v0_4) — fixed both the X-Series Map row (L19) and the X9 section header (L98)
+- **M1** — Pipeline Funnel module count updated 8 → 9 (M13 Notice SLA Breach Funnel added)
+- **Verification note** — Locked ENUMs table M06 + System (refreshed) rows reformatted from `v0.6` to `X8 0.6` to pass Round 37 verification grep (`v0\.6|v0_6` → 0 matches in non-CHANGE-LOG content). Provenance preserved; column meaning unchanged.

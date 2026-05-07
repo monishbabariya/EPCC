@@ -1,11 +1,11 @@
 ---
-artefact: EPCC_BuildArchitecture_Spec_v1_0
-round: 30
+artefact: EPCC_BuildArchitecture_Spec_v1_0a
+round: 30 (in-place patched R37 — stamp refresh only; no spec content change)
 date: 2026-05-04
 author: Monish (with Claude assist)
 parent_brief: EPCC_BuildArchitecture_Brief_v1_0.md (Round 23)
-x8_version: v0.6a
-x9_version: v0.4
+x8_version: v0.8
+x9_version: v0.5
 status: LOCKED
 type: Build Governance Spec
 re_issue_of: n/a (first lock — no legacy build governance spec existed)
@@ -13,7 +13,7 @@ locks_oq1: All 10 OQ-1 BuildArchitecture decisions (R23 → R30) per CLAUDE.md �
 references_locked: ES-DB-001 (schema-per-tenant), ES-DR-002 v1.2 (per-schema backup), ES-CICD-001/002 (7-stage pipeline), ES-SEC-004 (DPDPA 2023), Cadence C1b (2-Spec Buffer)
 ---
 
-# EPCC Build Architecture — Spec v1.0
+# EPCC Build Architecture — Spec v1.0a
 
 > **Type.** Build Governance Spec (not a module spec). Governs the technical build of EPCC: repo, scaffold, CI/CD, database, auth, codegen, and the path from spec to first running demo.
 >
@@ -29,6 +29,7 @@ references_locked: ES-DB-001 (schema-per-tenant), ES-DR-002 v1.2 (per-schema bac
 
 | Version | Date       | Author                      | Changes |
 |---------|------------|-----------------------------|---------|
+| v1.0a   | 2026-05-04 | Monish (with Claude assist) | **R37 in-place patch (stamp refresh).** M5: x8_version v0.6a → v0.8; x9_version v0.4 → v0.5 (post-cascade per spec-protocol §In-Place Patch Convention). All 10 OQ-1 decisions and spec content unchanged. |
 | v1.0    | 2026-05-04 | Monish (with Claude assist) | Initial lock. All 10 OQ-1 decisions embedded. 6 OQ-2 resolved. 0 open questions. |
 
 ---

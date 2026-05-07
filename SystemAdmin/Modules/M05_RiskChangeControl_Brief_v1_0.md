@@ -1,13 +1,13 @@
-# M05 — Risk & Change Control — Brief v1.0a
+# M05 — Risk & Change Control — Brief v1.0b
 
-**Artefact:** M05_RiskChangeControl_Brief_v1_0a
-**Round:** 31 (in-place patch applied at start of R33 pre-Spec authoring)
+**Artefact:** M05_RiskChangeControl_Brief_v1_0b
+**Round:** 31 (in-place patches: R33 v1.0a 7-state VO; R37 v1.0b stamp refresh)
 **Date:** 2026-05-04
 **Author:** Monish (with Claude assist)
 **Status:** LOCKED
-**Last Updated:** 2026-05-04 (v1.0a in-place patch — OQ-1.5 VO state machine extended from 6 to 7 states; pre-Spec correction caught during R33 verification)
-**Last Audited:** v1.0a on 2026-05-04
-**Reference Standards:** X8_GlossaryENUMs_v0_6a.md, X9_VisualisationStandards_Spec_v0_4.md, M34_SystemAdminRBAC_Spec_v1_0a.md, M01_ProjectRegistry_Spec_v1_0a.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0a.md (+ v1_1 cascade note), M03_PlanningMilestones_Spec_v1_1b.md (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0a.md, M06_FinancialControl_Spec_v1_0b.md (+ v1_1 cascade note)
+**Last Updated:** 2026-05-04 (v1.0b R37 stamp refresh — Reference Standards bumped to X8 v0.8 + X9 v0.5)
+**Last Audited:** v1.0b on 2026-05-04
+**Reference Standards:** X8_GlossaryENUMs_v0_8.md, X9_VisualisationStandards_Spec_v0_4.md (content version v0.5; filename retained per in-place patch convention), M34_SystemAdminRBAC_Spec_v1_0a.md, M01_ProjectRegistry_Spec_v1_0a.md (+ v1_1/v1_2/v1_3/v1_4 cascade notes), M02_StructureWBS_Spec_v1_0a.md (+ v1_1 cascade note), M03_PlanningMilestones_Spec_v1_1b.md (+ v1_2/v1_3 cascade notes), M04_ExecutionCapture_Spec_v1_0a.md, M06_FinancialControl_Spec_v1_0b.md (+ v1_1 cascade note)
 **Layer:** L2 Control — Risk & Commercial
 **Phase:** 1 — Foundational (gates M07 EVM, M08 GateControl, M19 Claims Phase 2)
 **Build Priority:** 🔴 Critical (precedes M07, M08; consumes M04 NCR + M03 BaselineExtension + M01 Contract + M02 BOQ)
@@ -19,6 +19,7 @@
 
 | Patch | Date       | Author                      | Changes |
 |-------|------------|-----------------------------|---------|
+| v1.0b | 2026-05-04 | Monish (with Claude assist) | **R37 in-place patch (stamp refresh).** M3: Reference Standards refreshed to X8 v0.8 + X9 v0.5 (post-cascade per spec-protocol §In-Place Patch Convention). No content/scope change. All R33 v1.0a OQ-1.5 7-state VO decisions preserved intact. |
 | v1.0a | 2026-05-04 | Monish (with Claude assist) | OQ-1.5 cascade impact updated: VO state machine extended from 6 to 7 states with explicit `Submitted` handoff between QS_MANAGER assessor and PMO/FINANCE approver. Reason: `VO_PENDING_APPROVAL` Decision Queue trigger (OQ-2.3) needs an in-flight state to anchor on; without `Submitted`, the trigger has nothing to reference. Submitted state cleanly separates "QS_MANAGER has assessed and submitted for approval" from "approver has approved" — required for dual-sign-off discipline above the ₹50L threshold (OQ-1.5). OQ-2.2 append-only ledger transition path also extended to include Submitted. No scope, entity, or BR change beyond state-list extension. |
 
 ---
