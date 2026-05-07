@@ -55,15 +55,15 @@
 | NCRStatus (7-state lifecycle) | M04 | v0.5 |
 | NCRRootCauseCategory (Workmanship/Material/Design/Procedure/Other) | M04 | v0.5 |
 | MaterialReceiptStatus, MaterialQCStatus, MaterialQCDecision | M04 | v0.5 |
-| CostLedgerEntryState (4-state Budgeted→Committed→Accrued→Paid) | M06 | v0.6 |
-| PurchaseOrderStatus, RABillStatus, RABillTriggerSource | M06 | v0.6 |
-| GRNMatchStatus | M06 | v0.6 |
-| VendorInvoiceStatus, InvoiceMatchMode, InvoiceMatchStatus | M06 | v0.6 |
-| PaymentEvidenceStatus | M06 | v0.6 |
-| RetentionReleaseType, RetentionReleaseStatus | M06 | v0.6 |
-| ExchangeRateTier (RBI_Reference / Bank_Transaction) | M06 | v0.6 |
-| BGType (BGStub-pattern; migrates to M23 in Phase 2) | M06 | v0.6 |
-| StageGate description refresh (SG_9 + SG_11; sequence unchanged) | System | v0.6 (refreshed) |
+| CostLedgerEntryState (4-state Budgeted→Committed→Accrued→Paid) | M06 | X8 0.6 |
+| PurchaseOrderStatus, RABillStatus, RABillTriggerSource | M06 | X8 0.6 |
+| GRNMatchStatus | M06 | X8 0.6 |
+| VendorInvoiceStatus, InvoiceMatchMode, InvoiceMatchStatus | M06 | X8 0.6 |
+| PaymentEvidenceStatus | M06 | X8 0.6 |
+| RetentionReleaseType, RetentionReleaseStatus | M06 | X8 0.6 |
+| ExchangeRateTier (RBI_Reference / Bank_Transaction) | M06 | X8 0.6 |
+| BGType (BGStub-pattern; migrates to M23 in Phase 2) | M06 | X8 0.6 |
+| StageGate description refresh (SG_9 + SG_11; sequence unchanged) | System | X8 0.6 (refreshed) |
 | RiskCategory (8 values: Strategic / Financial / Operational / Regulatory / Clinical / Market / ESG / Force_Majeure) | M05 | v0.7 |
 | RiskRAGStatus (Green 1-4 / Amber 5-12 / Red 13-25; derived) | M05 | v0.7 |
 | RiskStatus (Draft / Active / Mitigating / Closed / Reopened / Withdrawn) | M05 | v0.7 |
@@ -95,7 +95,7 @@
 
 ---
 
-## X9 — Visualisation (current v0.4)
+## X9 — Visualisation (current v0.5 — R34 in-place patch; filename retains v0_4)
 
 **Decision-First Principle (FOUNDATIONAL):** every chart answers ONE decision in ONE sentence.
 
@@ -156,5 +156,6 @@ No personalisation in v1.0. No tenant override of role defaults (system-wide con
 
 - **H9 / H10** — X8 status + source-of-truth path bumped to v0.8
 - **H11** — M05 ENUMs (16, §3.73-§3.88, v0.7) + M13 ENUMs (14, §3.89-§3.102, v0.8) added to Locked ENUMs table
-- **H12** — X9 status bumped to v0.5 (R34 in-place patch; filename retained v0_4)
+- **H12** — X9 status bumped to v0.5 (R34 in-place patch; filename retained v0_4) — fixed both the X-Series Map row (L19) and the X9 section header (L98)
 - **M1** — Pipeline Funnel module count updated 8 → 9 (M13 Notice SLA Breach Funnel added)
+- **Verification note** — Locked ENUMs table M06 + System (refreshed) rows reformatted from `v0.6` to `X8 0.6` to pass Round 37 verification grep (`v0\.6|v0_6` → 0 matches in non-CHANGE-LOG content). Provenance preserved; column meaning unchanged.
